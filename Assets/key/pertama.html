@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{?PageTitle}</title>
+</head>
+<body>
+{?somekey}
+<br/>
+
+<!--copyright divelliz if, loop harus didalam komentar untuk penghapusan tags nantinya-->
+<p>
+    <!--{!!-BlockedCondition}-->
+    <span>Test Only</span>
+    <!--{/BlockedCondition}-->
+    <br/>
+    <!--{-TestItems}-->
+    <span>{?TheValue}</span><br>
+    <!--{/TestItems}-->
+</p>
+
+<!--{!render}-->
+<h2>Test Render</h2>
+<!--{/render}-->
+
+</body>
+</html>
