@@ -14,7 +14,7 @@ use Puko\Core\Template;
 #region url router
 $router = new RouteParser(isset($_GET['query']) ? $_GET['query'] : 'main/main');
 $routerObj = $router->InitializeClass();
-$vars = $router->InitializeFunction($routerObj);
+$vars = $router->InitializeFunction();
 #end region
 
 /*
@@ -32,7 +32,7 @@ $template->setOpenBlockedRule("{!!", "}");
 $template->setClosedBlockedRule("{/", "}");
 
 $template->setArrays($vars);
-echo $template->output();
+echo (!is_null($vars)) ? $template->output() : "";
 
 /*
 echo '<pre>';
