@@ -84,10 +84,9 @@ class Template
             }
         }
 
-        try {
-            $output = file_get_contents($this->file);
-        } catch (Exception $ex) {
-            echo "I HANDLED THIS ERROR: " . $ex->getMessage();
+        if (!$output = @file_get_contents($this->file)) {
+            echo "View File " . $this->file . " not found.";
+            return null;
         }
 
 

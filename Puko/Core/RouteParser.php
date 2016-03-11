@@ -2,6 +2,8 @@
 
 namespace Puko\Core;
 
+use Exception;
+
 class RouteParser
 {
     public $RawRouter;
@@ -85,17 +87,35 @@ class RouteParser
         return new $this->ClassName($this->ConstructVars);
     }
 
-    function InitializeFunction($classObj)
+    /**
+     * @return mixed
+     * @throws PukoException
+     */
+    function InitializeFunction()
     {
-        if (empty($this->FunctionVars)) {
-            return call_user_func(
-                array($classObj, $this->FunctionNames)
-            );
-        } else {
-            return call_user_func_array(
-                array($this->ClassName, $this->FunctionNames), $this->FunctionVars
-            );
-        }
-    }
 
+        if (empty($this->FunctionVars)) {
+            if (method_exists($this->ClassName, $this->FunctionNames)
+                && is_callable(array($this->ClassName, $this->FunctionNames))
+            ) {
+                return call_user_func(
+                    array($this->ClassName, $this->FunctionNames)
+                );
+            } else {
+                echo "Method not found";
+            }
+        } else {
+            if (method_exists($this->ClassName, $this->FunctionNames)
+                && is_callable(array($this->ClassName, $this->FunctionNames))
+            ) {
+                return call_user_func_array(
+                    array($this->ClassName, $this->FunctionNames), $this->FunctionVars
+                );
+            } else {
+                echo "Method with var not found";
+            }
+        }
+
+        return null;
+    }
 }
