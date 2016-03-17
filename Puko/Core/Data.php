@@ -74,6 +74,18 @@ class Data
         }
     }
 
+    public function Delete($arrWhere)
+    {
+        $del_text = "DELETE FROM `$this->tableName` WHERE ";
+        foreach ($arrWhere as $col => $value) {
+            $del_text .= "`" . $col . "`" . " = '" . $value . "' AND ";
+        }
+        $del_text = substr($del_text, 0, -4);
+
+        $statement = $this->pdo->prepare($del_text);
+        return $statement->execute($arrWhere);
+    }
+
     public function Update($id, $array)
     {
         $array = array_merge($id, $array);
