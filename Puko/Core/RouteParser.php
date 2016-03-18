@@ -2,8 +2,6 @@
 
 namespace Puko\Core;
 
-use Exception;
-
 class RouteParser
 {
     public $RawRouter;
@@ -12,12 +10,12 @@ class RouteParser
     public $FunctionNames;
     public $FunctionVars = array();
 
-    function loader($class)
+    public function loader($class)
     {
         require_once PUKO_ROOT . '/Puko/Controllers/' . $class . EXT;
     }
 
-    function __construct($router)
+    public function __construct($router)
     {
         $this->RawRouter = $router;
         $variables = explode('/', $this->RawRouter);
@@ -77,9 +75,9 @@ class RouteParser
         }
     }
 
-    function InitializeClass()
+    public function InitializeClass()
     {
-        $realFilePath = PUKO_ROOT . '/Puko/Controllers/' . $this->ClassName . '.php';
+        $realFilePath = PUKO_ROOT . '/Puko/Controllers/' . $this->ClassName . EXT;
         if (!file_exists($realFilePath)) {
             die('Controller file ' . $this->ClassName . ' is not found.');
         }
@@ -88,34 +86,32 @@ class RouteParser
     }
 
     /**
+     * @param $object
      * @return mixed
-     * @throws PukoException
      */
-    function InitializeFunction()
+    public function InitializeFunction($object)
     {
 
         if (empty($this->FunctionVars)) {
-            if (method_exists($this->ClassName, $this->FunctionNames)
-                && is_callable(array($this->ClassName, $this->FunctionNames))
+            if (method_exists($object, $this->FunctionNames)
+                && is_callable(array($object, $this->FunctionNames))
             ) {
                 return call_user_func(
-                    array($this->ClassName, $this->FunctionNames)
+                    array($object, $this->FunctionNames)
                 );
             } else {
-                echo "Method not found";
+                die("Method not found");
             }
         } else {
-            if (method_exists($this->ClassName, $this->FunctionNames)
-                && is_callable(array($this->ClassName, $this->FunctionNames))
+            if (method_exists($object, $this->FunctionNames)
+                && is_callable(array($object, $this->FunctionNames))
             ) {
                 return call_user_func_array(
-                    array($this->ClassName, $this->FunctionNames), $this->FunctionVars
+                    array($object, $this->FunctionNames), $this->FunctionVars
                 );
             } else {
-                echo "Method with var not found";
+                die("Method with var not found");
             }
         }
-
-        return null;
     }
 }

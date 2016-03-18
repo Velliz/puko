@@ -1,8 +1,11 @@
 <?php
 
+/**
+ * Class Example
+ */
 class Example
 {
-    var $id;
+    public $id;
 
     function __construct($vars)
     {
@@ -13,12 +16,7 @@ class Example
     {
         return array(
             'PageTitle' => 'Puko Framework',
-            'Welcome' => 'Welcome To Puko Framework',
+            'Welcome' => 'Welcome To Puko Framework Test Programs',
         );
-    }
-
-    function run($var)
-    {
-        echo "whoa mama " . $var;
     }
 }
