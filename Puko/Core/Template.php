@@ -15,6 +15,7 @@ class Template
 
     protected $file;
     protected $values;
+    protected $stringFile;
 
     protected $templateValueRules;
     protected $templateLoopRulesOpen;
@@ -31,6 +32,19 @@ class Template
         $this->file = $file;
         $this->logs = $logOptions;
         $this->displayEmptyTag = $displayEmptyTag;
+
+        if (!file_exists($this->file)) {
+            if ($this->logs) {
+                die("template file not found");
+            }
+        }
+
+        if (!@file_get_contents($this->file)) {
+            echo "View File " . $this->file . " not found.";
+            return null;
+        }
+
+        $this->stringFile = @file_get_contents($this->file);
     }
 
     public function setArrays($arrData)
@@ -78,30 +92,19 @@ class Template
 
     public function output()
     {
-        if (!file_exists($this->file)) {
-            if ($this->logs) {
-                die("template file not found");
-            }
-        }
-
-        if (!$output = @file_get_contents($this->file)) {
-            echo "View File " . $this->file . " not found.";
-            return null;
-        }
-
 
         if (!isset($this->values)) {
             //eliminating html comments and statement tags
-            $output = preg_replace('/<!--(.|\s)*?-->/', '', $output);
+            $this->stringFile = preg_replace('/<!--(.|\s)*?-->/', '', $this->stringFile);
 
             // eliminating empty tags
             if (!$this->displayEmptyTag) {
                 foreach ($this->templateValueRules as $Tkey => $Tvalue) {
-                    $output = str_replace($Tkey, '', $output);
-                    $output = str_replace($Tvalue, '', $output);
+                    $this->stringFile = str_replace($Tkey, '', $this->stringFile);
+                    $this->stringFile = str_replace($Tvalue, '', $this->stringFile);
                 }
             }
-            return $output;
+            return $this->stringFile;
         }
 
         foreach ($this->values as $key => $value) {
@@ -112,7 +115,7 @@ class Template
                     && $this->searchVarType($value) != $this->BOOLEANS
                     && $this->searchVarType($value) != $this->NULLS
                 ) {
-                    $output = str_replace($tagToReplace1, $value, $output);
+                    $this->stringFile = str_replace($tagToReplace1, $value, $this->stringFile);
                 } else {
                     if ($this->searchVarType($value) == $this->ARRAYS) {
                         //for hold clone element
@@ -126,7 +129,7 @@ class Template
                                 $closeTag = $TkeyC . $key . $TvalueC;
                             }
                         }
-                        $ember = $this->get_string_between($output, $openTag, $closeTag);
+                        $ember = $this->get_string_between($this->stringFile, $openTag, $closeTag);
                         foreach ($value as $key2 => $value2) {
                             //for replacing template data
                             $openTag = '';
@@ -137,17 +140,17 @@ class Template
                                     $closeTag = $TkeyC . $key . $TvalueC;
                                 }
                             }
-                            $parsed = $this->get_string_between($output, $openTag, $closeTag);
+                            $parsed = $this->get_string_between($this->stringFile, $openTag, $closeTag);
                             foreach ($value2 as $key3 => $value3) {
                                 $parsed = str_replace($Tkey . $key3 . $Tvalue, $value3, $parsed);
                             }
                             $dinamicTags = $dinamicTags . $parsed;
                         }
-                        $output = str_replace($ember, $dinamicTags, $output);
+                        $this->stringFile = str_replace($ember, $dinamicTags, $this->stringFile);
                     } else {
                         if ($this->searchVarType($value) == $this->BOOLEANS) {
 
-                            $stanza = $this->blockedConditions($output, $key);
+                            $stanza = $this->blockedConditions($this->stringFile, $key);
 
                             // not blocked conditions
                             if (is_null($stanza)) {
@@ -161,13 +164,13 @@ class Template
                                             $closeTag = $TkeyC . $key . $TvalueC;
                                         }
                                     }
-                                    $parsed = $this->get_string_between($output, $openTag, $closeTag);
-                                    $output = str_replace($parsed, '', $output);
+                                    $parsed = $this->get_string_between($this->stringFile, $openTag, $closeTag);
+                                    $this->stringFile = str_replace($parsed, '', $this->stringFile);
                                 }
                             } else {
                                 //for blocked conditions
                                 if ($value == true) {
-                                    $output = str_replace($stanza, '', $output);
+                                    $this->stringFile = str_replace($stanza, '', $this->stringFile);
                                 }
                             }
                         } else {
@@ -181,17 +184,17 @@ class Template
         }
 
         //eliminating html comments and statement tags
-        $output = preg_replace('/<!--(.|\s)*?-->/', '', $output);
+        $this->stringFile = preg_replace('/<!--(.|\s)*?-->/', '', $this->stringFile);
 
         // eliminating empty tags
         if (!$this->displayEmptyTag) {
             foreach ($this->templateValueRules as $Tkey => $Tvalue) {
-                $output = str_replace($Tkey, '', $output);
-                $output = str_replace($Tvalue, '', $output);
+                $this->stringFile = str_replace($Tkey, '', $this->stringFile);
+                $this->stringFile = str_replace($Tvalue, '', $this->stringFile);
             }
         }
 
-        return $output;
+        return $this->stringFile;
     }
 
     public function searchVarType($var)
@@ -234,7 +237,13 @@ class Template
         return false;
     }
 
-    function get_string_between($string, $start, $end)
+    /**
+     * @param $string
+     * @param $start
+     * @param $end
+     * @return string
+     */
+    function getStringBetween($string, $start, $end)
     {
         $string = " " . $string;
         $ini = strpos($string, $start);
@@ -244,5 +253,39 @@ class Template
         $ini += strlen($start);
         $len = strpos($string, $end, $ini) - $ini;
         return substr($string, $ini, $len);
+    }
+
+    public function getStyleProperty()
+    {
+        $keys = $this->getStringBetween($this->stringFile, '@css{', '}');
+        $this->stringFile = str_replace('@css{' . $keys . '}', '@css{}', $this->stringFile);
+        return explode(',', $keys);
+    }
+
+    public function getScriptProperty()
+    {
+        $keys = $this->getStringBetween($this->stringFile, '@js{', '}');
+        $this->stringFile = str_replace('@js{' . $keys . '}', '@js{}', $this->stringFile);
+        return explode(',', $keys);
+    }
+
+    public function renderStyleProperty()
+    {
+        $arrayStyle = $this->getStyleProperty();
+        $htmlStylesheet = '';
+        foreach ($arrayStyle as $key => $val) {
+            $htmlStylesheet .= "<link rel='stylesheet' href='Extensions/css/" . $val . ".css'>";
+        }
+        $this->stringFile = str_replace('<!--@css{}-->', $htmlStylesheet, $this->stringFile);
+    }
+
+    public function renderScriptProperty()
+    {
+        $arrayScript = $this->getScriptProperty();
+        $htmlScripts = '';
+        foreach ($arrayScript as $key => $val) {
+            $htmlScripts .= "<script language='javascript' type='text/javascript' src='Extensions/js/" . $val . ".js'></script>";
+        }
+        $this->stringFile = str_replace('<!--@js{}-->', $htmlScripts, $this->stringFile);
     }
 }
