@@ -1,9 +1,11 @@
 # Puko - V0.92 Beta
+
 Puko is the Micro Model-View PHP Framework for faster PHP application Development.
 
-*Puko Require **PHP 5.3** or greater*
+*Puko Require* **PHP 5.3** *or greater*
 
 ## Features
+
 **URL Routing**
 
 Basic URL routing follow these rules:
@@ -11,7 +13,7 @@ Basic URL routing follow these rules:
 localhost/[controller]/ "will search method and view with name 'main'"
 localhost/[controller]/[function]/
 localhost/[controller]/[function]/[var1]/[var2]/[var3]/...
-localhost/[controller]/[ID]/[function]/[var1]/[var2]/[var3]/...
+localhost/[controller]/[ID]/[function]/[var1]/[var2]/[var3]/... "ID accepts [0-9] only"
 ```
 **Data Access**
 
@@ -29,6 +31,8 @@ Puko use **.html** file for view. So if you want to do styling or scripting:
 <!--@css{bootstrap.min,datatable}-->
 <!--@js{jquery.min,datatable.min}-->
 ```
+And the **.html** file has always have their partners. **.css** and **.js** located in Assets
+
 For data Boilerplates, you can print data returned by Controller class like this:
 ```
 {!value} "print simple single value"
@@ -37,8 +41,9 @@ For data Boilerplates, you can print data returned by Controller class like this
 ```
 
 ## Changelog
+
 **v0.1**
-- Build support for PHP template engine ~~This version is Amazing first work for my assigment for job requirement test in Maranatha Christiant University~~
+- Build support for PHP template engine ~~Actualy this is my test result in Maranatha Christiant University for Backend Developer~~
 
 **v0.9 Alfa**
 - Build support for PDO Database Connection
@@ -56,14 +61,31 @@ For data Boilerplates, you can print data returned by Controller class like this
 - Repositioning view hierarchy
 
 ## TODO
-- Adding support to database complex datatypes handling like BLOB data objects and Date data objects
-- Adding support for handle wrong or not find URL routing path
-- Adding support for another Database Connection
+
+- Adding support to PDO datatypes handling like BLOB data objects and Date data objects
+- Adding support for handle wrong or not find URL routing path or 404 Not Found Pages
+- Adding support for another Database Connection (Oracle, SQL Server)
+- Adding Session and Cookies Support (also remember me)
+- Adding dynamic url for view in Template Engine
+```
+<!--@url{[controller]/[function]}-->
+```
+- Adding PDO database tweaks for commit and rollback database transaction
+- Adding support for Exception in Template Engine
+```
+{!!PukoException}
+  {!Messages}
+{/PukoException}
+```
 
 ## About
+
 Crafted with <3 from **Bandung**, Indonesia.
 
 ## Contributing
+
 If you find bugs error or you want contribute to this project. 
+
 just send me email to : diditvelliz@gmail.com 
+
 Thanks :)
