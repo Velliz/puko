@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{!PageTitle}</title>
+    <!--@css{bootstrap.min,adminlte/AdminLTE.min}-->
+    <!--@js{jQuery-2.1.4.min,bootstrap.min,npm}-->
+</head>
+<body class="skin-blue layout-top-nav">
+<div class="wrapper">
+
+    <header class="main-header">
+        <nav class="navbar navbar-static-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#"><b>Admin</b>LTE</a>
+                    <button data-target="#navbar-collapse" data-toggle="collapse" class="navbar-toggle collapsed"
+                            type="button">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                </div>
+
+                <div id="navbar-collapse" class="collapse navbar-collapse pull-left">
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
+                        <li><a href="#">Link</a></li>
+                        <li class="dropdown">
+                            <a data-toggle="dropdown" class="dropdown-toggle" href="#">Dropdown <span
+                                    class="caret"></span></a>
+                            <ul role="menu" class="dropdown-menu">
+                                <li><a href="#">Action</a></li>
+                                <li><a href="#">Another action</a></li>
+                                <li><a href="#">Something else here</a></li>
+                                <li class="divider"></li>
+                                <li><a href="#">Separated link</a></li>
+                                <li class="divider"></li>
+                                <li><a href="#">One more separated link</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="content-wrapper" style="min-height: 268px;">
+        <div class="container">
+            <div class="register-box">
+                <div class="register-logo">
+                    <a href="#"><b>Upload File </b>Example</a>
+                </div>
+
+                <div class="register-box-body">
+                    <p class="login-box-msg">Upload file sample</p>
+
+                    <form method="post" action="#" enctype="multipart/form-data">
+                        <div class="form-group has-feedback">
+                            <input type="text" name="name" placeholder="Full name" class="form-control">
+                            <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                        </div>
+                        <div class="form-group has-feedback">
+                            <input type="email" name="email" placeholder="Email" class="form-control">
+                            <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputFile">File input</label>
+                            <input type="file" name="foto" id="exampleInputFile">
+
+                            <p class="help-block">JPEG or PNG File allowed.</p>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-8">
+
+                            </div>
+                            <div class="col-xs-4">
+                                <button class="btn btn-primary btn-block btn-flat" name="_submit" type="submit">Register</button>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+                <!-- /.form-box -->
+            </div>
+        </div>
+    </div>
+
+    <footer class="main-footer">
+        <div class="container">
+            <div class="pull-right hidden-xs">
+                <b>Version</b> 0.92
+            </div>
+        </div>
+    </footer>
+
+</div>
+
+</body>
+</html>
