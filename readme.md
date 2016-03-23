@@ -1,4 +1,4 @@
-# Puko - V0.92 Beta
+# Puko - V0.92 Beta [![Build Status](https://travis-ci.org/Velliz/puko.svg?branch=master)](https://travis-ci.org/Velliz/puko)
 
 Puko is the Micro Model-View PHP Framework for faster PHP application Development.
 
