@@ -28,8 +28,8 @@ $template->setClosedBlockedRule("{/", "}");
 
 $template->setArrays($vars);
 
-$template->renderStyleProperty();
-$template->renderScriptProperty();
+$template->renderStyleProperty($router->ClassName, $router->FunctionNames);
+$template->renderScriptProperty($router->ClassName, $router->FunctionNames);
 
 echo $template->output();
 

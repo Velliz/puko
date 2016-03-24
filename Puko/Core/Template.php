@@ -2,8 +2,6 @@
 
 namespace Puko\Core;
 
-use Exception;
-
 class Template
 {
     private $ARRAYS = 0;
@@ -243,7 +241,7 @@ class Template
      * @param $end
      * @return string
      */
-    function getStringBetween($string, $start, $end)
+    public function getStringBetween($string, $start, $end)
     {
         $string = " " . $string;
         $ini = strpos($string, $start);
@@ -269,23 +267,29 @@ class Template
         return explode(',', $keys);
     }
 
-    public function renderStyleProperty()
+    public function renderStyleProperty($cname, $fname)
     {
         $arrayStyle = $this->getStyleProperty();
         $htmlStylesheet = '';
         foreach ($arrayStyle as $key => $val) {
-            $htmlStylesheet .= "<link rel='stylesheet' href='Extensions/css/" . $val . ".css'>";
+            $htmlStylesheet .= "<link rel='stylesheet' href='" . PROJECT_ROOT . "Extensions/css/" . $val . ".css'>\n";
         }
+
+        $htmlStylesheet .= "<link rel='stylesheet' href='" . PROJECT_ROOT . "Assets/css/" . $cname . "/" . $fname . ".css'>\n";
+
         $this->stringFile = str_replace('<!--@css{}-->', $htmlStylesheet, $this->stringFile);
     }
 
-    public function renderScriptProperty()
+    public function renderScriptProperty($cname, $fname)
     {
         $arrayScript = $this->getScriptProperty();
         $htmlScripts = '';
         foreach ($arrayScript as $key => $val) {
-            $htmlScripts .= "<script language='javascript' type='text/javascript' src='Extensions/js/" . $val . ".js'></script>";
+            $htmlScripts .= "<script type='text/javascript' src='" . PROJECT_ROOT . "Extensions/js/" . $val . ".js'></script>\n";
         }
+
+        $htmlScripts .= "<script type='text/javascript' src='" . PROJECT_ROOT . "Assets/js/" . $cname . "/" . $fname . ".js'></script>\n";
+
         $this->stringFile = str_replace('<!--@js{}-->', $htmlScripts, $this->stringFile);
     }
 }

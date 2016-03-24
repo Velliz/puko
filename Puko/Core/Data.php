@@ -64,14 +64,25 @@ class Data
             $value_string = $value_string . ":" . $key . ", ";
         }
         $value_string = substr($value_string, 0, -2);
-        $insert_text = $insert_text . $value_string . ")";
+        $insert_text = $insert_text . $value_string . ");";
 
         $statement = $this->pdo->prepare($insert_text);
-        if ($statement->execute($array)) {
+
+        foreach ($keys as $no => $key) {
+            if (strpos($key, 'file') !== false) {
+                $blob = fopen($values[$no], 'rb');
+                $statement->bindParam(':' . $key, $blob, PDO::PARAM_LOB);
+            } else {
+                $statement->bindParam(':' . $key, $values[$no]);
+            }
+        }
+
+        if ($statement->execute()) {
             return $this->pdo->lastInsertId();
         } else {
             return false;
         }
+
     }
 
     public function Delete($arrWhere)
@@ -168,5 +179,18 @@ class Data
             }
         }
         return '';
+    }
+
+    public function insertBlob($filePath, $mime)
+    {
+        $blob = fopen($filePath, 'rb');
+
+        $sql = "INSERT INTO files(mime, data) VALUES(:mime, :data)";
+        $stmt = $this->pdo->prepare($sql);
+
+        $stmt->bindParam(':mime', $mime);
+        $stmt->bindParam(':data', $blob, PDO::PARAM_LOB);
+
+        return $stmt->execute();
     }
 }
