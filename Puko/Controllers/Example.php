@@ -1,5 +1,6 @@
 <?php
 use Puko\Core\Data;
+use Puko\Util\PukoDate;
 
 /**
  * Class Example
@@ -41,8 +42,18 @@ class Example
         }
     }
 
-    function uno()
+    function dateinput()
     {
+        $da = new PukoDate();
+        var_dump($da->NowDate());
+        var_dump($da->NowDateTime());
+
+        Data::To('TanggalDetil')->Save(
+            array(
+                'Tanggal' => $da->NowDateTime(),
+                'nama' => 'test apps'
+            )
+        );
     }
 
     function duo()
