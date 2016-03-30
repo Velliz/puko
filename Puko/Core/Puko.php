@@ -3,14 +3,14 @@
 namespace Puko\Core;
 
 use Puko\Core\Service\Service;
-use Puko\Core\View\HtmlParser;
+use Puko\Core\View\HTMLParser;
 use Puko\Core\View\View;
 use ReflectionClass;
 
 class Puko
 {
 
-    static $PukoInstance;
+    private static $PukoInstance;
 
     public static function Init()
     {
@@ -80,8 +80,4 @@ class Puko
         return $clause;
     }
 
-    private function ClassType($source, $dest)
-    {
-        return $source == $dest || is_subclass_of($source, $dest);
-    }
 }
