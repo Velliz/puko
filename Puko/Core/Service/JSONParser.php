@@ -12,4 +12,10 @@ namespace Puko\Core\Service;
 class JSONParser
 {
 
+    /**
+     * JSONParser constructor.
+     */
+    public function __construct()
+    {
+    }
 }
