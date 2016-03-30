@@ -3,12 +3,11 @@ language: php
 
 # list any PHP version you want to test against
 php:
-  # using major version aliases
-
   # aliased to a recent 5.6.x version
   - 5.6
-  # aliased to a recent 7.x version
-  - 7.0
+
+before_install:
+  - php /home/travis/.phpenv/versions/5.6/bin/composer.phar self-update
 
 # optionally specify a list of environments, for example to test different RDBMS
 env:
