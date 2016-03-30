@@ -28,10 +28,9 @@ class Puko
 
     private static function ClassLoader($className)
     {
-        if (file_exists($className)) {
+        $className .= '.php';
+        if (file_exists($className))
             require_once($className);
-        }
-
     }
 
     public function Start()
