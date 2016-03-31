@@ -1,8 +1,8 @@
 <?php
 
-namespace Puko\Core;
+namespace Puko\Core\View;
 
-class Template
+class HTMLParser
 {
     private $ARRAYS = 0;
     private $STRINGS = 1;
@@ -272,10 +272,10 @@ class Template
         $arrayStyle = $this->getStyleProperty();
         $htmlStylesheet = '';
         foreach ($arrayStyle as $key => $val) {
-            $htmlStylesheet .= "<link rel='stylesheet' href='" . PROJECT_ROOT . "Extensions/css/" . $val . ".css'>\n";
+            $htmlStylesheet .= "<link rel='stylesheet' href='" . ROOT . "Extensions/css/" . $val . ".css'>\n";
         }
 
-        $htmlStylesheet .= "<link rel='stylesheet' href='" . PROJECT_ROOT . "Assets/css/" . $cname . "/" . $fname . ".css'>\n";
+        $htmlStylesheet .= "<link rel='stylesheet' href='" . ROOT . "Assets/css/" . $cname . "/" . $fname . ".css'>\n";
 
         $this->stringFile = str_replace('<!--@css{}-->', $htmlStylesheet, $this->stringFile);
     }
@@ -285,10 +285,10 @@ class Template
         $arrayScript = $this->getScriptProperty();
         $htmlScripts = '';
         foreach ($arrayScript as $key => $val) {
-            $htmlScripts .= "<script type='text/javascript' src='" . PROJECT_ROOT . "Extensions/js/" . $val . ".js'></script>\n";
+            $htmlScripts .= "<script type='text/javascript' src='" . ROOT . "Extensions/js/" . $val . ".js'></script>\n";
         }
 
-        $htmlScripts .= "<script type='text/javascript' src='" . PROJECT_ROOT . "Assets/js/" . $cname . "/" . $fname . ".js'></script>\n";
+        $htmlScripts .= "<script type='text/javascript' src='" . ROOT . "Assets/js/" . $cname . "/" . $fname . ".js'></script>\n";
 
         $this->stringFile = str_replace('<!--@js{}-->', $htmlScripts, $this->stringFile);
     }

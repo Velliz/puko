@@ -1,6 +1,7 @@
 ## Changelog
+
 **v0.1**
-- Build support for PHP template engine ~~This version is Amazing first work for my assigment for job requirement test in Maranatha Christiant University~~
+- Build support for PHP template engine ~~Actualy this is my test result in Maranatha Christiant University for Backend Developer~~
 
 **v0.9 Alfa**
 - Build support for PDO Database Connection
@@ -16,3 +17,15 @@
 - Build support for PDO Database delete function
 - Build css and js template renderer feature
 - Repositioning view hierarchy
+- Adding support to PDO datatypes handling like BLOB data objects and Date data objects
+
+**v0.9.3 Beta**
+- Add support for output type in Controller.
+```
+class Example extends View {
+```
+Puko will render this controller with HTMLParser. Will result HTML page
+```
+class Example extends Service {
+```
+Puko will render this controller with JSONParser. Will result JSON page

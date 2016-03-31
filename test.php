@@ -1,36 +1,13 @@
 <?php
-define('PUKO_ROOT', dirname(__FILE__));
-define('PUKO_CONTROLLER', '/Puko/Controllers/');
-define('PUKO_CONFIG', '/Config/');
-define('EXT', '.php');
+define('FILE', dirname(__FILE__));
+define('CONTROLLERS', '/Puko/Controllers/');
 
-spl_autoload_register(function ($class_name) {
-    include $class_name . EXT;
-});
+define('ROOT', 'http://localhost/puko/');
 
-use Puko\Core\RouteParser;
-use Puko\Core\Template;
+include('Puko/Core/Puko.php');
+include('Puko/Core/RouteParser.php');
+include('Puko/Core/Template.php');
 
-#region url router
-$router = new RouteParser(isset($_GET['query']) ? $_GET['query'] : 'main/main');
-$routerObj = $router->InitializeClass();
-$vars = $router->InitializeFunction($routerObj);
-#end region
+use Puko\Core\Puko;
 
-$template = new Template('Assets/html/' . $router->ClassName . '/' . $router->FunctionNames . ".html",
-    true, true);
-$template->setValueRule("{!", "}");
-$template->setOpenLoopRule("{!", "}");
-$template->setClosedLoopRule("{/", "}");
-
-$template->setOpenBlockedRule("{!!", "}");
-$template->setClosedBlockedRule("{/", "}");
-
-$template->setArrays($vars);
-
-$template->renderStyleProperty($router->ClassName, $router->FunctionNames);
-$template->renderScriptProperty($router->ClassName, $router->FunctionNames);
-
-echo $template->output();
-
-echo '<br/>TEST';
+Puko::Init()->Start();

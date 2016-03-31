@@ -1,11 +1,13 @@
 <?php
 use Puko\Core\Data;
+use Puko\Core\Service\Service;
+use Puko\Core\View\View;
 use Puko\Util\PukoDate;
 
 /**
  * Class Example
  */
-class Example
+class Example extends View
 {
     public $id;
 
@@ -40,6 +42,8 @@ class Example
             );
 
         }
+
+        return array('om' => '23123', 'adik' => 'asd');
     }
 
     function dateinput()

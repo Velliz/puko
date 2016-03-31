@@ -1,8 +1,9 @@
 <?php
 
 use Puko\Core\Data;
+use Puko\Core\View\View;
 
-class key
+class Key extends View
 {
 
     var $id;

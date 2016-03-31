@@ -4,91 +4,66 @@ namespace Puko\Core;
 
 class RouteParser
 {
-    public $RawRouter;
-    public $ClassName;
-    public $ConstructVars;
-    public $FunctionNames;
-    public $FunctionVars = array();
 
-    public function loader($class)
-    {
-        require_once PUKO_ROOT . '/Puko/Controllers/' . $class . EXT;
-    }
+    public $FunctionNames;
+    public $ClassName;
+
+    private $RawRouter;
+    private $ConstructVars;
+    private $FunctionVars = array();
 
     public function __construct($router)
     {
         $this->RawRouter = $router;
         $variables = explode('/', $this->RawRouter);
 
-        $construct = null;
-        if (isset($variables[1])) {
-            $construct = ctype_digit($variables[1]) ? intval($variables[1]) : null;
-        }
+        foreach ($variables as $key => $val) {
+            if($val == '')
+                break;
 
-        if (sizeof($variables) > 3) {
-            $this->ClassName = $variables[0];
-            $this->ConstructVars = $variables[1];
-            if ($construct === null) {
-                $this->FunctionNames = $variables[2 - 1];
-            } else {
-                $this->FunctionNames = $variables[2];
-            }
-
-            if ($construct === null) {
-                foreach ($variables as $k => $v) {
-                    if ($k > 1) {
-                        array_push($this->FunctionVars, $v);
-                    }
-                }
-            } else {
-                foreach ($variables as $k => $v) {
-                    if ($k > 2) {
-                        array_push($this->FunctionVars, $v);
-                    }
-                }
-            }
-        } else {
-            if (sizeof($variables) == 3) {
-                $this->ClassName = $variables[0];
-                $this->ConstructVars = $variables[1];
-                if ($construct === null) {
-                    $this->FunctionNames = $variables[2 - 1];
-                } else {
-                    $this->FunctionNames = $variables[2];
-                }
-            } else {
-                if (sizeof($variables) == 2) {
-                    $this->ClassName = $variables[0];
-                    $this->ConstructVars = $variables[0];
-                    if ($construct === null) {
-                        $this->FunctionNames = $variables[1 - 1];
-                    } else {
-                        $this->FunctionNames = $variables[1];
-                    }
-                } else {
-                    if (sizeof($variables) == 1) {
-                        $this->ClassName = $router;
+            switch ($key) {
+                case 0:
+                    $this->ClassName = $val;
+                    $this->FunctionNames = 'main';
+                    break;
+                case 1:
+                    if (intval($variables[1])) {
+                        $this->ConstructVars = $val;
                         $this->FunctionNames = 'main';
+                    } else {
+                        $this->FunctionNames = $val;
                     }
-                }
+                    break;
+                case 2:
+                    if (isset($this->ConstructVars) || is_int($this->ConstructVars)) {
+                        $this->FunctionNames = $val;
+                    } else {
+                        array_push($this->FunctionVars, $val);
+                    }
+                    break;
+                default:
+                    array_push($this->FunctionVars, $val);
+                    break;
             }
         }
+    }
+
+    private function ClassLoader($ClassName)
+    {
+        $import = FILE . CONTROLLERS . $ClassName . '.php';
+        require_once($import);
     }
 
     public function InitializeClass()
     {
-        $realFilePath = PUKO_ROOT . '/Puko/Controllers/' . $this->ClassName . EXT;
+        $realFilePath = FILE . CONTROLLERS . $this->ClassName . '.php';
         if (!file_exists($realFilePath)) {
             die('Controller file ' . $this->ClassName . ' is not found.');
         }
-        $this->loader($this->ClassName);
+        $this->ClassLoader($this->ClassName);
         return new $this->ClassName($this->ConstructVars);
     }
 
-    /**
-     * @param $object
-     * @return mixed
-     */
     public function InitializeFunction($object)
     {
 
@@ -100,7 +75,7 @@ class RouteParser
                     array($object, $this->FunctionNames)
                 );
             } else {
-                die("Method not found");
+                die('Method not found');
             }
         } else {
             if (method_exists($object, $this->FunctionNames)
@@ -110,7 +85,7 @@ class RouteParser
                     array($object, $this->FunctionNames), $this->FunctionVars
                 );
             } else {
-                die("Method with var not found");
+                die('Method with var ' . $this->FunctionVars . ' not found');
             }
         }
     }
