@@ -35,14 +35,15 @@ class Puko
 
     public function Start()
     {
+
+        $view = new ReflectionClass(View::class);
+        $service = new ReflectionClass(Service::class);
+
         $router = new RouteParser($this->GetRouter());
         $routerObj = $router->InitializeClass();
         $vars = $router->InitializeFunction($routerObj);
 
         $hasil = new ReflectionClass($routerObj);
-
-        $view = new ReflectionClass(new View());
-        $service = new ReflectionClass(new Service());
 
         if ($hasil->isSubclassOf($view)) {
             $template = new HTMLParser('Assets/html/' . $router->ClassName . '/' .
@@ -62,6 +63,7 @@ class Puko
 
             echo $template->output();
         } elseif ($hasil->isSubclassOf($service)) {
+            header('Content-Type: application/json');
             echo json_encode($vars);
         } else {
             die('Controller must extends its type');

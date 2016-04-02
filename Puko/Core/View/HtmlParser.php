@@ -127,7 +127,7 @@ class HTMLParser
                                 $closeTag = $TkeyC . $key . $TvalueC;
                             }
                         }
-                        $ember = $this->get_string_between($this->stringFile, $openTag, $closeTag);
+                        $ember = $this->getStringBetween($this->stringFile, $openTag, $closeTag);
                         foreach ($value as $key2 => $value2) {
                             //for replacing template data
                             $openTag = '';
@@ -138,7 +138,7 @@ class HTMLParser
                                     $closeTag = $TkeyC . $key . $TvalueC;
                                 }
                             }
-                            $parsed = $this->get_string_between($this->stringFile, $openTag, $closeTag);
+                            $parsed = $this->getStringBetween($this->stringFile, $openTag, $closeTag);
                             foreach ($value2 as $key3 => $value3) {
                                 $parsed = str_replace($Tkey . $key3 . $Tvalue, $value3, $parsed);
                             }
@@ -162,7 +162,7 @@ class HTMLParser
                                             $closeTag = $TkeyC . $key . $TvalueC;
                                         }
                                     }
-                                    $parsed = $this->get_string_between($this->stringFile, $openTag, $closeTag);
+                                    $parsed = $this->getStringBetween($this->stringFile, $openTag, $closeTag);
                                     $this->stringFile = str_replace($parsed, '', $this->stringFile);
                                 }
                             } else {
@@ -224,7 +224,7 @@ class HTMLParser
     {
         foreach ($this->templateBlockedRulesOpen as $TkeyO => $TvalueO) {
             foreach ($this->templateBlockedRulesClosed as $TkeyC => $TvalueC) {
-                $ember = $this->get_string_between($stanza, $TkeyO . $key . $TvalueO, $TkeyC . $key . $TvalueC);
+                $ember = $this->getStringBetween($stanza, $TkeyO . $key . $TvalueO, $TkeyC . $key . $TvalueC);
                 if ($ember) {
                     return $ember;
                 } else {

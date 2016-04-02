@@ -15,10 +15,16 @@ class Main extends View
 
     function main()
     {
-        var_dump($this->id);
         return array(
             'PageTitle' => 'Puko Framework',
-            'Welcome' => 'uiie',
+            'Welcome' => 'Selamat Datang di Puko Framework',
+            'Pertama' => array(
+                'Kedua' => array(
+                    'Value' => 'KetigaSimpleValue'
+                ),
+                'Value' => 'KeduaValue'
+            ),
+            'Value' => 'PertamaValue'
         );
     }
 }

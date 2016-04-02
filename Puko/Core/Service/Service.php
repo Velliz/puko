@@ -2,9 +2,8 @@
 
 namespace Puko\Core\Service;
 
-class Service
+abstract class Service
 {
-
 
     /**
      * Service constructor.
@@ -12,4 +11,6 @@ class Service
     public function __construct()
     {
     }
+
+    public abstract function main();
 }

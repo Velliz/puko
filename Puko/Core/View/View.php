@@ -2,7 +2,7 @@
 
 namespace Puko\Core\View;
 
-class View
+abstract class View
 {
 
     /**
@@ -10,6 +10,7 @@ class View
      */
     public function __construct()
     {
-
     }
+
+    public abstract function main();
 }
