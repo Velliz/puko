@@ -116,6 +116,7 @@ class HTMLParser
                     $this->stringFile = str_replace($tagToReplace1, $value, $this->stringFile);
                 } else {
                     if ($this->searchVarType($value) == $this->ARRAYS) {
+                        // todo : enhancement to loop in the loop
                         //for hold clone element
                         $dinamicTags = '';
                         $openTag = '';
@@ -139,12 +140,17 @@ class HTMLParser
                                 }
                             }
                             $parsed = $this->getStringBetween($this->stringFile, $openTag, $closeTag);
+
                             foreach ($value2 as $key3 => $value3) {
                                 $parsed = str_replace($Tkey . $key3 . $Tvalue, $value3, $parsed);
                             }
+
                             $dinamicTags = $dinamicTags . $parsed;
+
                         }
                         $this->stringFile = str_replace($ember, $dinamicTags, $this->stringFile);
+
+
                     } else {
                         if ($this->searchVarType($value) == $this->BOOLEANS) {
 

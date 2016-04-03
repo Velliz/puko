@@ -18,7 +18,17 @@ class Data
 
     private function __construct($tablename = null)
     {
-        $conn = (require_once ROOT . '/Config/db.php');
+        //todo : connection bug
+        $conn = (require_once ROOT . 'Config/db.php');
+
+        $conn = array(
+            'dbType' => 'MySQL',
+            'host' => 'localhost',
+            'user' => 'root',
+            'pass' => '',
+            'dbName' => 'puko',
+        );
+
         $this->pdo = new PDO("mysql:host=" . $conn['host'] . ";dbname=" . $conn['dbName'], $conn['user'],
             $conn['pass']);
         $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

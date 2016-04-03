@@ -1,8 +1,6 @@
 <?php
-define('FILE', dirname(__FILE__));
-define('CONTROLLERS', '/Puko/Controllers/');
-define('ROOT', 'http://localhost/puko/');
+$code = @file_get_contents("Assets/html/main/main.html");
+$tokens = strtok($code, '<!-- -->');
+var_dump($tokens);
 
-include('Puko/Core/Puko.php');
-use Puko\Core\Puko;
-Puko::Init()->Start();
+?>
