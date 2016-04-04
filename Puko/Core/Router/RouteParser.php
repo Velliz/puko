@@ -1,6 +1,6 @@
 <?php
 
-namespace Puko\Core;
+namespace Puko\Core\Router;
 
 class RouteParser
 {

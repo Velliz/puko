@@ -1,6 +1,6 @@
 <?php
 
-namespace Puko\Core\View;
+namespace Puko\Core\Presentation\Html;
 
 abstract class View
 {

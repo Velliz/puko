@@ -1,10 +1,9 @@
 <?php
 
-use Puko\Core\Data;
-use Puko\Core\Service\Service;
-use Puko\Core\View\View;
+use Puko\Core\Backdoor\Data;
+use Puko\Core\Presentation\Json\Service;
 
-class Main extends View
+class Main extends Service
 {
 
     var $id;
@@ -24,11 +23,15 @@ class Main extends View
             array('PertamaValue' => 'Test 3'),
             array('PertamaValue' => 'Test 4'),
             array('PertamaValue' => 'Test 5'),
+
+            /*
             'Kedua' => array(
                 array('KeduaValue' => 'Dua 1'),
                 array('KeduaValue' => 'Dua 2'),
 
             )
+            */
+
         );
 
         $vars['Puko'] = Data::From('select * from family')->FetchAll();

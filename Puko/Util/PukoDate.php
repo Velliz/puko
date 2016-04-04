@@ -15,14 +15,16 @@ class PukoDate
         return $this;
     }
 
-    public function NowDate()
+    public static function NowDate()
     {
-        return $this->dateObject->format('y-m-d');
+        $obj = new DateTime();
+        return $obj->format('y-m-d');
     }
 
-    public function NowDateTime()
+    public static function NowDateTime()
     {
-        return $this->dateObject->format('y-m-d h:i:s');
+        $obj = new DateTime();
+        return $obj->format('y-m-d h:i:s');
     }
 
 }

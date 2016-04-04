@@ -1,6 +1,6 @@
 <?php
 
-namespace Puko\Core\Service;
+namespace Puko\Core\Presentation\Json;
 
 abstract class Service
 {

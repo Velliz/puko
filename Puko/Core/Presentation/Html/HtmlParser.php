@@ -1,6 +1,6 @@
 <?php
 
-namespace Puko\Core\View;
+namespace Puko\Core\Presentation\Html;
 
 class HTMLParser
 {
@@ -15,9 +15,9 @@ class HTMLParser
     protected $values;
     protected $stringFile;
 
-    protected $templateValueRules;
-    protected $templateLoopRulesOpen;
-    protected $templateLoopRulesClosed;
+    protected $valueRules;
+    protected $loopRulesHead;
+    protected $loopRulesTail;
 
     protected $templateBlockedRulesOpen;
     protected $templateBlockedRulesClosed;
@@ -63,19 +63,18 @@ class HTMLParser
 
     public function setValueRule($tagOpen, $tagClose)
     {
-        //only one template definition allowed
-        $this->templateRules = null;
-        $this->templateValueRules[$tagOpen] = $tagClose;
+        $this->valueRules = null;
+        $this->valueRules[$tagOpen] = $tagClose;
     }
 
     public function setOpenLoopRule($tagOpen, $tagClose)
     {
-        $this->templateLoopRulesOpen[$tagOpen] = $tagClose;
+        $this->loopRulesHead[$tagOpen] = $tagClose;
     }
 
     public function setClosedLoopRule($tagOpen, $tagClose)
     {
-        $this->templateLoopRulesClosed[$tagOpen] = $tagClose;
+        $this->loopRulesTail[$tagOpen] = $tagClose;
     }
 
     public function setOpenBlockedRule($tagOpen, $tagClose)
@@ -91,58 +90,60 @@ class HTMLParser
     public function output()
     {
 
+        // controller returning null array data
         if (!isset($this->values)) {
-            //eliminating html comments and statement tags
             $this->stringFile = preg_replace('/<!--(.|\s)*?-->/', '', $this->stringFile);
 
-            // eliminating empty tags
             if (!$this->displayEmptyTag) {
-                foreach ($this->templateValueRules as $Tkey => $Tvalue) {
-                    $this->stringFile = str_replace($Tkey, '', $this->stringFile);
-                    $this->stringFile = str_replace($Tvalue, '', $this->stringFile);
+                foreach ($this->valueRules as $head => $tail) {
+                    $this->stringFile = str_replace($head, '', $this->stringFile);
+                    $this->stringFile = str_replace($tail, '', $this->stringFile);
                 }
             }
             return $this->stringFile;
         }
 
         foreach ($this->values as $key => $value) {
-            foreach ($this->templateValueRules as $Tkey => $Tvalue) {
+            foreach ($this->valueRules as $head => $tail) {
 
-                $tagToReplace1 = $Tkey . $key . $Tvalue;
+                $tagReplace = $head . $key . $tail;
                 if ($this->searchVarType($value) != $this->ARRAYS
                     && $this->searchVarType($value) != $this->BOOLEANS
                     && $this->searchVarType($value) != $this->NULLS
                 ) {
-                    $this->stringFile = str_replace($tagToReplace1, $value, $this->stringFile);
+                    $this->stringFile = str_replace($tagReplace, $value, $this->stringFile);
                 } else {
                     if ($this->searchVarType($value) == $this->ARRAYS) {
+
                         // todo : enhancement to loop in the loop
-                        //for hold clone element
                         $dinamicTags = '';
                         $openTag = '';
                         $closeTag = '';
 
-                        foreach ($this->templateLoopRulesOpen as $TkeyO => $TvalueO) {
-                            foreach ($this->templateLoopRulesClosed as $TkeyC => $TvalueC) {
-                                $openTag = $TkeyO . $key . $TvalueO;
-                                $closeTag = $TkeyC . $key . $TvalueC;
+                        foreach ($this->loopRulesHead as $loopOpenHead => $loopOpenTail) {
+                            foreach ($this->loopRulesTail as $loopCloseHead => $loopCloseTail) {
+                                $openTag = $loopOpenHead . $key . $loopOpenTail;
+                                $closeTag = $loopCloseHead . $key . $loopCloseTail;
                             }
                         }
+
                         $ember = $this->getStringBetween($this->stringFile, $openTag, $closeTag);
+
                         foreach ($value as $key2 => $value2) {
-                            //for replacing template data
+
                             $openTag = '';
                             $closeTag = '';
-                            foreach ($this->templateLoopRulesOpen as $TkeyO => $TvalueO) {
-                                foreach ($this->templateLoopRulesClosed as $TkeyC => $TvalueC) {
-                                    $openTag = $TkeyO . $key . $TvalueO;
-                                    $closeTag = $TkeyC . $key . $TvalueC;
+
+                            foreach ($this->loopRulesHead as $loopOpenHead => $loopOpenTail) {
+                                foreach ($this->loopRulesTail as $loopCloseHead => $loopCloseTail) {
+                                    $openTag = $loopOpenHead . $key . $loopOpenTail;
+                                    $closeTag = $loopCloseHead . $key . $loopCloseTail;
                                 }
                             }
                             $parsed = $this->getStringBetween($this->stringFile, $openTag, $closeTag);
 
                             foreach ($value2 as $key3 => $value3) {
-                                $parsed = str_replace($Tkey . $key3 . $Tvalue, $value3, $parsed);
+                                $parsed = str_replace($head . $key3 . $tail, $value3, $parsed);
                             }
 
                             $dinamicTags = $dinamicTags . $parsed;
@@ -162,10 +163,10 @@ class HTMLParser
                                     $openTag = '';
                                     $closeTag = '';
 
-                                    foreach ($this->templateLoopRulesOpen as $TkeyO => $TvalueO) {
-                                        foreach ($this->templateLoopRulesClosed as $TkeyC => $TvalueC) {
-                                            $openTag = $TkeyO . $key . $TvalueO;
-                                            $closeTag = $TkeyC . $key . $TvalueC;
+                                    foreach ($this->loopRulesHead as $loopOpenHead => $loopOpenTail) {
+                                        foreach ($this->loopRulesTail as $loopCloseHead => $loopCloseTail) {
+                                            $openTag = $loopOpenHead . $key . $loopOpenTail;
+                                            $closeTag = $loopCloseHead . $key . $loopCloseTail;
                                         }
                                     }
                                     $parsed = $this->getStringBetween($this->stringFile, $openTag, $closeTag);
@@ -192,9 +193,9 @@ class HTMLParser
 
         // eliminating empty tags
         if (!$this->displayEmptyTag) {
-            foreach ($this->templateValueRules as $Tkey => $Tvalue) {
-                $this->stringFile = str_replace($Tkey, '', $this->stringFile);
-                $this->stringFile = str_replace($Tvalue, '', $this->stringFile);
+            foreach ($this->valueRules as $head => $tail) {
+                $this->stringFile = str_replace($head, '', $this->stringFile);
+                $this->stringFile = str_replace($tail, '', $this->stringFile);
             }
         }
 

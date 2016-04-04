@@ -2,9 +2,11 @@
 
 namespace Puko\Core;
 
-use Puko\Core\Service\Service;
-use Puko\Core\View\HTMLParser;
-use Puko\Core\View\View;
+use Puko\Core\Presentation\Html\HTMLParser;
+use Puko\Core\Presentation\Html\View;
+use Puko\Core\Presentation\Json\JSONParser;
+use Puko\Core\Presentation\Json\Service;
+use Puko\Core\Router\RouteParser;
 use ReflectionClass;
 
 class Puko
@@ -36,6 +38,8 @@ class Puko
     public function Start()
     {
 
+        $start = microtime(true);
+
         $view = new ReflectionClass(View::class);
         $service = new ReflectionClass(Service::class);
 
@@ -62,9 +66,12 @@ class Puko
             $template->renderScriptProperty($router->ClassName, $router->FunctionNames);
 
             echo $template->output();
+
         } elseif ($hasil->isSubclassOf($service)) {
-            header('Content-Type: application/json');
-            echo json_encode($vars);
+
+            $service = new JSONParser($vars, $start);
+            echo json_encode($service->output());
+
         } else {
             die('Controller must extends its type');
         }
