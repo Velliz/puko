@@ -1,10 +1,11 @@
 <?php
 
-namespace Puko\Core;
+namespace Puko\Core\Backdoor;
 
+use Config\DataConfig;
 use PDO;
 
-class Data
+class Data extends DataConfig
 {
 
     public static $Instance = null;
@@ -14,13 +15,16 @@ class Data
     public $tableName;
 
     private $queryPattern = '#@([0-9]+)#';
-    private $_QueryParameters = null;
+    private $queryParams = null;
 
     private function __construct($tablename = null)
     {
-        $conn = (require_once ROOT . '/Config/db.php');
-        $this->pdo = new PDO("mysql:host=" . $conn['host'] . ";dbname=" . $conn['dbName'], $conn['user'],
-            $conn['pass']);
+
+        $this->pdo = new PDO("mysql:host=" . $this->DB_CONFIG['host'] . ";dbname=" . $this->DB_CONFIG['dbName'],
+            $this->DB_CONFIG['user'],
+            $this->DB_CONFIG['pass']
+        );
+
         $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $this->tableName = $tablename;
     }
@@ -70,7 +74,7 @@ class Data
 
         foreach ($keys as $no => $key) {
             if (strpos($key, 'file') !== false) {
-                $blob = fopen($values[$no], 'rb');
+                $blob = file_get_contents($values[$no], 'rb');
                 $statement->bindParam(':' . $key, $blob, PDO::PARAM_LOB);
             } else {
                 $statement->bindParam(':' . $key, $values[$no]);
@@ -127,7 +131,7 @@ class Data
         $parameters = func_get_args();
         $argCount = count($parameters);
         if ($argCount > 0) {
-            $this->_QueryParameters = $parameters;
+            $this->queryParams = $parameters;
             $this->query = preg_replace_callback(
                 $this->queryPattern, array($this, 'queryParseReplace'), $this->query);
         }
@@ -141,7 +145,7 @@ class Data
         $parameters = func_get_args();
         $argCount = count($parameters);
         if ($argCount > 0) {
-            $this->_QueryParameters = $parameters;
+            $this->queryParams = $parameters;
             $this->query = preg_replace_callback(
                 $this->queryPattern, array($this, 'queryParseReplace'), $this->query);
         }
@@ -153,8 +157,8 @@ class Data
     private function queryParseReplace($key)
     {
         $aKey = ((int)$key[1] - 1);
-        if (isset($this->_QueryParameters[$aKey])) {
-            $var = $this->_QueryParameters[$aKey];
+        if (isset($this->queryParams[$aKey])) {
+            $var = $this->queryParams[$aKey];
             if (is_string($var)) {
                 return ("'" . $var . "'");
             } else {
@@ -179,18 +183,5 @@ class Data
             }
         }
         return '';
-    }
-
-    public function insertBlob($filePath, $mime)
-    {
-        $blob = fopen($filePath, 'rb');
-
-        $sql = "INSERT INTO files(mime, data) VALUES(:mime, :data)";
-        $stmt = $this->pdo->prepare($sql);
-
-        $stmt->bindParam(':mime', $mime);
-        $stmt->bindParam(':data', $blob, PDO::PARAM_LOB);
-
-        return $stmt->execute();
     }
 }

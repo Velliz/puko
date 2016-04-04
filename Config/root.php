@@ -1,1 +1,1 @@
-<?php return 'http://localhost/puko/'; ?>
+<?php return 'http://localhost/puko/';

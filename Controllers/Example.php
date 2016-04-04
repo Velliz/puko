@@ -1,13 +1,14 @@
 <?php
-use Puko\Core\Data;
-use Puko\Core\Service\Service;
-use Puko\Core\View\View;
+
+use Puko\Core\Backdoor\Data;
+use Puko\Core\Presentation\Html\View;
+use Puko\Core\Presentation\Json\Service;
 use Puko\Util\PukoDate;
 
 /**
  * Class Example
  */
-class Example extends View
+class Example extends Service
 {
     public $id;
 
@@ -29,10 +30,6 @@ class Example extends View
 
         $dataSubmit = isset($_POST['_submit']);
         if ($dataSubmit) {
-            //echo '<pre>';
-            //var_dump($_FILES);
-            //echo '</pre>';
-
             Data::To('filex')->Save(
                 array(
                     'name' => $_POST['name'],
@@ -49,8 +46,6 @@ class Example extends View
     function dateinput()
     {
         $da = new PukoDate();
-        var_dump($da->NowDate());
-        var_dump($da->NowDateTime());
 
         Data::To('TanggalDetil')->Save(
             array(
@@ -60,8 +55,4 @@ class Example extends View
         );
     }
 
-    function duo()
-    {
-
-    }
 }

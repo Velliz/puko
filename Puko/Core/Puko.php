@@ -2,15 +2,17 @@
 
 namespace Puko\Core;
 
-use Puko\Core\Service\Service;
-use Puko\Core\View\HtmlParser;
-use Puko\Core\View\View;
+use Puko\Core\Presentation\Html\HTMLParser;
+use Puko\Core\Presentation\Html\View;
+use Puko\Core\Presentation\Json\JSONParser;
+use Puko\Core\Presentation\Json\Service;
+use Puko\Core\Router\RouteParser;
 use ReflectionClass;
 
 class Puko
 {
 
-    static $PukoInstance;
+    private static $PukoInstance;
 
     public static function Init()
     {
@@ -28,22 +30,24 @@ class Puko
 
     private static function ClassLoader($className)
     {
-        if (file_exists($className)) {
+        $className .= '.php';
+        if (file_exists($className))
             require_once($className);
-        }
-
     }
 
     public function Start()
     {
+
+        $start = microtime(true);
+
+        $view = new ReflectionClass(View::class);
+        $service = new ReflectionClass(Service::class);
+
         $router = new RouteParser($this->GetRouter());
         $routerObj = $router->InitializeClass();
         $vars = $router->InitializeFunction($routerObj);
 
         $hasil = new ReflectionClass($routerObj);
-
-        $view = new ReflectionClass(new View());
-        $service = new ReflectionClass(new Service());
 
         if ($hasil->isSubclassOf($view)) {
             $template = new HTMLParser('Assets/html/' . $router->ClassName . '/' .
@@ -62,8 +66,12 @@ class Puko
             $template->renderScriptProperty($router->ClassName, $router->FunctionNames);
 
             echo $template->output();
+
         } elseif ($hasil->isSubclassOf($service)) {
-            echo json_encode($vars);
+
+            $service = new JSONParser($vars, $start);
+            echo json_encode($service->output());
+
         } else {
             die('Controller must extends its type');
         }
@@ -81,8 +89,4 @@ class Puko
         return $clause;
     }
 
-    private function ClassType($source, $dest)
-    {
-        return $source == $dest || is_subclass_of($source, $dest);
-    }
 }
