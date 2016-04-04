@@ -37,7 +37,6 @@ class Puko
 
     public function Start()
     {
-
         $start = microtime(true);
 
         $view = new ReflectionClass(View::class);
