@@ -2,28 +2,28 @@
 
 namespace Puko\Util;
 
-use DateTime;
+use DateTime as Dates;
 
-class PukoDate
+class DateTime
 {
 
     private $dateObject;
 
     public function __construct()
     {
-        $this->dateObject = new DateTime();
+        $this->dateObject = new Dates();
         return $this;
     }
 
     public static function NowDate()
     {
-        $obj = new DateTime();
+        $obj = new Dates();
         return $obj->format('y-m-d');
     }
 
     public static function NowDateTime()
     {
-        $obj = new DateTime();
+        $obj = new Dates();
         return $obj->format('y-m-d h:i:s');
     }
 

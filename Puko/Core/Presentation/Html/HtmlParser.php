@@ -2,7 +2,9 @@
 
 namespace Puko\Core\Presentation\Html;
 
-class HTMLParser
+use Puko\Core\Presentation\AbstractParser;
+
+class HtmlParser extends AbstractParser
 {
     private $ARRAYS = 0;
     private $STRINGS = 1;
@@ -298,5 +300,40 @@ class HTMLParser
         $htmlScripts .= "<script type='text/javascript' src='" . ROOT . "Assets/js/" . $cname . "/" . $fname . ".js'></script>\n";
 
         $this->stringFile = str_replace('<!--@js{}-->', $htmlScripts, $this->stringFile);
+    }
+
+    public function ValueRender()
+    {
+        // TODO: Implement ValueRender() method.
+    }
+
+    public function ConditionRender()
+    {
+        // TODO: Implement ConditionRender() method.
+    }
+
+    public function LoopRender()
+    {
+        // TODO: Implement LoopRender() method.
+    }
+
+    public function ScriptRender()
+    {
+        // TODO: Implement ScriptRender() method.
+    }
+
+    public function StyleRender()
+    {
+        // TODO: Implement StyleRender() method.
+    }
+
+    public function UrlRender()
+    {
+        // TODO: Implement UrlRender() method.
+    }
+
+    public function ReturnEmptyRender()
+    {
+        // TODO: Implement ReturnEmptyRender() method.
     }
 }

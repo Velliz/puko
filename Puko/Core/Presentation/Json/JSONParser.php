@@ -3,7 +3,9 @@
 namespace Puko\Core\Presentation\Json;
 
 
-class JSONParser
+use Puko\Core\Presentation\AbstractParser;
+
+class JSONParser extends AbstractParser
 {
 
     private $file;
@@ -34,4 +36,38 @@ class JSONParser
         return $data;
     }
 
+    public function ValueRender()
+    {
+        // TODO: Implement ValueRender() method.
+    }
+
+    public function ConditionRender()
+    {
+        // TODO: Implement ConditionRender() method.
+    }
+
+    public function LoopRender()
+    {
+        // TODO: Implement LoopRender() method.
+    }
+
+    public function ScriptRender()
+    {
+        // TODO: Implement ScriptRender() method.
+    }
+
+    public function StyleRender()
+    {
+        // TODO: Implement StyleRender() method.
+    }
+
+    public function UrlRender()
+    {
+        // TODO: Implement UrlRender() method.
+    }
+
+    public function ReturnEmptyRender()
+    {
+        // TODO: Implement ReturnEmptyRender() method.
+    }
 }

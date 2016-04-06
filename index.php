@@ -7,4 +7,4 @@ define('CONTROLLERS', '/Controllers/');
 include('Puko/Core/Puko.php');
 use Puko\Core\Puko;
 
-Puko::Init()->Start();
+Puko::Init()->Start(PUKO_AUTH);

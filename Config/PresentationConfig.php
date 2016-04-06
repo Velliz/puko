@@ -2,7 +2,7 @@
 
 namespace Config;
 
-class HtmlConfig
+class PresentationConfig
 {
     /**
      * key '?' represent the value that will replaced by Puko with actual Data.

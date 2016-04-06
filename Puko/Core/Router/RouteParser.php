@@ -17,6 +17,8 @@ class RouteParser
         $this->RawRouter = $router;
         $variables = explode('/', $this->RawRouter);
 
+        $this->FunctionNames = 'main';
+
         foreach ($variables as $key => $val) {
             if($val == '')
                 break;
@@ -24,12 +26,10 @@ class RouteParser
             switch ($key) {
                 case 0:
                     $this->ClassName = $val;
-                    $this->FunctionNames = 'main';
                     break;
                 case 1:
                     if (intval($variables[1])) {
                         $this->ConstructVars = $val;
-                        $this->FunctionNames = 'main';
                     } else {
                         $this->FunctionNames = $val;
                     }
@@ -54,14 +54,14 @@ class RouteParser
         require_once($import);
     }
 
-    public function InitializeClass()
+    public function InitializeClass($authCode)
     {
         $realFilePath = FILE . CONTROLLERS . $this->ClassName . '.php';
         if (!file_exists($realFilePath)) {
             die('Controller file ' . $this->ClassName . ' is not found.');
         }
         $this->ClassLoader($this->ClassName);
-        return new $this->ClassName($this->ConstructVars);
+        return new $this->ClassName($this->ConstructVars, $authCode);
     }
 
     public function InitializeFunction($object)

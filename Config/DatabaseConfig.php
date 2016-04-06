@@ -2,7 +2,7 @@
 
 namespace Config;
 
-class DataConfig
+class DatabaseConfig
 {
     var $DB_CONFIG = array(
         'dbType' => 'MySQL',

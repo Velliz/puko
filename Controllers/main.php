@@ -6,10 +6,11 @@ use Puko\Core\Presentation\Json\Service;
 class Main extends Service
 {
 
-    var $id;
+    private $id;
 
-    function __construct($vars)
+    function __construct($vars, $authCode)
     {
+        parent::__construct($authCode);
         $this->id = $vars;
     }
 

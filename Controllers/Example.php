@@ -1,20 +1,22 @@
 <?php
 
+use Puko\Core\Auth\Authentication;
 use Puko\Core\Backdoor\Data;
 use Puko\Core\Presentation\Html\View;
-use Puko\Core\Presentation\Json\Service;
-use Puko\Util\PukoDate;
 
 /**
  * Class Example
  */
-class Example extends Service
+class Example extends View
 {
-    public $id;
 
-    function __construct($vars)
+    private $id;
+
+    function __construct($vars, $authCode)
     {
+        parent::__construct($authCode);
         $this->id = $vars;
+        $this->PukoAuthObject = Authentication::GetInstance($authCode);
     }
 
     function main()
@@ -45,7 +47,7 @@ class Example extends Service
 
     function dateinput()
     {
-        $da = new PukoDate();
+        $da = new \Puko\Util\DateTime();
 
         Data::To('TanggalDetil')->Save(
             array(

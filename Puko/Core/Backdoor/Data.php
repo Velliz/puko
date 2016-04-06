@@ -2,10 +2,10 @@
 
 namespace Puko\Core\Backdoor;
 
-use Config\DataConfig;
+use Config\DatabaseConfig;
 use PDO;
 
-class Data extends DataConfig
+class Data extends DatabaseConfig
 {
 
     public static $Instance = null;
@@ -19,7 +19,6 @@ class Data extends DataConfig
 
     private function __construct($tablename = null)
     {
-
         $this->pdo = new PDO("mysql:host=" . $this->DB_CONFIG['host'] . ";dbname=" . $this->DB_CONFIG['dbName'],
             $this->DB_CONFIG['user'],
             $this->DB_CONFIG['pass']
