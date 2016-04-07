@@ -2,7 +2,6 @@
 
 namespace Puko\Core\Presentation\Json;
 
-
 use Puko\Core\Presentation\AbstractParser;
 
 class JSONParser extends AbstractParser

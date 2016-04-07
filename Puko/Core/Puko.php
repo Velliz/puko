@@ -51,6 +51,8 @@ namespace Puko\Core {
             $routerObj = $router->InitializeClass($authCode);
             $vars = $router->InitializeFunction($routerObj);
 
+            //$vars['Auth'] = Authentication::GetInstance($authCode)->GetUserData();
+
             $hasil = new ReflectionClass($routerObj);
 
             if ($hasil->isSubclassOf($view)) {

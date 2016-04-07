@@ -11,7 +11,6 @@ class Example extends View
 {
 
     private $id;
-    private $auth;
 
     function __construct($vars, $authCode)
     {
@@ -24,20 +23,27 @@ class Example extends View
      */
     function main()
     {
-        if($this->PukoAuthObject->IsAuthenticated()){
-            echo 'authenticated';
+        if(!$this->PukoAuthObject->IsAuthenticated()) {
+            return array(
+                'PageTitle' => 'Puko Framework',
+                'Welcome' => 'Welcome To Puko Framework NOT AUTHENTICATED',
+            );
         } else {
-            echo 'forbidden';
+            return array(
+                'PageTitle' => 'Puko Framework',
+                'Welcome' => 'AUTHENTICATED',
+            );
         }
+    }
 
-        return array(
-            'PageTitle' => 'Puko Framework',
-            'Welcome' => 'Welcome To Puko Framework Test Programs',
-        );
+    function Login(){
+        $this->PukoAuthObject->Authenticate('d', 'v');
     }
 
     function fileupload()
     {
+
+        $this->PukoAuthObject->RemoveAuthentication();
 
         $dataSubmit = isset($_POST['_submit']);
         if ($dataSubmit) {

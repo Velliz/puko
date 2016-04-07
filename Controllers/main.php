@@ -29,7 +29,6 @@ class Main extends Service
             'Kedua' => array(
                 array('KeduaValue' => 'Dua 1'),
                 array('KeduaValue' => 'Dua 2'),
-
             )
             */
 

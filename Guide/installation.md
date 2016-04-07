@@ -1,3 +1,7 @@
+## Warning
+
+This release version now only support Apache PHP server.
+
 ## MySQL Config
 
 #  log_file_size to 25 % of buffer pool size

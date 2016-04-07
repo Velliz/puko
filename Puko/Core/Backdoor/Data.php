@@ -2,10 +2,10 @@
 
 namespace Puko\Core\Backdoor;
 
-use Config\DatabaseConfig;
+use Exception;
 use PDO;
 
-class Data extends DatabaseConfig
+class Data
 {
 
     public static $Instance = null;
@@ -19,9 +19,13 @@ class Data extends DatabaseConfig
 
     private function __construct($tablename = null)
     {
-        $this->pdo = new PDO("mysql:host=" . $this->DB_CONFIG['host'] . ";dbname=" . $this->DB_CONFIG['dbName'],
-            $this->DB_CONFIG['user'],
-            $this->DB_CONFIG['pass']
+        $db = include(FILE . '/Config/dbconfig.php');
+        if (!$db) {
+            throw new Exception("Can't connect to database.");
+        }
+        $this->pdo = new PDO("mysql:host=" . $db['host'] . ";dbname=" . $db['dbName'],
+            $db['user'],
+            $db['pass']
         );
 
         $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

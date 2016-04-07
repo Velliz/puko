@@ -2,10 +2,7 @@
 
 namespace Puko\Core\Presentation;
 
-
-use Config\PresentationConfig;
-
-abstract class AbstractParser extends PresentationConfig
+abstract class AbstractParser
 {
 
     private $ARRAYS = 0;
