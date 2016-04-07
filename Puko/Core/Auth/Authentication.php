@@ -20,11 +20,26 @@ namespace Puko\Core\Auth {
 
         static function GetInstance($authCode)
         {
-            if (!isset(self::$Instance) && !is_object(self::$Instance))
+            @session_start();
+            if (!isset(self::$Instance) && !is_object(self::$Instance)) {
                 self::$Instance = new Authentication();
+            }
 
             self::$authCodes = $authCode;
             return self::$Instance;
+        }
+
+        function IsAuthenticated()
+        {
+            if(!isset($_SESSION['PukoAuth']))
+                return false;
+
+            return true;
+        }
+
+        function Authenticate($username, $password){
+            $authData = $this->CustomAuthentication($username, $password);
+            $_SESSION['PukoAuth'] = $authData;
         }
     }
 

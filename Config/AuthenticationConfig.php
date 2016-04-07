@@ -3,12 +3,15 @@
 namespace Config;
 
 
-class AuthenticationConfig
+abstract class AuthenticationConfig
 {
 
-    function CustomAuthentication()
+    function CustomAuthentication($username, $password)
     {
-
+        return array(
+            'username' => 'Velliz',
+            'email' => 'velliz@gmail.com'
+        );
     }
 
 }

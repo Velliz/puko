@@ -11,16 +11,25 @@ class Example extends View
 {
 
     private $id;
+    private $auth;
 
     function __construct($vars, $authCode)
     {
         parent::__construct($authCode);
         $this->id = $vars;
-        $this->PukoAuthObject = Authentication::GetInstance($authCode);
     }
 
+    /**
+     * @return array
+     */
     function main()
     {
+        if($this->PukoAuthObject->IsAuthenticated()){
+            echo 'authenticated';
+        } else {
+            echo 'forbidden';
+        }
+
         return array(
             'PageTitle' => 'Puko Framework',
             'Welcome' => 'Welcome To Puko Framework Test Programs',
