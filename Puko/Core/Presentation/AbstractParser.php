@@ -14,7 +14,7 @@ abstract class AbstractParser
 
     public function __construct()
     {
-
+        // todo : abstract parser
     }
 
     public function getVarType($var)

@@ -1,8 +1,18 @@
 <?php
 
-namespace {
+/**
+ * Global namespace
+ */
+namespace Puko {
+
     define('PUKO_AUTH', 800);
     define('CUSTOM_AUTH', 900);
+    define('CONTROLLERS', '/Controllers/');
+    define('ASSETS', 'Assets/html/');
+
+    function VariableDump($var) {
+        echo '<pre>' . var_dump($var) . '</pre>';
+    }
 }
 
 namespace Puko\Core {
@@ -16,14 +26,17 @@ namespace Puko\Core {
 
     class Puko
     {
+
+        /**
+         * @var object
+         */
         private static $PukoInstance;
 
         public static function Init()
         {
             self::Autoload();
-            if (!is_object(self::$PukoInstance)) {
+            if (!is_object(self::$PukoInstance))
                 self::$PukoInstance = new Puko();
-            }
             return self::$PukoInstance;
         }
 
@@ -35,9 +48,8 @@ namespace Puko\Core {
         private static function ClassLoader($className)
         {
             $className .= '.php';
-            if (file_exists($className)) {
+            if (file_exists($className))
                 require_once($className);
-            }
         }
 
         public function Start($authCode)
@@ -56,8 +68,7 @@ namespace Puko\Core {
             $hasil = new ReflectionClass($routerObj);
 
             if ($hasil->isSubclassOf($view)) {
-                $template = new HtmlParser('Assets/html/' . $router->ClassName . '/' .
-                    $router->FunctionNames . ".html", false, false);
+                $template = new HtmlParser(ASSETS . $router->ClassName . '/' . $router->FunctionNames . ".html", false, false);
 
                 $template->setValueRule("{!", "}");
                 $template->setOpenLoopRule("{!", "}");
@@ -86,14 +97,10 @@ namespace Puko\Core {
         private function GetRouter()
         {
             $clause = isset($_GET['query']) ? $_GET['query'] : 'main/main/';
-
             $ClauseTail = substr($clause, -1);
-            if ($ClauseTail != '/') {
+            if ($ClauseTail != '/')
                 $clause .= '/';
-            }
-
             return $clause;
         }
-
     }
 }

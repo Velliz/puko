@@ -16,6 +16,7 @@ class Main extends Service
 
     function main()
     {
+
         $vars['PageTitle'] = 'Puko Framework';
         $vars['Welcome'] = 'Selamat Datang di Puko Framework';
         $vars['Pertama'] = array(
@@ -33,6 +34,8 @@ class Main extends Service
             */
 
         );
+
+        \Puko\VariableDump($vars);
 
         $vars['Puko'] = Data::From('select * from family')->FetchAll();
 

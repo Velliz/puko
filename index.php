@@ -1,8 +1,6 @@
 <?php
-$root = include('Config/root.php');
-define('ROOT', $root);
+define('ROOT', 'http://localhost/puko/');
 define('FILE', dirname(__FILE__));
-define('CONTROLLERS', '/Controllers/');
 
 include('Puko/Core/Puko.php');
 use Puko\Core\Puko;
