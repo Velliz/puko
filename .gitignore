@@ -46,3 +46,6 @@ fabric.properties
 *.iml
 .idea
 vendor
+
+composer.lock
+composer.phar
