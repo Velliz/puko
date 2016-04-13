@@ -40,7 +40,7 @@ For data Boilerplates, you can print data returned by Controller class like this
 {!!condition} {/condition} "blocked condition"
 ```
 
-And many more you can find in the [DOCS / WIKI.](https://github.com/Velliz/puko/wiki)
+And many more you can find in the [DOCS / WIKI.](https://github.com/Velliz/puko/wiki/Welcome-to-Puko-Docs)
 
 ## About
 
