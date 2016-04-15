@@ -1,9 +1,9 @@
 <?php
 
 use Puko\Core\Backdoor\Data;
-use Puko\Core\Presentation\Json\Service;
+use Puko\Core\Presentation\Html\View;
 
-class Main extends Service
+class Main extends View
 {
 
     private $id;
@@ -34,8 +34,6 @@ class Main extends Service
             */
 
         );
-
-        \Puko\VariableDump($vars);
 
         $vars['Puko'] = Data::From('select * from family')->FetchAll();
 

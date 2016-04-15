@@ -4,7 +4,7 @@ namespace Puko\Util;
 
 use DateTime as Dates;
 
-class DateTime
+class DateAndTime
 {
 
     private $dateObject;
