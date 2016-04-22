@@ -13,7 +13,7 @@ cache:
 before_install:
  - composer --prefer-source install
 
-script: phpunit --verbose Tests/Main.php
+script: phpunit --verbose Tests/MainTest.php
 
 notifications:
   email: "nurcholid@windowslive.com"
