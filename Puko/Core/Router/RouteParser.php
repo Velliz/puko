@@ -85,10 +85,10 @@ class RouteParser
         require_once($import);
     }
 
-    public function InitializeClass($authCode)
+    public function InitializeClass()
     {
         $this->ClassLoader($this->ClassName);
-        return new $this->ClassName($this->ConstructVars, $authCode);
+        return new $this->ClassName($this->ConstructVars);
     }
 
     public function InitializeFunction($object)

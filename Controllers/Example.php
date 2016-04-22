@@ -1,20 +1,20 @@
 <?php
 
 use Puko\Core\Backdoor\Data;
-use Puko\Core\Presentation\Html\View;
+use Puko\Core\Presentation\Json\Service;
 use Puko\Util\DateAndTime;
 
 /**
  * Class Example
  */
-class Example extends \Puko\Core\Presentation\Json\Service
+class Example extends Service
 {
 
     private $id;
 
-    function __construct($vars, $authCode)
+    function __construct($vars)
     {
-        parent::__construct($authCode);
+        parent::__construct();
         $this->id = $vars;
     }
 

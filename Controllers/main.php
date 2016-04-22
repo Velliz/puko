@@ -8,15 +8,14 @@ class Main extends View
 
     private $id;
 
-    function __construct($vars, $authCode)
+    function __construct($vars)
     {
-        parent::__construct($authCode);
+        parent::__construct();
         $this->id = $vars;
     }
 
     function main()
     {
-
         $vars['PageTitle'] = 'Puko Framework';
         $vars['Welcome'] = 'Selamat Datang di Puko Framework';
         $vars['Pertama'] = array(
@@ -25,14 +24,6 @@ class Main extends View
             array('PertamaValue' => 'Test 3'),
             array('PertamaValue' => 'Test 4'),
             array('PertamaValue' => 'Test 5'),
-
-            /*
-            'Kedua' => array(
-                array('KeduaValue' => 'Dua 1'),
-                array('KeduaValue' => 'Dua 2'),
-            )
-            */
-
         );
 
         $vars['Puko'] = Data::From('select * from family')->FetchAll();

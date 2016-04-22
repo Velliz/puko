@@ -5,9 +5,6 @@
  */
 namespace Puko {
 
-    define('USE_PUKO_DEFAULT_AUTH', 800);
-    define('USE_PUKO_CUSTOM_AUTH', 900);
-
     define('CONTROLLERS', '/Controllers/');
     define('ASSETS', 'Assets/html/');
 
@@ -22,7 +19,7 @@ namespace Puko {
     }
 }
 
-namespace Puko\Core {
+namespace Core\Puko {
 
     use Puko\Core\Presentation\Html\HtmlParser;
     use Puko\Core\Presentation\Html\View;
@@ -72,7 +69,7 @@ namespace Puko\Core {
             }
         }
 
-        public function Start($authCode)
+        public function Start()
         {
             $start = microtime(true);
 
@@ -80,7 +77,7 @@ namespace Puko\Core {
             $service = new ReflectionClass(Service::class);
 
             $router = new RouteParser($this->GetRouter());
-            $routerObj = $router->InitializeClass($authCode);
+            $routerObj = $router->InitializeClass();
             $vars = $router->InitializeFunction($routerObj);
 
             if(self::$VariableDump && strcmp(self::$Environment, 'dev') == 0) {
