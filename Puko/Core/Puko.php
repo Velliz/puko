@@ -19,7 +19,7 @@ namespace Puko {
     }
 }
 
-namespace Core\Puko {
+namespace Puko\Core {
 
     use Puko\Core\Presentation\Html\HtmlParser;
     use Puko\Core\Presentation\Html\View;
