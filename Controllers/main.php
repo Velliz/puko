@@ -1,6 +1,6 @@
 <?php
 
-use Puko\Core\Backdoor\Data;
+use Model\Member;
 use Puko\Core\Presentation\Html\View;
 
 class Main extends View
@@ -14,7 +14,7 @@ class Main extends View
         $this->id = $vars;
     }
 
-    function main()
+    function Main()
     {
         $vars['PageTitle'] = 'Puko Framework';
         $vars['Welcome'] = 'Selamat Datang di Puko Framework';
@@ -26,10 +26,8 @@ class Main extends View
             array('PertamaValue' => 'Test 5'),
         );
 
-        $vars['Puko'] = Data::From('select * from family')->FetchAll();
-
+        $vars['Puko'] = Member::GetFamily(1);
         $vars['Value'] = 'Didit Velliz';
-
         return $vars;
     }
 }
