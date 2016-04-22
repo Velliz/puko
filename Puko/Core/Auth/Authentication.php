@@ -8,16 +8,14 @@ class Authentication extends AuthenticationModules
 {
 
     public static $Instance = null;
-    private static $authCodes;
 
-    static function GetInstance($authCode)
+    static function GetInstance()
     {
         @session_start();
         if (!isset(self::$Instance) && !is_object(self::$Instance)) {
             self::$Instance = new Authentication();
         }
 
-        self::$authCodes = $authCode;
         return self::$Instance;
     }
 
@@ -43,7 +41,7 @@ class Authentication extends AuthenticationModules
 
     function RemoveAuthentication()
     {
-        session_destroy();
+        @session_destroy();
     }
 }
 

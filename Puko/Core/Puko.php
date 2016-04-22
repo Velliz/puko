@@ -5,17 +5,21 @@
  */
 namespace Puko {
 
-    define('PUKO_AUTH', 800);
-    define('CUSTOM_AUTH', 900);
     define('CONTROLLERS', '/Controllers/');
     define('ASSETS', 'Assets/html/');
 
-    function VariableDump($var) {
-        echo '<pre>' . var_dump($var) . '</pre>';
+    define('PRODUCTION', 'live');
+    define('DEVELOPMENT', 'dev');
+
+    function _VariableDump($var)
+    {
+        echo '<pre>';
+        var_dump($var);
+        echo '</pre>';
     }
 }
 
-namespace Puko\Core {
+namespace Core\Puko {
 
     use Puko\Core\Presentation\Html\HtmlParser;
     use Puko\Core\Presentation\Html\View;
@@ -32,11 +36,23 @@ namespace Puko\Core {
          */
         private static $PukoInstance;
 
-        public static function Init()
+        /**
+         * @var string
+         */
+        public static $Environment;
+
+        /**
+         * @var bool
+         */
+        private static $VariableDump;
+
+        public static function Init($environment)
         {
+            self::$Environment = $environment;
             self::Autoload();
-            if (!is_object(self::$PukoInstance))
+            if (!is_object(self::$PukoInstance)) {
                 self::$PukoInstance = new Puko();
+            }
             return self::$PukoInstance;
         }
 
@@ -48,11 +64,12 @@ namespace Puko\Core {
         private static function ClassLoader($className)
         {
             $className .= '.php';
-            if (file_exists($className))
+            if (file_exists($className)) {
                 require_once($className);
+            }
         }
 
-        public function Start($authCode)
+        public function Start()
         {
             $start = microtime(true);
 
@@ -60,22 +77,19 @@ namespace Puko\Core {
             $service = new ReflectionClass(Service::class);
 
             $router = new RouteParser($this->GetRouter());
-            $routerObj = $router->InitializeClass($authCode);
+            $routerObj = $router->InitializeClass();
             $vars = $router->InitializeFunction($routerObj);
 
-            //$vars['Auth'] = Authentication::GetInstance($authCode)->GetUserData();
+            if(self::$VariableDump && strcmp(self::$Environment, 'dev') == 0) {
+                \Puko\_VariableDump($vars);
+                //\Puko\_VariableDump(Authentication::GetInstance($authCode)->GetUserData());
+            }
 
             $hasil = new ReflectionClass($routerObj);
 
             if ($hasil->isSubclassOf($view)) {
-                $template = new HtmlParser(ASSETS . $router->ClassName . '/' . $router->FunctionNames . ".html", false, false);
-
-                $template->setValueRule("{!", "}");
-                $template->setOpenLoopRule("{!", "}");
-                $template->setClosedLoopRule("{/", "}");
-
-                $template->setOpenBlockedRule("{!!", "}");
-                $template->setClosedBlockedRule("{/", "}");
+                $template = new HtmlParser(ASSETS . $router->ClassName . '/' . $router->FunctionNames . ".html", false,
+                    false);
 
                 $template->setArrays($vars);
 
@@ -90,7 +104,13 @@ namespace Puko\Core {
                 echo json_encode($service->output());
 
             } else {
-                die('Controller must extends its type');
+                if (strcmp(self::$Environment, 'dev') == 0) {
+                    die('Controller must extends its type');
+                } else {
+                    header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found", true, 404);
+                    include 'Assets/global/notfound.html';
+                    die();
+                }
             }
         }
 
@@ -98,9 +118,16 @@ namespace Puko\Core {
         {
             $clause = isset($_GET['query']) ? $_GET['query'] : 'main/main/';
             $ClauseTail = substr($clause, -1);
-            if ($ClauseTail != '/')
+            if ($ClauseTail != '/') {
                 $clause .= '/';
+            }
             return $clause;
+        }
+
+        public static function VariableDump($option = false)
+        {
+            self::$VariableDump = $option;
+            return self::$PukoInstance;
         }
     }
 }

@@ -29,6 +29,14 @@ class HtmlParser extends AbstractParser
 
     public function __construct($file, $logOptions = true, $displayEmptyTag = true)
     {
+
+        $this->setValueRule("{!", "}");
+        $this->setOpenLoopRule("{!", "}");
+        $this->setClosedLoopRule("{/", "}");
+
+        $this->setOpenBlockedRule("{!!", "}");
+        $this->setClosedBlockedRule("{/", "}");
+
         $this->file = $file;
         $this->logs = $logOptions;
         $this->displayEmptyTag = $displayEmptyTag;

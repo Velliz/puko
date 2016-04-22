@@ -1,27 +1,24 @@
 <?php
 
-use Puko\Core\Auth\Authentication;
 use Puko\Core\Backdoor\Data;
-use Puko\Core\Presentation\Html\View;
+use Puko\Core\Presentation\Json\Service;
+use Puko\Util\DateAndTime;
 
 /**
  * Class Example
  */
-class Example extends View
+class Example extends Service
 {
 
     private $id;
 
-    function __construct($vars, $authCode)
+    function __construct($vars)
     {
-        parent::__construct($authCode);
+        parent::__construct();
         $this->id = $vars;
     }
 
-    /**
-     * @return array
-     */
-    function main()
+    function Main()
     {
         if(!$this->PukoAuthObject->IsAuthenticated()) {
             return array(
@@ -40,7 +37,7 @@ class Example extends View
         $this->PukoAuthObject->Authenticate('d', 'v');
     }
 
-    function fileupload()
+    function FileUpload()
     {
 
         $this->PukoAuthObject->RemoveAuthentication();
@@ -62,7 +59,7 @@ class Example extends View
 
     function dateinput()
     {
-        $da = new \Puko\Util\DateTime();
+        $da = new DateAndTime();
 
         Data::To('TanggalDetil')->Save(
             array(

@@ -16,9 +16,9 @@ abstract class View
     /**
      * View constructor.
      */
-    public function __construct($authCode)
+    public function __construct()
     {
-        $this->PukoAuthObject = Authentication::GetInstance($authCode);
+        $this->PukoAuthObject = Authentication::GetInstance();
     }
 
     public abstract function main();
