@@ -7,7 +7,7 @@ use Puko\Util\DateAndTime;
 /**
  * Class Example
  */
-class Example extends Service
+class Example extends \Puko\Core\Presentation\Html\View
 {
 
     private $id;
@@ -39,8 +39,8 @@ class Example extends Service
 
     function FileUpload()
     {
-
-        $this->PukoAuthObject->RemoveAuthentication();
+        $vars = array();
+        $vars['PageTitle'] = 'Upload File';
 
         $dataSubmit = isset($_POST['_submit']);
         if ($dataSubmit) {
@@ -51,10 +51,8 @@ class Example extends Service
                     'file' => $_FILES['foto']['tmp_name']
                 )
             );
-
         }
-
-        return array('om' => '23123', 'adik' => 'asd');
+        return $vars;
     }
 
     function dateinput()

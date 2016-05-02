@@ -13,6 +13,7 @@ class JSONParser extends AbstractParser
 
     public function __construct($var, $start)
     {
+        parent::__construct(false, false);
         $this->file = $var;
         $this->procesStart = $start;
     }
@@ -35,38 +36,18 @@ class JSONParser extends AbstractParser
         return $data;
     }
 
-    public function ValueRender()
+    public function ScriptRender($controllerName, $functionName)
     {
-        // TODO: Implement ValueRender() method.
+
     }
 
-    public function ConditionRender()
+    public function StyleRender($controllerName, $functionName)
     {
-        // TODO: Implement ConditionRender() method.
-    }
 
-    public function LoopRender()
-    {
-        // TODO: Implement LoopRender() method.
-    }
-
-    public function ScriptRender()
-    {
-        // TODO: Implement ScriptRender() method.
-    }
-
-    public function StyleRender()
-    {
-        // TODO: Implement StyleRender() method.
-    }
-
-    public function UrlRender()
-    {
-        // TODO: Implement UrlRender() method.
     }
 
     public function ReturnEmptyRender()
     {
-        // TODO: Implement ReturnEmptyRender() method.
+
     }
 }
