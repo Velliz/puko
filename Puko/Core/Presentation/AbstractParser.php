@@ -5,16 +5,20 @@ namespace Puko\Core\Presentation;
 abstract class AbstractParser
 {
 
-    private $ARRAYS = 0;
-    private $STRINGS = 1;
-    private $BOOLEANS = 2;
-    private $NULLS = 4;
-    private $NUMERIC = 5;
-    private $UNDEFINED = 6;
+    protected $ARRAYS = 0;
+    protected $STRINGS = 1;
+    protected $BOOLEANS = 2;
+    protected $NULLS = 4;
+    protected $NUMERIC = 5;
+    protected $UNDEFINED = 6;
 
-    public function __construct()
+    protected $logs;
+    protected $displayEmptyTag;
+
+    public function __construct($logs = false, $displayEmptyTag = false)
     {
-        // todo : abstract parser
+        $this->logs = $logs;
+        $this->displayEmptyTag = $displayEmptyTag;
     }
 
     public function getVarType($var)
@@ -33,18 +37,9 @@ abstract class AbstractParser
             return $this->UNDEFINED;
     }
 
+    public abstract function ScriptRender($controllerName, $functionName);
 
-    public abstract function ValueRender();
-
-    public abstract function ConditionRender();
-
-    public abstract function LoopRender();
-
-    public abstract function ScriptRender();
-
-    public abstract function StyleRender();
-
-    public abstract function UrlRender();
+    public abstract function StyleRender($controllerName, $functionName);
 
     public abstract function ReturnEmptyRender();
 

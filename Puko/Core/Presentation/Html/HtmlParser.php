@@ -6,16 +6,11 @@ use Puko\Core\Presentation\AbstractParser;
 
 class HtmlParser extends AbstractParser
 {
-    private $ARRAYS = 0;
-    private $STRINGS = 1;
-    private $BOOLEANS = 2;
-    private $NULLS = 4;
-    private $NUMERIC = 5;
-    private $UNDEFINED = 6;
-
+    
     protected $file;
     protected $values;
     protected $stringFile;
+    protected $masterFile;
 
     protected $valueRules;
     protected $loopRulesHead;
@@ -24,12 +19,10 @@ class HtmlParser extends AbstractParser
     protected $templateBlockedRulesOpen;
     protected $templateBlockedRulesClosed;
 
-    protected $logs;
-    protected $displayEmptyTag;
-
-    public function __construct($file, $logOptions = true, $displayEmptyTag = true)
+    public function __construct($file)
     {
-
+        parent::__construct(false, false);
+        
         $this->setValueRule("{!", "}");
         $this->setOpenLoopRule("{!", "}");
         $this->setClosedLoopRule("{/", "}");
@@ -38,8 +31,6 @@ class HtmlParser extends AbstractParser
         $this->setClosedBlockedRule("{/", "}");
 
         $this->file = $file;
-        $this->logs = $logOptions;
-        $this->displayEmptyTag = $displayEmptyTag;
 
         if (!file_exists($this->file)) {
             if ($this->logs) {
@@ -51,8 +42,8 @@ class HtmlParser extends AbstractParser
             echo "View File " . $this->file . " not found.";
             return null;
         }
-
         $this->stringFile = @file_get_contents($this->file);
+        $this->masterFile = @file_get_contents(MASTER . "master.html");
     }
 
     public function setArrays($arrData)
@@ -97,53 +88,36 @@ class HtmlParser extends AbstractParser
         $this->templateBlockedRulesClosed[$tagOpen] = $tagClose;
     }
 
-    public function output()
-    {
-
-        // controller returning null array data
+    public function output(){
         if (!isset($this->values)) {
-            $this->stringFile = preg_replace('/<!--(.|\s)*?-->/', '', $this->stringFile);
-
-            if (!$this->displayEmptyTag) {
-                foreach ($this->valueRules as $head => $tail) {
-                    $this->stringFile = str_replace($head, '', $this->stringFile);
-                    $this->stringFile = str_replace($tail, '', $this->stringFile);
-                }
-            }
-            return $this->stringFile;
+            $this->ReturnEmptyRender();
         }
-
         foreach ($this->values as $key => $value) {
             foreach ($this->valueRules as $head => $tail) {
-
                 $tagReplace = $head . $key . $tail;
-                if ($this->searchVarType($value) != $this->ARRAYS
-                    && $this->searchVarType($value) != $this->BOOLEANS
-                    && $this->searchVarType($value) != $this->NULLS
-                ) {
-                    $this->stringFile = str_replace($tagReplace, $value, $this->stringFile);
-                } else {
-                    if ($this->searchVarType($value) == $this->ARRAYS) {
 
+                switch($this->getVarType($value)) {
+                    case $this->NUMERIC:
+                        $this->stringFile = str_replace($tagReplace, $value, $this->stringFile);
+                        $this->masterFile = str_replace($tagReplace, $value, $this->masterFile);
+                        break;
+                    case $this->STRINGS:
+                        $this->stringFile = str_replace($tagReplace, $value, $this->stringFile);
+                        $this->masterFile = str_replace($tagReplace, $value, $this->masterFile);
+                        break;
+                    case $this->ARRAYS:
                         // todo : enhancement to loop in the loop
-                        $dinamicTags = '';
-                        $openTag = '';
-                        $closeTag = '';
-
+                        $dynamicTags = ''; $openTag = ''; $closeTag = '';
                         foreach ($this->loopRulesHead as $loopOpenHead => $loopOpenTail) {
                             foreach ($this->loopRulesTail as $loopCloseHead => $loopCloseTail) {
                                 $openTag = $loopOpenHead . $key . $loopOpenTail;
                                 $closeTag = $loopCloseHead . $key . $loopCloseTail;
                             }
                         }
-
                         $ember = $this->getStringBetween($this->stringFile, $openTag, $closeTag);
-
                         foreach ($value as $key2 => $value2) {
-
                             $openTag = '';
                             $closeTag = '';
-
                             foreach ($this->loopRulesHead as $loopOpenHead => $loopOpenTail) {
                                 foreach ($this->loopRulesTail as $loopCloseHead => $loopCloseTail) {
                                     $openTag = $loopOpenHead . $key . $loopOpenTail;
@@ -151,53 +125,46 @@ class HtmlParser extends AbstractParser
                                 }
                             }
                             $parsed = $this->getStringBetween($this->stringFile, $openTag, $closeTag);
-
                             foreach ($value2 as $key3 => $value3) {
                                 $parsed = str_replace($head . $key3 . $tail, $value3, $parsed);
                             }
-
-                            $dinamicTags = $dinamicTags . $parsed;
-
+                            $dynamicTags .= $parsed;
                         }
-                        $this->stringFile = str_replace($ember, $dinamicTags, $this->stringFile);
-
-
-                    } else {
-                        if ($this->searchVarType($value) == $this->BOOLEANS) {
-
-                            $stanza = $this->blockedConditions($this->stringFile, $key);
-
-                            // not blocked conditions
-                            if (is_null($stanza)) {
-                                if ($value != true) {
-                                    $openTag = '';
-                                    $closeTag = '';
-
-                                    foreach ($this->loopRulesHead as $loopOpenHead => $loopOpenTail) {
-                                        foreach ($this->loopRulesTail as $loopCloseHead => $loopCloseTail) {
-                                            $openTag = $loopOpenHead . $key . $loopOpenTail;
-                                            $closeTag = $loopCloseHead . $key . $loopCloseTail;
-                                        }
+                        $this->stringFile = str_replace($ember, $dynamicTags, $this->stringFile);
+                        break;
+                    case $this->BOOLEANS:
+                        $stanza = $this->blockedConditions($this->stringFile, $key);
+                        if (is_null($stanza)) {
+                            if ($value != true) {
+                                $openTag = '';
+                                $closeTag = '';
+                                foreach ($this->loopRulesHead as $loopOpenHead => $loopOpenTail) {
+                                    foreach ($this->loopRulesTail as $loopCloseHead => $loopCloseTail) {
+                                        $openTag = $loopOpenHead . $key . $loopOpenTail;
+                                        $closeTag = $loopCloseHead . $key . $loopCloseTail;
                                     }
-                                    $parsed = $this->getStringBetween($this->stringFile, $openTag, $closeTag);
-                                    $this->stringFile = str_replace($parsed, '', $this->stringFile);
                                 }
-                            } else {
-                                //for blocked conditions
-                                if ($value == true) {
-                                    $this->stringFile = str_replace($stanza, '', $this->stringFile);
-                                }
+                                $parsed = $this->getStringBetween($this->stringFile, $openTag, $closeTag);
+                                $this->stringFile = str_replace($parsed, '', $this->stringFile);
                             }
                         } else {
-                            if ($this->logs) {
-                                die('variable undefined.');
-                            }
+                            //for blocked conditions
+                            if ($value == true)
+                                $this->stringFile = str_replace($stanza, '', $this->stringFile);
+
                         }
-                    }
+                        break;
+                    case $this->NULLS:
+                        break;
+                    case $this->UNDEFINED:
+                        if ($this->logs)
+                            die('variable undefined.');
+                        break;
+                    default:
+                        break;
                 }
             }
         }
-
         //eliminating html comments and statement tags
         $this->stringFile = preg_replace('/<!--(.|\s)*?-->/', '', $this->stringFile);
 
@@ -209,32 +176,8 @@ class HtmlParser extends AbstractParser
             }
         }
 
-        return $this->stringFile;
-    }
-
-    public function searchVarType($var)
-    {
-        if (is_array($var)) {
-            return $this->ARRAYS;
-        } else {
-            if (is_null($var)) {
-                return $this->NULLS;
-            } else {
-                if (is_string($var)) {
-                    return $this->STRINGS;
-                } else {
-                    if (is_bool($var)) {
-                        return $this->BOOLEANS;
-                    } else {
-                        if (is_numeric($var)) {
-                            return $this->NUMERIC;
-                        } else {
-                            return $this->UNDEFINED;
-                        }
-                    }
-                }
-            }
-        }
+        $this->masterFile = str_replace('{CONTENT}', $this->stringFile, $this->masterFile);
+        return $this->masterFile;
     }
 
     public function blockedConditions($stanza, $key)
@@ -272,76 +215,50 @@ class HtmlParser extends AbstractParser
 
     public function getStyleProperty()
     {
-        $keys = $this->getStringBetween($this->stringFile, '@css{', '}');
-        $this->stringFile = str_replace('@css{' . $keys . '}', '@css{}', $this->stringFile);
+        $keys = $this->getStringBetween($this->masterFile, '@css{', '}');
+        $this->masterFile = str_replace('@css{' . $keys . '}', '@css{}', $this->masterFile);
         return explode(',', $keys);
     }
 
     public function getScriptProperty()
     {
-        $keys = $this->getStringBetween($this->stringFile, '@js{', '}');
-        $this->stringFile = str_replace('@js{' . $keys . '}', '@js{}', $this->stringFile);
+        $keys = $this->getStringBetween($this->masterFile, '@js{', '}');
+        $this->masterFile = str_replace('@js{' . $keys . '}', '@js{}', $this->masterFile);
         return explode(',', $keys);
     }
 
-    public function renderStyleProperty($cname, $fname)
-    {
-        $arrayStyle = $this->getStyleProperty();
-        $htmlStylesheet = '';
-        foreach ($arrayStyle as $key => $val) {
-            $htmlStylesheet .= "<link rel='stylesheet' href='" . ROOT . "Extensions/css/" . $val . ".css'>\n";
-        }
-
-        $htmlStylesheet .= "<link rel='stylesheet' href='" . ROOT . "Assets/css/" . $cname . "/" . $fname . ".css'>\n";
-
-        $this->stringFile = str_replace('<!--@css{}-->', $htmlStylesheet, $this->stringFile);
-    }
-
-    public function renderScriptProperty($cname, $fname)
+    public function ScriptRender($controllerName, $functionName)
     {
         $arrayScript = $this->getScriptProperty();
         $htmlScripts = '';
         foreach ($arrayScript as $key => $val) {
             $htmlScripts .= "<script type='text/javascript' src='" . ROOT . "Extensions/js/" . $val . ".js'></script>\n";
         }
-
-        $htmlScripts .= "<script type='text/javascript' src='" . ROOT . "Assets/js/" . $cname . "/" . $fname . ".js'></script>\n";
-
-        $this->stringFile = str_replace('<!--@js{}-->', $htmlScripts, $this->stringFile);
+        $htmlScripts .= "<script type='text/javascript' src='" . ROOT . "Assets/js/" . $controllerName . "/" . $functionName . ".js'></script>\n";
+        $this->masterFile = str_replace('<!--@js{}-->', $htmlScripts, $this->masterFile);
     }
 
-    public function ValueRender()
+    public function StyleRender($controllerName, $functionName)
     {
-        // TODO: Implement ValueRender() method.
-    }
-
-    public function ConditionRender()
-    {
-        // TODO: Implement ConditionRender() method.
-    }
-
-    public function LoopRender()
-    {
-        // TODO: Implement LoopRender() method.
-    }
-
-    public function ScriptRender()
-    {
-        // TODO: Implement ScriptRender() method.
-    }
-
-    public function StyleRender()
-    {
-        // TODO: Implement StyleRender() method.
-    }
-
-    public function UrlRender()
-    {
-        // TODO: Implement UrlRender() method.
+        $arrayStyle = $this->getStyleProperty();
+        $htmlStylesheet = '';
+        foreach ($arrayStyle as $key => $val) {
+            $htmlStylesheet .= "<link rel='stylesheet' href='" . ROOT . "Extensions/css/" . $val . ".css'>\n";
+        }
+        $htmlStylesheet .= "<link rel='stylesheet' href='" . ROOT . "Assets/css/" . $controllerName . "/" . $functionName . ".css'>\n";
+        $this->masterFile = str_replace('<!--@css{}-->', $htmlStylesheet, $this->masterFile);
     }
 
     public function ReturnEmptyRender()
     {
-        // TODO: Implement ReturnEmptyRender() method.
+        $this->stringFile = preg_replace('/<!--(.|\s)*?-->/', '', $this->stringFile);
+        if (!$this->displayEmptyTag) {
+            foreach ($this->valueRules as $head => $tail) {
+                $this->stringFile = str_replace($head, '', $this->stringFile);
+                $this->stringFile = str_replace($tail, '', $this->stringFile);
+            }
+        }
+        return $this->stringFile;
     }
+
 }

@@ -7,6 +7,7 @@ namespace Puko {
 
     define('CONTROLLERS', '/Controllers/');
     define('ASSETS', 'Assets/html/');
+    define('MASTER', 'Assets/global/');
 
     define('PRODUCTION', 'live');
     define('DEVELOPMENT', 'dev');
@@ -88,13 +89,12 @@ namespace Puko\Core {
             $hasil = new ReflectionClass($routerObj);
 
             if ($hasil->isSubclassOf($view)) {
-                $template = new HtmlParser(ASSETS . $router->ClassName . '/' . $router->FunctionNames . ".html", false,
-                    false);
+                $template = new HtmlParser(ASSETS . $router->ClassName . '/' . $router->FunctionNames . ".html");
 
                 $template->setArrays($vars);
 
-                $template->renderStyleProperty($router->ClassName, $router->FunctionNames);
-                $template->renderScriptProperty($router->ClassName, $router->FunctionNames);
+                $template->StyleRender($router->ClassName, $router->FunctionNames);
+                $template->ScriptRender($router->ClassName, $router->FunctionNames);
 
                 echo $template->output();
 
