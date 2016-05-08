@@ -4,6 +4,8 @@ Puko is the Micro Model-View PHP Framework for faster PHP application Developmen
 
 *Puko Require* **PHP 5.3** *or greater*
 
+checkout the lastest release [HERE](https://github.com/Velliz/puko/releases) 
+
 ## Main Features
 
 **URL Routing**
