@@ -32,6 +32,10 @@ class RouteParser
      */
     private $FunctionVars = array();
 
+    /**
+     * RouteParser constructor.
+     * @param $router
+     */
     public function __construct($router)
     {
         $this->RawRouter = $router;
@@ -69,6 +73,9 @@ class RouteParser
         }
     }
 
+    /**
+     * @param $ClassName
+     */
     private function ClassLoader($ClassName)
     {
         $import = FILE . CONTROLLERS . $ClassName . '.php';
@@ -85,12 +92,19 @@ class RouteParser
         require_once($import);
     }
 
+    /**
+     * @return mixed
+     */
     public function InitializeClass()
     {
         $this->ClassLoader($this->ClassName);
         return new $this->ClassName($this->ConstructVars);
     }
 
+    /**
+     * @param $object
+     * @return mixed
+     */
     public function InitializeFunction($object)
     {
         if (method_exists($object, $this->FunctionNames) && is_callable(array($object, $this->FunctionNames))) {

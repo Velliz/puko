@@ -47,6 +47,10 @@ namespace Puko\Core {
          */
         private static $VariableDump;
 
+        /**
+         * @param $environment
+         * @return object|Puko
+         */
         public static function Init($environment)
         {
             self::$Environment = $environment;
@@ -56,12 +60,15 @@ namespace Puko\Core {
             }
             return self::$PukoInstance;
         }
-
+        
         private function Autoload()
         {
             spl_autoload_register(array('\Puko\Core\Puko', 'ClassLoader'));
         }
 
+        /**
+         * @param $className
+         */
         private static function ClassLoader($className)
         {
             $className .= '.php';
@@ -69,7 +76,7 @@ namespace Puko\Core {
                 require_once($className);
             }
         }
-
+        
         public function Start()
         {
             $start = microtime(true);
@@ -114,6 +121,9 @@ namespace Puko\Core {
             }
         }
 
+        /**
+         * @return string
+         */
         private function GetRouter()
         {
             $clause = isset($_GET['query']) ? $_GET['query'] : 'main/main/';
@@ -124,6 +134,10 @@ namespace Puko\Core {
             return $clause;
         }
 
+        /**
+         * @param bool $option
+         * @return object
+         */
         public static function VariableDump($option = false)
         {
             self::$VariableDump = $option;
