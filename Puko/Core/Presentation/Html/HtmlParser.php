@@ -232,7 +232,7 @@ class HtmlParser extends AbstractParser
         $arrayScript = $this->getScriptProperty();
         $htmlScripts = '';
         foreach ($arrayScript as $key => $val) {
-            $htmlScripts .= "<script type='text/javascript' src='" . ROOT . "Extensions/js/" . $val . ".js'></script>\n";
+            $htmlScripts .= "<script type='text/javascript' src='" . ROOT . "Assets/Extensions/js/" . $val . ".js'></script>\n";
         }
         $htmlScripts .= "<script type='text/javascript' src='" . ROOT . "Assets/js/" . $controllerName . "/" . $functionName . ".js'></script>\n";
         $this->masterFile = str_replace('<!--@js{}-->', $htmlScripts, $this->masterFile);
@@ -243,7 +243,7 @@ class HtmlParser extends AbstractParser
         $arrayStyle = $this->getStyleProperty();
         $htmlStylesheet = '';
         foreach ($arrayStyle as $key => $val) {
-            $htmlStylesheet .= "<link rel='stylesheet' href='" . ROOT . "Extensions/css/" . $val . ".css'>\n";
+            $htmlStylesheet .= "<link rel='stylesheet' href='" . ROOT . "Assets/Extensions/css/" . $val . ".css'>\n";
         }
         $htmlStylesheet .= "<link rel='stylesheet' href='" . ROOT . "Assets/css/" . $controllerName . "/" . $functionName . ".css'>\n";
         $this->masterFile = str_replace('<!--@css{}-->', $htmlStylesheet, $this->masterFile);

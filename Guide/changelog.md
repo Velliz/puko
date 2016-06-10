@@ -1,5 +1,4 @@
 ## TODO
-- Adding support for handle wrong or not find URL routing path or 404 Not Found Pages
 - Adding support for another Database Connection (Oracle, SQL Server)
 - Adding Authorization, Session and Cookies Support (also remember me)
 - Adding dynamic url for view in Template Engine
@@ -47,3 +46,7 @@ Puko will render this controller with HTMLParser. Will result HTML page
 class Example extends Service {
 ```
 Puko will render this controller with JSONParser. Will result JSON page
+- Add support for master template for html
+- Add support for model (MVC) pattern
+- Add support for variable dumb and development mode
+- Cleanup abstract parser and HTML View class
