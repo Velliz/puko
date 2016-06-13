@@ -94,6 +94,7 @@ namespace Puko\Core {
             }
 
             $hasil = new ReflectionClass($routerObj);
+            //todo : processing docs comments
             $classDocs = $hasil->getDocComment();
             $fnDocs = $hasil->getMethod($router->FunctionNames)->getDocComment();
 

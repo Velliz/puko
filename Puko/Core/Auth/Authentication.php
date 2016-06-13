@@ -8,7 +8,7 @@ class Authentication extends AuthenticationModules
 {
 
     /**
-     * @var null
+     * @var object
      */
     public static $Instance = null;
 
