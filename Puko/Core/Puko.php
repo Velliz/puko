@@ -86,28 +86,29 @@ namespace Puko\Core {
 
             $router = new RouteParser($this->GetRouter());
             $routerObj = $router->InitializeClass();
-            $vars = $router->InitializeFunction($routerObj);
+            $returnVars = $router->InitializeFunction($routerObj);
 
             if(self::$VariableDump && strcmp(self::$Environment, 'dev') == 0) {
-                \Puko\_VariableDump($vars);
+                \Puko\_VariableDump($returnVars);
                 //\Puko\_VariableDump(Authentication::GetInstance($authCode)->GetUserData());
             }
 
-            $hasil = new ReflectionClass($routerObj);
+            $routeResult = new ReflectionClass($routerObj);
+
             //todo : processing docs comments
-            $classDocs = $hasil->getDocComment();
-            $fnDocs = $hasil->getMethod($router->FunctionNames)->getDocComment();
+            $classDocs = $routeResult->getDocComment();
+            $fnDocs = $routeResult->getMethod($router->FunctionNames)->getDocComment();
 
             $router->DocParser($fnDocs);
 
-            if ($hasil->isSubclassOf($view)) {
+            if ($routeResult->isSubclassOf($view)) {
                 $template = new HtmlParser(ASSETS . $router->ClassName . '/' . $router->FunctionNames . ".html");
-                $template->setArrays($vars);
+                $template->setArrays($returnVars);
                 $template->StyleRender($router->ClassName, $router->FunctionNames);
                 $template->ScriptRender($router->ClassName, $router->FunctionNames);
                 echo $template->output();
-            } elseif ($hasil->isSubclassOf($service)) {
-                $service = new JSONParser($vars, $start);
+            } elseif ($routeResult->isSubclassOf($service)) {
+                $service = new JSONParser($returnVars, $start);
                 echo json_encode($service->output());
             } else {
                 if (strcmp(self::$Environment, 'dev') == 0) {

@@ -39,6 +39,7 @@ class Example extends \Puko\Core\Presentation\Html\View
      */
     function Login(){
         $this->PukoAuthObject->Authenticate('d', 'v');
+        $this->RedirectTo('main/noaccess');
     }
 
     function FileUpload()
@@ -59,7 +60,7 @@ class Example extends \Puko\Core\Presentation\Html\View
         return $vars;
     }
 
-    function dateinput()
+    function DateInput()
     {
         $da = new DateAndTime();
 
@@ -71,7 +72,7 @@ class Example extends \Puko\Core\Presentation\Html\View
         );
     }
 
-    function noaccess()
+    function NoAccess()
     {
         echo 'koplax login aja salah';
     }

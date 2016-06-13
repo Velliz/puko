@@ -127,6 +127,7 @@ class RouteParser
     public function DocParser($StrDoc)
     {
         //todo : logic parser
-        var_dump($StrDoc);
+
+        var_dump(nl2br($StrDoc));
     }
 }

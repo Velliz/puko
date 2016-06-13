@@ -14,6 +14,11 @@ class Main extends View
         $this->id = $vars;
     }
 
+    /**
+     * @return mixed
+     *
+     * #puko auth true
+     */
     function Main()
     {
         $vars['PageTitle'] = 'Puko Framework';
@@ -29,5 +34,9 @@ class Main extends View
         $vars['Puko'] = Member::GetFamily(1);
         $vars['Value'] = 'Didit Velliz';
         return $vars;
+    }
+
+    public function NoAccess() {
+
     }
 }
