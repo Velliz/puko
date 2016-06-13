@@ -33,6 +33,10 @@ class Example extends \Puko\Core\Presentation\Html\View
         }
     }
 
+    /**
+     * #puko binary true
+     * #puko title asdf
+     */
     function Login(){
         $this->PukoAuthObject->Authenticate('d', 'v');
     }
@@ -65,6 +69,11 @@ class Example extends \Puko\Core\Presentation\Html\View
                 'nama' => 'test apps'
             )
         );
+    }
+
+    function noaccess()
+    {
+        echo 'koplax login aja salah';
     }
 
 }

@@ -22,4 +22,10 @@ abstract class View
     }
 
     public abstract function main();
+
+    public function RedirectTo($url, $permanent = false)
+    {
+        header('Location: ' . $url, true, $permanent ? 301 : 302);
+        exit();
+    }
 }

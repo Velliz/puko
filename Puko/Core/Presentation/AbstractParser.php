@@ -2,9 +2,13 @@
 
 namespace Puko\Core\Presentation;
 
+/**
+ * Class AbstractParser
+ * @package Puko\Core\Presentation
+ */
 abstract class AbstractParser
 {
-
+    
     protected $ARRAYS = 0;
     protected $STRINGS = 1;
     protected $BOOLEANS = 2;
@@ -12,15 +16,31 @@ abstract class AbstractParser
     protected $NUMERIC = 5;
     protected $UNDEFINED = 6;
 
+    /**
+     * @var bool
+     */
     protected $logs;
+
+    /**
+     * @var bool
+     */
     protected $displayEmptyTag;
 
+    /**
+     * AbstractParser constructor.
+     * @param bool $logs
+     * @param bool $displayEmptyTag
+     */
     public function __construct($logs = false, $displayEmptyTag = false)
     {
         $this->logs = $logs;
         $this->displayEmptyTag = $displayEmptyTag;
     }
 
+    /**
+     * @param $var
+     * @return int
+     */
     public function getVarType($var)
     {
         if (is_array($var))
@@ -37,10 +57,23 @@ abstract class AbstractParser
             return $this->UNDEFINED;
     }
 
+    /**
+     * @param $controllerName
+     * @param $functionName
+     * @return mixed
+     */
     public abstract function ScriptRender($controllerName, $functionName);
 
+    /**
+     * @param $controllerName
+     * @param $functionName
+     * @return mixed
+     */
     public abstract function StyleRender($controllerName, $functionName);
 
+    /**
+     * @return mixed
+     */
     public abstract function ReturnEmptyRender();
 
 

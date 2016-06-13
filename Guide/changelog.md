@@ -46,6 +46,13 @@ Puko will render this controller with HTMLParser. Will result HTML page
 class Example extends Service {
 ```
 Puko will render this controller with JSONParser. Will result JSON page
+<<<<<<< HEAD
 
 - Adding support for handle wrong or not find URL routing path or 404 Not Found Pages
 - Adding support Authorization and Session
+=======
+- Add support for master template for html
+- Add support for model (MVC) pattern
+- Add support for variable dumb and development mode
+- Cleanup abstract parser and HTML View class
+>>>>>>> development

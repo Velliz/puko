@@ -7,6 +7,9 @@ use Puko\Modules\AuthenticationModules;
 class Authentication extends AuthenticationModules
 {
 
+    /**
+     * @var null
+     */
     public static $Instance = null;
 
     static function GetInstance()

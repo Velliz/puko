@@ -92,30 +92,24 @@ class HtmlParser extends AbstractParser
         if (!isset($this->values)) {
             $this->ReturnEmptyRender();
         }
-        foreach ($this->values as $key => $value) {
-            foreach ($this->valueRules as $head => $tail) {
-                $tagReplace = $head . $key . $tail;
 
-                switch($this->getVarType($value)) {
-                    case $this->NUMERIC:
-                        $this->stringFile = str_replace($tagReplace, $value, $this->stringFile);
-                        $this->masterFile = str_replace($tagReplace, $value, $this->masterFile);
-                        break;
-                    case $this->STRINGS:
-                        $this->stringFile = str_replace($tagReplace, $value, $this->stringFile);
-                        $this->masterFile = str_replace($tagReplace, $value, $this->masterFile);
-                        break;
-                    case $this->ARRAYS:
-                        // todo : enhancement to loop in the loop
-                        $dynamicTags = ''; $openTag = ''; $closeTag = '';
-                        foreach ($this->loopRulesHead as $loopOpenHead => $loopOpenTail) {
-                            foreach ($this->loopRulesTail as $loopCloseHead => $loopCloseTail) {
-                                $openTag = $loopOpenHead . $key . $loopOpenTail;
-                                $closeTag = $loopCloseHead . $key . $loopCloseTail;
-                            }
-                        }
-                        $ember = $this->getStringBetween($this->stringFile, $openTag, $closeTag);
-                        foreach ($value as $key2 => $value2) {
+        if(sizeof($this->values) > 0) {
+            foreach ($this->values as $key => $value) {
+                foreach ($this->valueRules as $head => $tail) {
+                    $tagReplace = $head . $key . $tail;
+
+                    switch ($this->getVarType($value)) {
+                        case $this->NUMERIC:
+                            $this->stringFile = str_replace($tagReplace, $value, $this->stringFile);
+                            $this->masterFile = str_replace($tagReplace, $value, $this->masterFile);
+                            break;
+                        case $this->STRINGS:
+                            $this->stringFile = str_replace($tagReplace, $value, $this->stringFile);
+                            $this->masterFile = str_replace($tagReplace, $value, $this->masterFile);
+                            break;
+                        case $this->ARRAYS:
+                            // todo : enhancement to loop in the loop
+                            $dynamicTags = '';
                             $openTag = '';
                             $closeTag = '';
                             foreach ($this->loopRulesHead as $loopOpenHead => $loopOpenTail) {
@@ -124,18 +118,8 @@ class HtmlParser extends AbstractParser
                                     $closeTag = $loopCloseHead . $key . $loopCloseTail;
                                 }
                             }
-                            $parsed = $this->getStringBetween($this->stringFile, $openTag, $closeTag);
-                            foreach ($value2 as $key3 => $value3) {
-                                $parsed = str_replace($head . $key3 . $tail, $value3, $parsed);
-                            }
-                            $dynamicTags .= $parsed;
-                        }
-                        $this->stringFile = str_replace($ember, $dynamicTags, $this->stringFile);
-                        break;
-                    case $this->BOOLEANS:
-                        $stanza = $this->blockedConditions($this->stringFile, $key);
-                        if (is_null($stanza)) {
-                            if ($value != true) {
+                            $ember = $this->getStringBetween($this->stringFile, $openTag, $closeTag);
+                            foreach ($value as $key2 => $value2) {
                                 $openTag = '';
                                 $closeTag = '';
                                 foreach ($this->loopRulesHead as $loopOpenHead => $loopOpenTail) {
@@ -145,26 +129,50 @@ class HtmlParser extends AbstractParser
                                     }
                                 }
                                 $parsed = $this->getStringBetween($this->stringFile, $openTag, $closeTag);
-                                $this->stringFile = str_replace($parsed, '', $this->stringFile);
+                                foreach ($value2 as $key3 => $value3) {
+                                    $parsed = str_replace($head . $key3 . $tail, $value3, $parsed);
+                                }
+                                $dynamicTags .= $parsed;
                             }
-                        } else {
-                            //for blocked conditions
-                            if ($value == true)
-                                $this->stringFile = str_replace($stanza, '', $this->stringFile);
+                            $this->stringFile = str_replace($ember, $dynamicTags, $this->stringFile);
+                            break;
+                        case $this->BOOLEANS:
+                            $stanza = $this->blockedConditions($this->stringFile, $key);
+                            if (is_null($stanza)) {
+                                if ($value != true) {
+                                    $openTag = '';
+                                    $closeTag = '';
+                                    foreach ($this->loopRulesHead as $loopOpenHead => $loopOpenTail) {
+                                        foreach ($this->loopRulesTail as $loopCloseHead => $loopCloseTail) {
+                                            $openTag = $loopOpenHead . $key . $loopOpenTail;
+                                            $closeTag = $loopCloseHead . $key . $loopCloseTail;
+                                        }
+                                    }
+                                    $parsed = $this->getStringBetween($this->stringFile, $openTag, $closeTag);
+                                    $this->stringFile = str_replace($parsed, '', $this->stringFile);
+                                }
+                            } else {
+                                //for blocked conditions
+                                if ($value == true) {
+                                    $this->stringFile = str_replace($stanza, '', $this->stringFile);
+                                }
 
-                        }
-                        break;
-                    case $this->NULLS:
-                        break;
-                    case $this->UNDEFINED:
-                        if ($this->logs)
-                            die('variable undefined.');
-                        break;
-                    default:
-                        break;
+                            }
+                            break;
+                        case $this->NULLS:
+                            break;
+                        case $this->UNDEFINED:
+                            if ($this->logs) {
+                                die('variable undefined.');
+                            }
+                            break;
+                        default:
+                            break;
+                    }
                 }
             }
         }
+
         //eliminating html comments and statement tags
         $this->stringFile = preg_replace('/<!--(.|\s)*?-->/', '', $this->stringFile);
 
@@ -232,7 +240,7 @@ class HtmlParser extends AbstractParser
         $arrayScript = $this->getScriptProperty();
         $htmlScripts = '';
         foreach ($arrayScript as $key => $val) {
-            $htmlScripts .= "<script type='text/javascript' src='" . ROOT . "Extensions/js/" . $val . ".js'></script>\n";
+            $htmlScripts .= "<script type='text/javascript' src='" . ROOT . "Assets/Extensions/js/" . $val . ".js'></script>\n";
         }
         $htmlScripts .= "<script type='text/javascript' src='" . ROOT . "Assets/js/" . $controllerName . "/" . $functionName . ".js'></script>\n";
         $this->masterFile = str_replace('<!--@js{}-->', $htmlScripts, $this->masterFile);
@@ -243,7 +251,7 @@ class HtmlParser extends AbstractParser
         $arrayStyle = $this->getStyleProperty();
         $htmlStylesheet = '';
         foreach ($arrayStyle as $key => $val) {
-            $htmlStylesheet .= "<link rel='stylesheet' href='" . ROOT . "Extensions/css/" . $val . ".css'>\n";
+            $htmlStylesheet .= "<link rel='stylesheet' href='" . ROOT . "Assets/Extensions/css/" . $val . ".css'>\n";
         }
         $htmlStylesheet .= "<link rel='stylesheet' href='" . ROOT . "Assets/css/" . $controllerName . "/" . $functionName . ".css'>\n";
         $this->masterFile = str_replace('<!--@css{}-->', $htmlStylesheet, $this->masterFile);
