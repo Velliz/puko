@@ -5,4 +5,7 @@ define('FILE', dirname(__FILE__));
 include('Puko/Core/Puko.php');
 use Puko\Core\Puko;
 
-Puko::Init(DEVELOPMENT)->Start();
+/**
+ * Use with variable dump true/false
+ */
+Puko::Init(DEVELOPMENT)->VariableDump(false)->Start();

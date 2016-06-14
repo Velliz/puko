@@ -6,6 +6,7 @@ use Puko\Util\DateAndTime;
 
 /**
  * Class Example
+ * #PageTitle Welcome To Puko
  */
 class Example extends \Puko\Core\Presentation\Html\View
 {
@@ -20,7 +21,7 @@ class Example extends \Puko\Core\Presentation\Html\View
 
     function Main()
     {
-        if(!$this->PukoAuthObject->IsAuthenticated()) {
+        if (!$this->PukoAuthObject->IsAuthenticated()) {
             return array(
                 'PageTitle' => 'Puko Framework',
                 'Welcome' => 'Welcome To Puko Framework NOT AUTHENTICATED',
@@ -34,14 +35,16 @@ class Example extends \Puko\Core\Presentation\Html\View
     }
 
     /**
-     * #binary true
-     * #PageTitle phpdocs dfg
-     * #asdasd asdasd
+     * #PageTitle Login ke Aplikasi
      */
-    function Login(){
+    function Login()
+    {
         $this->PukoAuthObject->Authenticate('d', 'v');
     }
 
+    /**
+     * #PageTitle Upload File Anda
+     */
     function FileUpload()
     {
         $vars = array();

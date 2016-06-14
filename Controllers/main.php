@@ -3,6 +3,9 @@
 use Model\Member;
 use Puko\Core\Presentation\Html\View;
 
+/**
+ * Class Main
+ */
 class Main extends View
 {
 
@@ -17,7 +20,7 @@ class Main extends View
     /**
      * @return mixed
      *
-     * #puko auth true
+     * #PageTitle Main Puko Pages
      */
     function Main()
     {
@@ -36,7 +39,8 @@ class Main extends View
         return $vars;
     }
 
-    public function NoAccess() {
+    public function NoAccess()
+    {
 
     }
 }
