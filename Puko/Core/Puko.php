@@ -11,7 +11,6 @@ namespace Puko {
 
     define('PRODUCTION', 'live');
     define('DEVELOPMENT', 'dev');
-
 }
 
 namespace Puko\Core {
@@ -144,7 +143,8 @@ namespace Puko\Core {
                 $template->setArrays($this->returnVars);
                 $template->StyleRender($router->ClassName, $router->FunctionNames);
                 $template->ScriptRender($router->ClassName, $router->FunctionNames);
-                echo $template->output();
+                $template->Parse();
+                echo $template->ClearOutput();
             } elseif ($routeResult->isSubclassOf($service)) {
                 $service = new JSONParser($this->returnVars, $start);
                 echo json_encode($service->output());
@@ -153,7 +153,7 @@ namespace Puko\Core {
                     die('Controller must extends its type');
                 } else {
                     header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found", true, 404);
-                    include 'Assets/templates/notfound.html';
+                    include NOT_FOUND;
                     die();
                 }
             }
