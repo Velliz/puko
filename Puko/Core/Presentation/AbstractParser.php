@@ -71,10 +71,4 @@ abstract class AbstractParser
      */
     public abstract function StyleRender($controllerName, $functionName);
 
-    /**
-     * @return mixed
-     */
-    public abstract function ReturnEmptyRender();
-
-
 }

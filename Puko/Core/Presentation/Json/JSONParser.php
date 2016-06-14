@@ -46,8 +46,4 @@ class JSONParser extends AbstractParser
 
     }
 
-    public function ReturnEmptyRender()
-    {
-
-    }
 }

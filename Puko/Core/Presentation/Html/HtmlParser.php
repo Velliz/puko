@@ -46,12 +46,8 @@ class HtmlParser extends AbstractParser
 
     public function Parse()
     {
-        if (!isset($this->values)) {
-            $this->ReturnEmptyRender();
-        }
-
         $this->masterFile = str_replace('{CONTENT}', $this->stringFile, $this->masterFile);
-
+        $this->masterFile = str_replace('/url/', ROOT, $this->masterFile);
         if (sizeof($this->values) > 0) {
             foreach ($this->values as $key => $value) {
                 $tagReplace = '{!' . $key . '}';
@@ -106,7 +102,8 @@ class HtmlParser extends AbstractParser
         }
     }
 
-    public function ClearOutput() {
+    public function ClearOutput()
+    {
         return preg_replace('(<!--(.|\s)*?-->)', '', $this->masterFile);
     }
 
@@ -167,18 +164,6 @@ class HtmlParser extends AbstractParser
         }
         $htmlStylesheet .= "<link rel='stylesheet' href='" . ROOT . "Assets/css/" . $controllerName . "/" . $functionName . ".css'>\n";
         $this->masterFile = str_replace('<!--@css{}-->', $htmlStylesheet, $this->masterFile);
-    }
-
-    public function ReturnEmptyRender()
-    {
-        $this->stringFile = preg_replace('/<!--(.|\s)*?-->/', '', $this->stringFile);
-        if (!$this->displayEmptyTag) {
-            foreach ($this->valueRules as $head => $tail) {
-                $this->stringFile = str_replace($head, '', $this->stringFile);
-                $this->stringFile = str_replace($tail, '', $this->stringFile);
-            }
-        }
-        return $this->stringFile;
     }
 
 }
