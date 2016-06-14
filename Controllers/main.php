@@ -5,6 +5,7 @@ use Puko\Core\Presentation\Html\View;
 
 /**
  * Class Main
+ * #PageTitle Main Puko Pages
  */
 class Main extends View
 {
@@ -17,11 +18,6 @@ class Main extends View
         $this->id = $vars;
     }
 
-    /**
-     * @return mixed
-     *
-     * #PageTitle Main Puko Pages
-     */
     function Main()
     {
         $vars['PageTitle'] = 'Puko Framework';

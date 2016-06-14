@@ -8,7 +8,7 @@ use Puko\Util\DateAndTime;
  * Class Example
  * #PageTitle Welcome To Puko
  */
-class Example extends \Puko\Core\Presentation\Html\View
+class Example extends Service
 {
 
     private $id;
