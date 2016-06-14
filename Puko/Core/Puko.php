@@ -60,7 +60,7 @@ namespace Puko\Core {
             }
             return self::$PukoInstance;
         }
-        
+
         private function Autoload()
         {
             spl_autoload_register(array('\Puko\Core\Puko', 'ClassLoader'));
@@ -76,7 +76,7 @@ namespace Puko\Core {
                 require_once($className);
             }
         }
-        
+
         public function Start()
         {
             $start = microtime(true);
@@ -88,7 +88,7 @@ namespace Puko\Core {
             $routerObj = $router->InitializeClass();
             $returnVars = $router->InitializeFunction($routerObj);
 
-            if(self::$VariableDump && strcmp(self::$Environment, 'dev') == 0) {
+            if (self::$VariableDump && strcmp(self::$Environment, 'dev') == 0) {
                 \Puko\_VariableDump($returnVars);
                 //\Puko\_VariableDump(Authentication::GetInstance($authCode)->GetUserData());
             }
@@ -99,7 +99,45 @@ namespace Puko\Core {
             $classDocs = $routeResult->getDocComment();
             $fnDocs = $routeResult->getMethod($router->FunctionNames)->getDocComment();
 
-            $router->DocParser($fnDocs);
+            $classParse = $router->DocParser($classDocs);
+            $fnParse = $router->DocParser($fnDocs);
+
+            if (sizeof($classParse[0]) > 0) {
+                foreach ($classParse[0] as $k => $v) {
+                    $preg = explode(' ', $v);
+
+                    foreach ($preg as $key => $val) {
+                        switch ($key) {
+                            case 0:
+                                //var_dump($val);
+                                break;
+                            case 1:
+                                break;
+                            default:
+                                break;
+
+                        }
+                    }
+                }
+            }
+
+            if (sizeof($fnParse[0]) > 0) {
+                foreach ($fnParse[0] as $k => $v) {
+                    $preg = explode(' ', $v);
+
+                    foreach ($preg as $key => $val) {
+                        switch ($key) {
+                            case 0:
+                                //var_dump($val);
+                                break;
+                            case 1:
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+            }
 
             if ($routeResult->isSubclassOf($view)) {
                 $template = new HtmlParser(ASSETS . $router->ClassName . '/' . $router->FunctionNames . ".html");

@@ -34,12 +34,12 @@ class Example extends \Puko\Core\Presentation\Html\View
     }
 
     /**
-     * #puko binary true
-     * #puko title asdf
+     * #binary true
+     * #PageTitle phpdocs dfg
+     * #asdasd asdasd
      */
     function Login(){
         $this->PukoAuthObject->Authenticate('d', 'v');
-        $this->RedirectTo('main/noaccess');
     }
 
     function FileUpload()
