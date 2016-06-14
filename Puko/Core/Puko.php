@@ -7,21 +7,15 @@ namespace Puko {
 
     define('CONTROLLERS', '/Controllers/');
     define('ASSETS', 'Assets/html/');
-    define('MASTER', 'Assets/global/');
+    define('MASTER', 'Assets/templates/');
 
     define('PRODUCTION', 'live');
     define('DEVELOPMENT', 'dev');
-
-    function _VariableDump($var)
-    {
-        echo '<pre>';
-        var_dump($var);
-        echo '</pre>';
-    }
 }
 
 namespace Puko\Core {
 
+    use Puko\Core\Auth\Authentication;
     use Puko\Core\Presentation\Html\HtmlParser;
     use Puko\Core\Presentation\Html\View;
     use Puko\Core\Presentation\Json\JSONParser;
@@ -47,6 +41,15 @@ namespace Puko\Core {
          */
         private static $VariableDump;
 
+        /**
+         * @var array
+         */
+        private $returnVars;
+
+        /**
+         * @param $environment
+         * @return object|Puko
+         */
         public static function Init($environment)
         {
             self::$Environment = $environment;
@@ -62,6 +65,9 @@ namespace Puko\Core {
             spl_autoload_register(array('\Puko\Core\Puko', 'ClassLoader'));
         }
 
+        /**
+         * @param $className
+         */
         private static function ClassLoader($className)
         {
             $className .= '.php';
@@ -70,51 +76,104 @@ namespace Puko\Core {
             }
         }
 
-        public function Start()
+        public function Start($routeConfig = array())
         {
             $start = microtime(true);
+            $router = new RouteParser($this->GetDefaultRouter());
+            foreach ($routeConfig as $key => $value) {
+                if ($this->GetDefaultRouter() == $key . '/') {
+                    $router = new RouteParser($this->GetRouter($value));
+                    break;
+                }
+            }
 
             $view = new ReflectionClass(View::class);
             $service = new ReflectionClass(Service::class);
-
-            $router = new RouteParser($this->GetRouter());
             $routerObj = $router->InitializeClass();
-            $vars = $router->InitializeFunction($routerObj);
+            $this->returnVars = $router->InitializeFunction($routerObj);
 
-            if(self::$VariableDump && strcmp(self::$Environment, 'dev') == 0) {
-                \Puko\_VariableDump($vars);
-                //\Puko\_VariableDump(Authentication::GetInstance($authCode)->GetUserData());
+            if (self::$VariableDump && strcmp(self::$Environment, 'dev') == 0) {
+                $dump['LoginData'] = Authentication::GetInstance()->GetUserData();
+                $dump['Return'] = $this->returnVars;
+                echo '<pre>';
+                var_dump($dump);
+                echo '</pre>';
             }
 
-            $hasil = new ReflectionClass($routerObj);
+            $routeResult = new ReflectionClass($routerObj);
+            $classDocs = $routeResult->getDocComment();
+            $fnDocs = $routeResult->getMethod($router->FunctionNames)->getDocComment();
 
-            if ($hasil->isSubclassOf($view)) {
+            $classParse = $router->DocParser($classDocs);
+            $fnParse = $router->DocParser($fnDocs);
+
+            if (sizeof($classParse[0]) > 0) {
+                foreach ($classParse[0] as $k => $v) {
+                    $preg = explode(' ', $v);
+                    $params = null;
+                    foreach ($preg as $key => $val) {
+                        switch ($key) {
+                            case 0:
+                                break;
+                            default:
+                                if ($key != sizeof($preg) - 1) {
+                                    $params .= $val . ' ';
+                                } else {
+                                    $params .= $val;
+                                }
+                                break;
+                        }
+                    }
+                    call_user_func(array($this, str_replace('#', '', $preg[0])), $params);
+                }
+            }
+
+            if (sizeof($fnParse[0]) > 0) {
+                foreach ($fnParse[0] as $k => $v) {
+                    $preg = explode(' ', $v);
+                    $params = null;
+                    foreach ($preg as $key => $val) {
+                        switch ($key) {
+                            case 0:
+                                break;
+                            default:
+                                if ($key != sizeof($preg) - 1) {
+                                    $params .= $val . ' ';
+                                } else {
+                                    $params .= $val;
+                                }
+                                break;
+                        }
+                    }
+                    call_user_func(array($this, str_replace('#', '', $preg[0])), $params);
+                }
+            }
+
+            if ($routeResult->isSubclassOf($view)) {
                 $template = new HtmlParser(ASSETS . $router->ClassName . '/' . $router->FunctionNames . ".html");
-
-                $template->setArrays($vars);
-
+                $template->setArrays($this->returnVars);
                 $template->StyleRender($router->ClassName, $router->FunctionNames);
                 $template->ScriptRender($router->ClassName, $router->FunctionNames);
-
-                echo $template->output();
-
-            } elseif ($hasil->isSubclassOf($service)) {
-
-                $service = new JSONParser($vars, $start);
+                $template->Parse();
+                echo $template->ClearOutput();
+            } elseif ($routeResult->isSubclassOf($service)) {
+                $service = new JSONParser($this->returnVars, $start);
                 echo json_encode($service->output());
-
             } else {
                 if (strcmp(self::$Environment, 'dev') == 0) {
                     die('Controller must extends its type');
                 } else {
                     header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found", true, 404);
-                    include 'Assets/global/notfound.html';
+                    include NOT_FOUND;
                     die();
                 }
             }
         }
 
-        private function GetRouter()
+        /**
+         * @return string
+         */
+        private function GetDefaultRouter()
         {
             $clause = isset($_GET['query']) ? $_GET['query'] : 'main/main/';
             $ClauseTail = substr($clause, -1);
@@ -124,10 +183,34 @@ namespace Puko\Core {
             return $clause;
         }
 
+        private function GetRouter($clause)
+        {
+            $ClauseTail = substr($clause, -1);
+            if ($ClauseTail != '/') {
+                $clause .= '/';
+            }
+            return $clause;
+        }
+
+        /**
+         * @param bool $option
+         * @return object
+         */
         public static function VariableDump($option = false)
         {
             self::$VariableDump = $option;
             return self::$PukoInstance;
         }
+
+
+        #region php docs tags
+        /**
+         * @param $value
+         */
+        public function PageTitle($value)
+        {
+            $this->returnVars['PageTitle'] = $value;
+        }
+        #endregion php docs tags
     }
 }

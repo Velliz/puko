@@ -21,5 +21,12 @@ abstract class View
         $this->PukoAuthObject = Authentication::GetInstance();
     }
 
-    public abstract function main();
+    public function RedirectTo($url, $permanent = false)
+    {
+        if(strpos($url, '/') === false) header('Location: ' . $url, true, $permanent ? 301 : 302);
+        if(strpos($url, '/') !== false) header('Location: ' . ROOT . $url, true, $permanent ? 301 : 302);
+        exit();
+    }
+
+    public abstract function Main();
 }

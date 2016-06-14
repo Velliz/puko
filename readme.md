@@ -4,6 +4,8 @@ Puko is the Micro Model-View PHP Framework for faster PHP application Developmen
 
 *Puko Require* **PHP 5.3** *or greater*
 
+checkout the lastest release [HERE](https://github.com/Velliz/puko/releases) 
+
 ## Main Features
 
 **URL Routing**
@@ -19,26 +21,28 @@ localhost/[controller]/[ID]/[function]/[var1]/[var2]/[var3]/... "ID accepts [0-9
 
 Database Access can configure via **Config/db.php** and you can use static **Data.php** class to perform CRUD operations like:
 ```PHP
-Data::To("table name")->Save($arraydata); "insert"
-Data::To("table name")->Update($arraywhere, $arraydata); "update"
-Data::To("table name")->Delete($arraydata); -> "delete"
-Data::From("your query here")->FetchAll(); -> "select"
+Data::To("table name")->Save($arraydata);
+Data::To("table name")->Update($arraywhere, $arraydata);
+Data::To("table name")->Delete($arraydata);
+Data::From("your query here")->FetchAll();
 ```
 **Template Engine**
 
 Puko use **.html** file for view. So if you want to do styling or scripting:
-```HTML
+```
 <!--@css{bootstrap.min,datatable}-->
 <!--@js{jquery.min,datatable.min}-->
 ```
 And the **.html** file has always have their partners. **.css** and **.js** located in Assets
 
 For data Boilerplates, you can print data returned by Controller class like this:
-```HTML
+```
 {!value} "print simple single value"
 {!loop} {!value} {/loop} "print value on array"
 {!!condition} {/condition} "blocked condition"
 ```
+
+And many more you can find in the [DOCS / WIKI](https://github.com/Velliz/puko/wiki/Welcome-to-Puko-Docs)
 
 ## About
 

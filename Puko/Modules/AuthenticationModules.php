@@ -7,16 +7,20 @@ class AuthenticationModules
     /**
      * @param $username
      * @param $password
-     * @return mixed
+     *
+     * @return int
      */
-    function CustomAuthentication($username, $password)
+    protected function CustomAuthentication($username, $password)
     {
         // todo : your authentication code belongs here.
 
-        // todo : return your session data.
-        return array(
-            'username' => $username,
-            'email' => $password
-        );
+        // todo : return your session ID.
+        return 1;
+    }
+
+    protected function FetchUserData($uid)
+    {
+        // todo : get userdata from session ID.
+        return 1;
     }
 }

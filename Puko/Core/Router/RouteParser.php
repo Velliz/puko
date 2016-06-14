@@ -32,6 +32,10 @@ class RouteParser
      */
     private $FunctionVars = array();
 
+    /**
+     * RouteParser constructor.
+     * @param $router
+     */
     public function __construct($router)
     {
         $this->RawRouter = $router;
@@ -69,6 +73,9 @@ class RouteParser
         }
     }
 
+    /**
+     * @param $ClassName
+     */
     private function ClassLoader($ClassName)
     {
         $import = FILE . CONTROLLERS . $ClassName . '.php';
@@ -77,7 +84,7 @@ class RouteParser
                 die('Controller file ' . $this->ClassName . ' is not found.');
             } else {
                 header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found", true, 404);
-                include 'Assets/global/notfound.html';
+                include NOT_FOUND;
                 die();
             }
         }
@@ -85,12 +92,19 @@ class RouteParser
         require_once($import);
     }
 
+    /**
+     * @return mixed
+     */
     public function InitializeClass()
     {
         $this->ClassLoader($this->ClassName);
         return new $this->ClassName($this->ConstructVars);
     }
 
+    /**
+     * @param $object
+     * @return mixed
+     */
     public function InitializeFunction($object)
     {
         if (method_exists($object, $this->FunctionNames) && is_callable(array($object, $this->FunctionNames))) {
@@ -104,10 +118,19 @@ class RouteParser
                 die('Method ' . $this->FunctionNames . ' not found');
             } else {
                 header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found", true, 404);
-                include 'Assets/global/notfound.html';
+                include NOT_FOUND;
                 die();
             }
         }
+    }
 
+    /**
+     * @param $StrDoc
+     * @return mixed
+     */
+    public function DocParser($StrDoc)
+    {
+        preg_match_all('(#[ a-zA-Z]+)', $StrDoc, $result, PREG_PATTERN_ORDER);
+        return $result;
     }
 }

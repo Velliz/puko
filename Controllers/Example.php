@@ -1,13 +1,14 @@
 <?php
 
 use Puko\Core\Backdoor\Data;
-use Puko\Core\Presentation\Json\Service;
+use Puko\Core\Presentation\Html\View;
 use Puko\Util\DateAndTime;
 
 /**
  * Class Example
+ * #PageTitle Welcome To Puko
  */
-class Example extends \Puko\Core\Presentation\Html\View
+class Example extends View
 {
 
     private $id;
@@ -20,7 +21,7 @@ class Example extends \Puko\Core\Presentation\Html\View
 
     function Main()
     {
-        if(!$this->PukoAuthObject->IsAuthenticated()) {
+        if (!$this->PukoAuthObject->IsAuthenticated()) {
             return array(
                 'PageTitle' => 'Puko Framework',
                 'Welcome' => 'Welcome To Puko Framework NOT AUTHENTICATED',
@@ -33,10 +34,23 @@ class Example extends \Puko\Core\Presentation\Html\View
         }
     }
 
-    function Login(){
+    /**
+     * #PageTitle Login ke Aplikasi
+     */
+    function Login()
+    {
         $this->PukoAuthObject->Authenticate('d', 'v');
     }
 
+    function Logout()
+    {
+        $this->PukoAuthObject->RemoveAuthentication();
+        $this->RedirectTo('fileupload');
+    }
+
+    /**
+     * #PageTitle Upload File Anda
+     */
     function FileUpload()
     {
         $vars = array();
@@ -55,7 +69,7 @@ class Example extends \Puko\Core\Presentation\Html\View
         return $vars;
     }
 
-    function dateinput()
+    function DateInput()
     {
         $da = new DateAndTime();
 
@@ -65,6 +79,11 @@ class Example extends \Puko\Core\Presentation\Html\View
                 'nama' => 'test apps'
             )
         );
+    }
+
+    function NoAccess()
+    {
+        echo 'koplax login aja salah';
     }
 
 }

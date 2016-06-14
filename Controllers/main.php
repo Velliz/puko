@@ -3,6 +3,10 @@
 use Model\Member;
 use Puko\Core\Presentation\Html\View;
 
+/**
+ * Class Main
+ * #PageTitle Main Puko Pages
+ */
 class Main extends View
 {
 
@@ -25,9 +29,19 @@ class Main extends View
             array('PertamaValue' => 'Test 4'),
             array('PertamaValue' => 'Test 5'),
         );
+        $vars['Kedua'] = array(
+            array('KeduaValue' => 'Piringan Divell'),
+        );
+
 
         $vars['Puko'] = Member::GetFamily(1);
         $vars['Value'] = 'Didit Velliz';
+        $vars['Block'] = false;
         return $vars;
+    }
+
+    public function NoAccess()
+    {
+
     }
 }
