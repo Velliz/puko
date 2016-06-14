@@ -76,14 +76,19 @@ namespace Puko\Core {
             }
         }
 
-        public function Start()
+        public function Start($routeConfig = array())
         {
             $start = microtime(true);
+            $router = new RouteParser($this->GetDefaultRouter());
+            foreach ($routeConfig as $key => $value) {
+                if ($this->GetDefaultRouter() == $key . '/') {
+                    $router = new RouteParser($this->GetRouter($value));
+                    break;
+                }
+            }
 
             $view = new ReflectionClass(View::class);
             $service = new ReflectionClass(Service::class);
-
-            $router = new RouteParser($this->GetRouter());
             $routerObj = $router->InitializeClass();
             $this->returnVars = $router->InitializeFunction($routerObj);
 
@@ -111,8 +116,11 @@ namespace Puko\Core {
                             case 0:
                                 break;
                             default:
-                                if ($key != sizeof($preg) - 1) $params .= $val . ' ';
-                                else $params .= $val;
+                                if ($key != sizeof($preg) - 1) {
+                                    $params .= $val . ' ';
+                                } else {
+                                    $params .= $val;
+                                }
                                 break;
                         }
                     }
@@ -129,8 +137,11 @@ namespace Puko\Core {
                             case 0:
                                 break;
                             default:
-                                if ($key != sizeof($preg) - 1) $params .= $val . ' ';
-                                else $params .= $val;
+                                if ($key != sizeof($preg) - 1) {
+                                    $params .= $val . ' ';
+                                } else {
+                                    $params .= $val;
+                                }
                                 break;
                         }
                     }
@@ -162,9 +173,18 @@ namespace Puko\Core {
         /**
          * @return string
          */
-        private function GetRouter()
+        private function GetDefaultRouter()
         {
             $clause = isset($_GET['query']) ? $_GET['query'] : 'main/main/';
+            $ClauseTail = substr($clause, -1);
+            if ($ClauseTail != '/') {
+                $clause .= '/';
+            }
+            return $clause;
+        }
+
+        private function GetRouter($clause)
+        {
             $ClauseTail = substr($clause, -1);
             if ($ClauseTail != '/') {
                 $clause .= '/';
@@ -187,7 +207,8 @@ namespace Puko\Core {
         /**
          * @param $value
          */
-        public function PageTitle($value) {
+        public function PageTitle($value)
+        {
             $this->returnVars['PageTitle'] = $value;
         }
         #endregion php docs tags
