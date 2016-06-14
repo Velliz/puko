@@ -1,14 +1,14 @@
 <?php
 
 use Puko\Core\Backdoor\Data;
-use Puko\Core\Presentation\Json\Service;
+use Puko\Core\Presentation\Html\View;
 use Puko\Util\DateAndTime;
 
 /**
  * Class Example
  * #PageTitle Welcome To Puko
  */
-class Example extends Service
+class Example extends View
 {
 
     private $id;
@@ -40,6 +40,12 @@ class Example extends Service
     function Login()
     {
         $this->PukoAuthObject->Authenticate('d', 'v');
+    }
+
+    function Logout()
+    {
+        $this->PukoAuthObject->RemoveAuthentication();
+        $this->RedirectTo('fileupload');
     }
 
     /**
