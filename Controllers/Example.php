@@ -36,6 +36,7 @@ class Example extends View
 
     /**
      * #PageTitle Login ke Aplikasi
+     *
      */
     function Login()
     {
