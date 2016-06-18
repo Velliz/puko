@@ -27,7 +27,7 @@ class AuthenticationModules
         return 1;
     }
 
-    protected function FetchUserData($uid)
+    protected function FetchUserData($sid)
     {
         // todo : get userdata from session ID.
         return 1;
