@@ -15,6 +15,10 @@ use Puko\Modules\AuthenticationModules;
 class Authentication extends AuthenticationModules
 {
 
+    private static $method;
+    private static $key;
+    private static $identifier;
+
     /**
      * @var object
      */
@@ -24,6 +28,10 @@ class Authentication extends AuthenticationModules
     {
         if (!isset(self::$Instance) && !is_object(self::$Instance)) {
             self::$Instance = new Authentication();
+            $encript = include(FILE . '/Config/encription_config.php');
+            self::$method = $encript['method'];
+            self::$key = $encript['key'];
+            self::$identifier = $encript['identifier'];
         }
 
         return self::$Instance;
@@ -73,27 +81,19 @@ class Authentication extends AuthenticationModules
 
     private function encrypt($string)
     {
-        $encrypt_method = "AES-256-CBC";
-        $secret_key = '37360191345215';
-        $secret_iv = 'pukoframework';
+        $key = hash('sha256', self::$key);
+        $iv = substr(hash('sha256', self::$identifier), 0, 16);
 
-        $key = hash('sha256', $secret_key);
-        $iv = substr(hash('sha256', $secret_iv), 0, 16);
-
-        $output = openssl_encrypt($string, $encrypt_method, $key, 0, $iv);
+        $output = openssl_encrypt($string, self::$method, $key, 0, $iv);
         return base64_encode($output);
     }
 
     private function decrypt($string)
     {
-        $encrypt_method = "AES-256-CBC";
-        $secret_key = '37360191345215';
-        $secret_iv = 'pukoframework';
+        $key = hash('sha256', self::$key);
 
-        $key = hash('sha256', $secret_key);
-
-        $iv = substr(hash('sha256', $secret_iv), 0, 16);
-        return openssl_decrypt(base64_decode($string), $encrypt_method, $key, 0, $iv);
+        $iv = substr(hash('sha256', self::$identifier), 0, 16);
+        return openssl_decrypt(base64_decode($string), self::$method, $key, 0, $iv);
     }
 }
 

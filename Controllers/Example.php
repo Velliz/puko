@@ -36,7 +36,6 @@ class Example extends View
 
     /**
      * #PageTitle Login ke Aplikasi
-     *
      */
     function Login()
     {
@@ -47,6 +46,14 @@ class Example extends View
     {
         $this->PukoAuthObject->RemoveAuthentication();
         $this->RedirectTo('fileupload');
+    }
+
+    function add(){
+        $this->PukoAuthObject->setSessionData('velliz', 'koplax');
+    }
+
+    function rem(){
+        $this->PukoAuthObject->removeSessionData('velliz');
     }
 
     /**
