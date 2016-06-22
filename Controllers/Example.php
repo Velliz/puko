@@ -1,12 +1,11 @@
 <?php
 
-use Puko\Core\Backdoor\Data;
-use Puko\Core\Presentation\Html\View;
+use Puko\Core\Presentation\View;
 use Puko\Util\DateAndTime;
 
 /**
  * Class Example
- * #PageTitle Welcome To Puko
+ * #Value PageTitle Welcome To Puko
  */
 class Example extends View
 {
@@ -35,7 +34,7 @@ class Example extends View
     }
 
     /**
-     * #PageTitle Login ke Aplikasi
+     * #Value PageTitle Login ke Aplikasi
      */
     function Login()
     {
@@ -57,7 +56,7 @@ class Example extends View
     }
 
     /**
-     * #PageTitle Upload File Anda
+     * #Value PageTitle Upload File Anda
      */
     function FileUpload()
     {
@@ -65,28 +64,12 @@ class Example extends View
         $vars['PageTitle'] = 'Upload File';
 
         $dataSubmit = isset($_POST['_submit']);
-        if ($dataSubmit) {
-            Data::To('filex')->Save(
-                array(
-                    'name' => $_POST['name'],
-                    'email' => $_POST['email'],
-                    'file' => $_FILES['foto']['tmp_name']
-                )
-            );
-        }
         return $vars;
     }
 
     function DateInput()
     {
         $da = new DateAndTime();
-
-        Data::To('TanggalDetil')->Save(
-            array(
-                'Tanggal' => $da->NowDateTime(),
-                'nama' => 'test apps'
-            )
-        );
     }
 
     function NoAccess()

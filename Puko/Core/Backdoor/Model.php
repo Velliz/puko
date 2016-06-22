@@ -22,7 +22,7 @@ class Model extends Data
         parent::__construct();
     }
 
-    public function Save($array)
+    protected function Save($array)
     {
         $insert_text = "INSERT INTO `$this->tableName`";
         $keys = array();
@@ -65,7 +65,7 @@ class Model extends Data
 
     }
 
-    public function Delete($arrWhere)
+    protected function Delete($arrWhere)
     {
         $del_text = "DELETE FROM `$this->tableName` WHERE ";
         foreach ($arrWhere as $col => $value) {
@@ -77,7 +77,7 @@ class Model extends Data
         return $statement->execute($arrWhere);
     }
 
-    public function Update($id, $array)
+    protected function Update($id, $array)
     {
         $array = array_merge($id, $array);
 
@@ -102,7 +102,7 @@ class Model extends Data
         return $statement->execute($array);
     }
 
-    public function FetchAll()
+    protected function FetchAll()
     {
         $parameters = func_get_args();
         $argCount = count($parameters);
@@ -116,7 +116,7 @@ class Model extends Data
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function Fetch()
+    protected function Fetch()
     {
         $parameters = func_get_args();
         $argCount = count($parameters);

@@ -58,15 +58,15 @@ abstract class Data
         return self::$Instance;
     }
 
-    public abstract function Save($array);
+    protected abstract function Save($array);
 
-    public abstract function Delete($arrWhere);
+    protected abstract function Delete($arrWhere);
 
-    public abstract function Update($id, $array);
+    protected abstract function Update($id, $array);
 
-    public abstract function FetchAll();
+    protected abstract function FetchAll();
 
-    public abstract function Fetch();
+    protected abstract function Fetch();
 
     protected function queryParseReplace($key)
     {

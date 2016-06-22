@@ -1,11 +1,11 @@
 <?php
 
 use Model\Member;
-use Puko\Core\Presentation\Html\View;
+use Puko\Core\Presentation\View;
 
 /**
  * Class Main
- * #PageTitle Main Puko Pages
+ * #Value PageTitle Main Puko Pages
  */
 class Main extends View
 {
@@ -40,8 +40,8 @@ class Main extends View
         return $vars;
     }
 
-    public function NoAccess()
+    public function NoAccess($a, $b)
     {
-
+        var_dump($this->id);
     }
 }

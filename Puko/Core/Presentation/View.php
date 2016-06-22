@@ -8,7 +8,7 @@
  * @since version 0.92
  * @package Puko Core
  */
-namespace Puko\Core\Presentation\Html;
+namespace Puko\Core\Presentation;
 
 use Puko\Core\Auth\Authentication;
 

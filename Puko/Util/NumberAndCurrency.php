@@ -14,4 +14,13 @@ namespace Puko\Util;
 class NumberAndCurrency
 {
 
+
+    public function __construct()
+    {
+    }
+
+    public static function NumberFormat($number) {
+        return number_format($number);
+    }
+
 }
