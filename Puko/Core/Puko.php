@@ -1,8 +1,14 @@
 <?php
-
 /**
- * Global namespace
+ * Core class for Puko Framework
+ *
+ * @author Didit Velliz <diditvelliz@gmail.com>
+ * @link http://github.com/Velliz/puko
+ * @license http://www.apache.org/licenses/LICENSE-2.0
+ * @since version 0.92
+ * @package Puko Core
  */
+
 namespace Puko {
 
     define('CONTROLLERS', '/Controllers/');
@@ -16,10 +22,10 @@ namespace Puko {
 namespace Puko\Core {
 
     use Puko\Core\Auth\Authentication;
+    use Puko\Core\Presentation\View;
+    use Puko\Core\Presentation\Service;
     use Puko\Core\Presentation\Html\HtmlParser;
-    use Puko\Core\Presentation\Html\View;
     use Puko\Core\Presentation\Json\JSONParser;
-    use Puko\Core\Presentation\Json\Service;
     use Puko\Core\Router\RouteParser;
     use ReflectionClass;
 
@@ -81,7 +87,8 @@ namespace Puko\Core {
             $start = microtime(true);
             $router = new RouteParser($this->GetDefaultRouter());
             foreach ($routeConfig as $key => $value) {
-                if ($this->GetDefaultRouter() == $key . '/') {
+                if (strpos($this->GetDefaultRouter(), $key) !== false) {
+                    $value = str_replace($key, $value, $this->GetDefaultRouter());
                     $router = new RouteParser($this->GetRouter($value));
                     break;
                 }
@@ -115,6 +122,8 @@ namespace Puko\Core {
                         switch ($key) {
                             case 0:
                                 break;
+                            case 1:
+                                break;
                             default:
                                 if ($key != sizeof($preg) - 1) {
                                     $params .= $val . ' ';
@@ -124,7 +133,7 @@ namespace Puko\Core {
                                 break;
                         }
                     }
-                    call_user_func(array($this, str_replace('#', '', $preg[0])), $params);
+                    call_user_func(array($this, str_replace('#', '', $preg[1])), $params);
                 }
             }
 
@@ -136,6 +145,8 @@ namespace Puko\Core {
                         switch ($key) {
                             case 0:
                                 break;
+                            case 1:
+                                break;
                             default:
                                 if ($key != sizeof($preg) - 1) {
                                     $params .= $val . ' ';
@@ -145,7 +156,7 @@ namespace Puko\Core {
                                 break;
                         }
                     }
-                    call_user_func(array($this, str_replace('#', '', $preg[0])), $params);
+                    call_user_func(array($this, str_replace('#', '', $preg[1])), $params);
                 }
             }
 

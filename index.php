@@ -9,7 +9,7 @@ include('Puko/Core/Puko.php');
 use Puko\Core\Puko;
 Puko::Init(DEVELOPMENT)->VariableDump(false)->Start(
     array(
-        'home' => 'example/fileupload',
+        'home' => 'main/noaccess',
         'dashboard' => 'example',
         'anak' => 'example/fileupload',
     )

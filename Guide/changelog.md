@@ -1,10 +1,5 @@
 ## TODO
 - Adding support for another Database Connection (Oracle, SQL Server)
-- Adding Cookies Support (also remember me)
-- Adding dynamic url for view in Template Engine
-```HTML
-<!--@url{[controller]/[function]}-->
-```
 - Adding PDO database tweaks for commit and rollback database transaction
 - Adding support for Exception in Template Engine
 ```PHP
@@ -12,6 +7,19 @@
   {!Messages}
 {/PukoException}
 ```
+PHPDocs tags command :
+- Adding #User Authentication true
+- Adding #View Template template/directory/master.html
+- Adding #View Template false
+- Adding #View Template null
+- Adding #Date before dd-mm-yyyy
+- Adding #Date after dd-mm-yyyy
+- Adding #Date bettwen dd-mm-yyyy dd-mm-yyyy
+- Adding #Value PageTitle judulnya boleh pake spasi
+- Adding #Value Key Value
+- Adding #Throws Exception true
+- Adding #Validation name required,number,min[30],max[40]
+- Adding #....
 
 ## Changelog
 
@@ -53,4 +61,6 @@ Puko will render this controller with JSONParser. Will result JSON page
 - Add support for model (MVC) pattern
 - Add support for variable dumb and development mode
 - Cleanup abstract parser and HTML View class
+- Adding Cookies Support
+- Adding dynamic url for view in Template Engine with /ref/
 

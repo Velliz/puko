@@ -1,23 +1,17 @@
 <?php
 /**
- * Permission modules for Puko Framework
+ * Parser engine for Puko Framework
  *
  * @author Didit Velliz <diditvelliz@gmail.com>
  * @link http://github.com/Velliz/puko
  * @license http://www.apache.org/licenses/LICENSE-2.0
- * @since version 0.92
+ * @since version 1.0
  * @package Puko Core
  */
-
-namespace Puko\Modules;
-
-
-class PermissionModules
+class XmlParser
 {
 
-    function CustomPermission()
+    public function __construct()
     {
-
     }
-
 }
