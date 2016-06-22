@@ -1,6 +1,6 @@
 <?php
 /**
- * Permission modules for Puko Framework
+ * Core class for Puko Framework
  *
  * @author Didit Velliz <diditvelliz@gmail.com>
  * @link http://github.com/Velliz/puko
@@ -9,15 +9,12 @@
  * @package Puko Core
  */
 
-namespace Puko\Modules;
+namespace Puko\Core\Auth;
 
+class Validation {
 
-class PermissionModules
-{
-
-    function CustomPermission()
+    public function __construct()
     {
 
     }
-
 }

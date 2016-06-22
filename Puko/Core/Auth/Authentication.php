@@ -1,11 +1,23 @@
 <?php
-
+/**
+ * Authentication class for Puko Framework
+ *
+ * @author Didit Velliz <diditvelliz@gmail.com>
+ * @link http://github.com/Velliz/puko
+ * @license http://www.apache.org/licenses/LICENSE-2.0
+ * @since version 0.92
+ * @package Puko Core
+ */
 namespace Puko\Core\Auth;
 
 use Puko\Modules\AuthenticationModules;
 
 class Authentication extends AuthenticationModules
 {
+
+    private static $method;
+    private static $key;
+    private static $identifier;
 
     /**
      * @var object
@@ -16,6 +28,10 @@ class Authentication extends AuthenticationModules
     {
         if (!isset(self::$Instance) && !is_object(self::$Instance)) {
             self::$Instance = new Authentication();
+            $encript = include(FILE . '/Config/encription_config.php');
+            self::$method = $encript['method'];
+            self::$key = $encript['key'];
+            self::$identifier = $encript['identifier'];
         }
 
         return self::$Instance;
@@ -44,45 +60,40 @@ class Authentication extends AuthenticationModules
 
     public function RemoveAuthentication()
     {
-        setcookie( 'puko', '', time() - (86400 * 30), '/', $_SERVER['SERVER_NAME']);
+        setcookie('puko', '', time() - (86400 * 30), '/', $_SERVER['SERVER_NAME']);
+    }
+
+    public function setSessionData($key, $val)
+    {
+        $secure = $this->encrypt($val);
+        setcookie($key, $secure, time() + (86400 * 30), "/", $_SERVER['SERVER_NAME']);
+    }
+
+    public function getSessionData($val)
+    {
+        return $this->decrypt($_COOKIE[$val]);
+    }
+
+    public function removeSessionData($key)
+    {
+        setcookie($key, '', time() - (86400 * 30), '/', $_SERVER['SERVER_NAME']);
     }
 
     private function encrypt($string)
     {
-        $output = false;
+        $key = hash('sha256', self::$key);
+        $iv = substr(hash('sha256', self::$identifier), 0, 16);
 
-        $encrypt_method = "AES-256-CBC";
-        $secret_key = '37360191345215';
-        $secret_iv = 'pukoframework';
-
-        // hash
-        $key = hash('sha256', $secret_key);
-
-        // iv - encrypt method AES-256-CBC expects 16 bytes - else you will get a warning
-        $iv = substr(hash('sha256', $secret_iv), 0, 16);
-
-        $output = openssl_encrypt($string, $encrypt_method, $key, 0, $iv);
-        $output = base64_encode($output);
-
-        return $output;
+        $output = openssl_encrypt($string, self::$method, $key, 0, $iv);
+        return base64_encode($output);
     }
 
     private function decrypt($string)
     {
-        $output = false;
+        $key = hash('sha256', self::$key);
 
-        $encrypt_method = "AES-256-CBC";
-        $secret_key = '37360191345215';
-        $secret_iv = 'pukoframework';
-
-        // hash
-        $key = hash('sha256', $secret_key);
-
-        // iv - encrypt method AES-256-CBC expects 16 bytes - else you will get a warning
-        $iv = substr(hash('sha256', $secret_iv), 0, 16);
-        $output = openssl_decrypt(base64_decode($string), $encrypt_method, $key, 0, $iv);
-
-        return $output;
+        $iv = substr(hash('sha256', self::$identifier), 0, 16);
+        return openssl_decrypt(base64_decode($string), self::$method, $key, 0, $iv);
     }
 }
 
