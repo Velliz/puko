@@ -132,14 +132,4 @@ class RouteParser
             }
         }
     }
-
-    /**
-     * @param $StrDoc
-     * @return mixed
-     */
-    public function DocParser($StrDoc)
-    {
-        preg_match_all('(#[ a-zA-Z]+)', $StrDoc, $result, PREG_PATTERN_ORDER);
-        return $result;
-    }
 }
