@@ -39,7 +39,7 @@ class Authentication extends AuthenticationModules
 
     public function IsAuthenticated()
     {
-        if (!isset($_SESSION['PukoAuth'])) {
+        if (!isset($_COOKIE['puko'])) {
             return false;
         }
 
@@ -54,6 +54,7 @@ class Authentication extends AuthenticationModules
 
     public function GetUserData()
     {
+        if(!isset($_COOKIE['puko'])) return false;
         $secure = $this->decrypt($_COOKIE['puko']);
         return $this->FetchUserData($secure);
     }

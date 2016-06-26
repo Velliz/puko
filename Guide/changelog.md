@@ -21,11 +21,16 @@ PHPDocs tags command :
 - Adding #Validation name required,number,min[30],max[40]
 - Adding #....
 
-## Changelog
+- Adding feature to handle sql injections
+- Adding feature import export Excel, Word, PDF
+- Adding Mail utility
 
+## Changelog
+October 2015
 **v0.1**
 - Build support for PHP template engine ~~Actualy this is my test result in Maranatha Christiant University for Backend Developer~~
 
+26 February 2016
 **v0.5 Alfa**
 - Build support for PDO Database Connection
 - Build support for URL REST style routing
@@ -44,6 +49,7 @@ PHPDocs tags command :
 - Repositioning view hierarchy
 - Adding support to PDO datatypes handling like BLOB data objects and Date data objects
 
+May 2016
 **v0.9.3 Beta**
 - Add support for output type in Controller.
 ```PHP

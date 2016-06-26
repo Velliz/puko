@@ -22,6 +22,7 @@ namespace Puko {
 namespace Puko\Core {
 
     use Puko\Core\Auth\Authentication;
+    use Puko\Core\Presentation\PHPDocProcessor;
     use Puko\Core\Presentation\View;
     use Puko\Core\Presentation\Service;
     use Puko\Core\Presentation\Html\HtmlParser;
@@ -99,18 +100,15 @@ namespace Puko\Core {
             $routerObj = $router->InitializeClass();
             $this->returnVars = $router->InitializeFunction($routerObj);
 
-            if (self::$VariableDump && strcmp(self::$Environment, 'dev') == 0) {
-                $dump['LoginData'] = Authentication::GetInstance()->GetUserData();
-                $dump['Return'] = $this->returnVars;
-                echo '<pre>';
-                var_dump($dump);
-                echo '</pre>';
-            }
-
             $routeResult = new ReflectionClass($routerObj);
             $classDocs = $routeResult->getDocComment();
             $fnDocs = $routeResult->getMethod($router->FunctionNames)->getDocComment();
 
+            $docParser = new PHPDocProcessor($classDocs);
+            $docParser->Output($this->returnVars);
+            $fnParser = new PHPDocProcessor($fnDocs);
+            $fnParser->Output($this->returnVars);
+            /*
             $classParse = $router->DocParser($classDocs);
             $fnParse = $router->DocParser($fnDocs);
 
@@ -158,6 +156,15 @@ namespace Puko\Core {
                     }
                     call_user_func(array($this, str_replace('#', '', $preg[1])), $params);
                 }
+            }
+            */
+
+            if (self::$VariableDump && strcmp(self::$Environment, 'dev') == 0) {
+                $dump['LoginData'] = Authentication::GetInstance()->GetUserData();
+                $dump['Return'] = $this->returnVars;
+                echo '<pre>';
+                var_dump($dump);
+                echo '</pre>';
             }
 
             if ($routeResult->isSubclassOf($view)) {
@@ -218,10 +225,12 @@ namespace Puko\Core {
         /**
          * @param $value
          */
+        /*
         public function PageTitle($value)
         {
             $this->returnVars['PageTitle'] = $value;
         }
+        */
         #endregion php docs tags
     }
 }
