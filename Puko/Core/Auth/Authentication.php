@@ -68,10 +68,12 @@ class Authentication extends AuthenticationModules
     {
         $secure = $this->encrypt($val);
         setcookie($key, $secure, time() + (86400 * 30), "/", $_SERVER['SERVER_NAME']);
+        if($key == 'lang') $_COOKIE['lang'] = $secure;
     }
 
     public function getSessionData($val)
     {
+        if(!isset($_COOKIE[$val])) return false;
         return $this->decrypt($_COOKIE[$val]);
     }
 

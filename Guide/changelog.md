@@ -21,10 +21,6 @@ PHPDocs tags command :
 - Adding #Validation name required,number,min[30],max[40]
 - Adding #....
 
-- Adding feature to handle sql injections
-- Adding feature import export Excel, Word, PDF
-- Adding Mail utility
-
 ## Changelog
 October 2015
 **v0.1**

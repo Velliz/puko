@@ -168,7 +168,10 @@ namespace Puko\Core {
             }
 
             if ($routeResult->isSubclassOf($view)) {
-                $template = new HtmlParser(ASSETS . $router->ClassName . '/' . $router->FunctionNames . ".html");
+                $lang = Authentication::GetInstance();
+                $language = $lang->getSessionData('lang');
+                $language = '/' . $language . '/';
+                $template = new HtmlParser(ASSETS . $router->ClassName . $language . $router->FunctionNames . '/' . $router->FunctionNames . ".html");
                 $template->setArrays($this->returnVars);
                 $template->StyleRender($router->ClassName, $router->FunctionNames);
                 $template->ScriptRender($router->ClassName, $router->FunctionNames);
