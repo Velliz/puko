@@ -23,6 +23,11 @@ PHPDocs tags command :
 
 Security
 - Adding CSRF protection
+- Adding feature to handle sql injections
+
+Feature Request
+- Adding feature import export Excel, Word, PDF
+- Adding Mail utility
 
 ## Changelog
 October 2015
