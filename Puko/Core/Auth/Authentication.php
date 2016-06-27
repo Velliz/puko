@@ -34,6 +34,18 @@ class Authentication extends AuthenticationModules
             self::$identifier = $encript['identifier'];
         }
 
+        if (!isset($_COOKIE['token'])) {
+            if (function_exists('mcrypt_create_iv')) {
+                $csrf = bin2hex(mcrypt_create_iv(32, MCRYPT_DEV_URANDOM));
+                setcookie('token', $csrf, time() + (86400 * 30), '/', $_SERVER['SERVER_NAME']);
+                $_COOKIE['token'] = $csrf;
+            } else {
+                $csrf = bin2hex(openssl_random_pseudo_bytes(32));
+                setcookie('token', $csrf, time() + (86400 * 30), '/', $_SERVER['SERVER_NAME']);
+                $_COOKIE['token'] = $csrf;
+            }
+        }
+
         return self::$Instance;
     }
 
@@ -49,12 +61,12 @@ class Authentication extends AuthenticationModules
     function Authenticate($username, $password)
     {
         $secure = $this->encrypt($this->CustomAuthentication($username, $password));
-        setcookie('puko', $secure, time() + (86400 * 30), "/", $_SERVER['SERVER_NAME']);
+        setcookie('puko', $secure, time() + (86400), "/", $_SERVER['SERVER_NAME']);
     }
 
     public function GetUserData()
     {
-        if(!isset($_COOKIE['puko'])) return false;
+        if (!isset($_COOKIE['puko'])) return false;
         $secure = $this->decrypt($_COOKIE['puko']);
         return $this->FetchUserData($secure);
     }
@@ -68,12 +80,12 @@ class Authentication extends AuthenticationModules
     {
         $secure = $this->encrypt($val);
         setcookie($key, $secure, time() + (86400 * 30), "/", $_SERVER['SERVER_NAME']);
-        if($key == 'lang') $_COOKIE['lang'] = $secure;
+        if ($key == 'lang') $_COOKIE['lang'] = $secure;
     }
 
     public function getSessionData($val)
     {
-        if(!isset($_COOKIE[$val])) return false;
+        if (!isset($_COOKIE[$val])) return false;
         return $this->decrypt($_COOKIE[$val]);
     }
 
