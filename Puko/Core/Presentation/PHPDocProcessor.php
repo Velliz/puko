@@ -87,12 +87,11 @@ class PHPDocProcessor implements PHPDoc
     public function Validation($key, $val)
     {
         // TODO: Implement Validation() method.
+        // #Validation name required,number,min[30],max[40] ??
     }
 
     public function Output(&$data = array())
     {
-        $result = array();
-
         if (sizeof($this->arrDoc[0]) > 0) {
             foreach ($this->arrDoc[0] as $k => $v) {
                 $preg = explode(' ', $v);

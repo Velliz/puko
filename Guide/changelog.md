@@ -21,9 +21,8 @@ PHPDocs tags command :
 - Adding #Validation name required,number,min[30],max[40]
 - Adding #....
 
-- Adding feature to handle sql injections
-- Adding feature import export Excel, Word, PDF
-- Adding Mail utility
+Security
+- Adding CSRF protection
 
 ## Changelog
 October 2015
@@ -62,11 +61,11 @@ class Example extends Service {
 Puko will render this controller with JSONParser. Will result JSON page
 
 - Adding support for handle wrong or not find URL routing path or 404 Not Found Pages
-- Adding support Authorization and Session
+- Adding support for Session
 - Add support for master template for html
 - Add support for model (MVC) pattern
-- Add support for variable dumb and development mode
+- Add support for variable dump and development mode
 - Cleanup abstract parser and HTML View class
 - Adding Cookies Support
 - Adding dynamic url for view in Template Engine with /ref/
-
+- Multiple Language Support en & id

@@ -53,6 +53,8 @@ namespace Puko\Core {
          */
         private $returnVars;
 
+        private static $AuthObject;
+
         /**
          * @param $environment
          * @return object|Puko
@@ -63,6 +65,7 @@ namespace Puko\Core {
             self::Autoload();
             if (!is_object(self::$PukoInstance)) {
                 self::$PukoInstance = new Puko();
+                self::$AuthObject = Authentication::GetInstance();
             }
             return self::$PukoInstance;
         }
@@ -99,6 +102,7 @@ namespace Puko\Core {
             $service = new ReflectionClass(Service::class);
             $routerObj = $router->InitializeClass();
             $this->returnVars = $router->InitializeFunction($routerObj);
+            $this->returnVars['token'] = $_COOKIE['token'];
 
             $routeResult = new ReflectionClass($routerObj);
             $classDocs = $routeResult->getDocComment();
@@ -168,7 +172,10 @@ namespace Puko\Core {
             }
 
             if ($routeResult->isSubclassOf($view)) {
-                $template = new HtmlParser(ASSETS . $router->ClassName . '/' . $router->FunctionNames . ".html");
+                $language = self::$AuthObject->getSessionData('lang');
+                if($language =='') $language = 'id';
+                $language = '/' . $language . '/';
+                $template = new HtmlParser(ASSETS . $router->ClassName . $language . $router->FunctionNames . '/' . $router->FunctionNames . ".html");
                 $template->setArrays($this->returnVars);
                 $template->StyleRender($router->ClassName, $router->FunctionNames);
                 $template->ScriptRender($router->ClassName, $router->FunctionNames);
