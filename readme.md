@@ -1,10 +1,14 @@
-# Puko - V0.93 Beta [![Build Status](https://travis-ci.org/Velliz/puko.svg?branch=master)](https://travis-ci.org/Velliz/puko)
+# Puko - V0.93 Beta [![Build Status](https://travis-ci.org/Velliz/puko.svg?branch=master)](https://travis-ci.org/Velliz/puko) [![Total Downloads](https://poser.pugx.org/velliz/puko/downloads)](https://packagist.org/packages/velliz/puko) [![Latest Stable Version](https://poser.pugx.org/velliz/puko/v/stable)](https://packagist.org/packages/velliz/puko)
 
 Puko is the Micro MVC PHP Framework for faster PHP application Development.
 
 *Puko Require* **PHP 5.3** *or greater*
 
-checkout the lastest release [HERE](https://github.com/Velliz/puko/releases) 
+Download via composer:
+```
+composer create-project velliz/puko --prefer-dist --stability="dev" --no-install
+```
+Or checkout the lastest [zipped](https://github.com/Velliz/puko/releases) package.
 
 ## Main Features
 
@@ -12,10 +16,10 @@ checkout the lastest release [HERE](https://github.com/Velliz/puko/releases)
 
 Basic URL routing follows these rules:
 ```PHP
-localhost/[controller]/ "will search method and view with name 'main'"
+localhost/[controller]/
 localhost/[controller]/[function]/
-localhost/[controller]/[function]/[var1]/[var2]/[var3]/...
-localhost/[controller]/[ID]/[function]/[var1]/[var2]/[var3]/... "ID accepts [0-9] only"
+localhost/[controller]/[function]/[var1]/[var2]/[var3]/
+localhost/[controller]/[ID]/[function]/[var1]/[var2]/[var3]/
 ```
 **Data Access**
 
@@ -37,12 +41,12 @@ And the **.html** file has always have their partners. **.css** and **.js** loca
 
 For data Boilerplates, you can print data returned by Controller class like this:
 ```
-{!value} "print simple single value"
-{!loop} {!value} {/loop} "print value on array"
-{!!condition} {/condition} "blocked condition"
+{!value}
+{!loop} {!value} {/loop}
+{!!condition} {/condition}
 ```
 
-And many more you can find in the [DOCS / WIKI](https://github.com/Velliz/puko/wiki/Welcome-to-Puko-Docs)
+And many more you can find in the [Documentation](https://github.com/Velliz/puko/wiki/Welcome-to-Puko-Docs)
 
 ## About
 
@@ -54,18 +58,4 @@ just send me email to : diditvelliz@gmail.com
 
 Thanks :)
 
-## License
-
 Copyright **2016 - Didit Velliz**
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
