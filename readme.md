@@ -1,4 +1,4 @@
-# Puko - V0.93 Beta [![Build Status](https://travis-ci.org/Velliz/puko.svg?branch=master)](https://travis-ci.org/Velliz/puko) [![Total Downloads](https://poser.pugx.org/velliz/puko/downloads)](https://packagist.org/packages/velliz/puko) [![Latest Stable Version](https://poser.pugx.org/velliz/puko/v/stable)](https://packagist.org/packages/velliz/puko)
+# Puko - V0.93 Beta [![Build Status](https://travis-ci.org/Velliz/puko.svg?branch=master)](https://travis-ci.org/Velliz/puko) [![Total Downloads](https://poser.pugx.org/velliz/puko/downloads)](https://packagist.org/packages/velliz/puko) [![Latest Stable Version](https://poser.pugx.org/velliz/puko/v/stable)](https://packagist.org/packages/velliz/puko) [![Coverage Status](https://coveralls.io/repos/github/Velliz/puko/badge.svg?branch=master)](https://coveralls.io/github/Velliz/puko?branch=master)
 
 Puko is the Micro MVC PHP Framework for faster PHP application Development.
 
