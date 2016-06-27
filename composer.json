@@ -1,5 +1,5 @@
 {
-  "name": "velliz/framework/puko",
+  "name": "velliz/puko",
   "description": "Micro Model-View PHP Framework for faster PHP application Development.",
   "keywords": [
     "puko",
@@ -7,15 +7,17 @@
     "micro"
   ],
   "require": {
-    "php": "~5.3"
+    "php": ">=5.3.0"
   },
   "require-dev": {
+    "php": ">=5.3.0",
     "phpunit/phpunit": "3.7.*"
   },
   "license": "Apache-License-2",
   "authors": [
     {
       "name": "Didit Velliz",
+      "email": "diditvelliz@gmail.com",
       "homepage": "https://github.com/Velliz"
     },
     {
@@ -26,5 +28,7 @@
   "support": {
     "issues": "https://github.com/Velliz/puko/issues",
     "source": "https://github.com/Velliz/puko"
-  }
+  },
+  "minimum-stability": "RC",
+  "type": "Framework"
 }
