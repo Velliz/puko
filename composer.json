@@ -29,6 +29,6 @@
     "issues": "https://github.com/Velliz/puko/issues",
     "source": "https://github.com/Velliz/puko"
   },
-  "minimum-stability": "RC",
+  "minimum-stability": "dev-master",
   "type": "Framework"
 }
