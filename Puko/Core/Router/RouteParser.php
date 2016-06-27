@@ -90,7 +90,7 @@ class RouteParser
         $import = FILE . CONTROLLERS . $ClassName . '.php';
         if (!file_exists($import)) {
             if (strcmp(Puko::$Environment, 'dev') == 0) {
-                die('Controller file ' . $this->ClassName . ' is not found.');
+                die('Controller file ' . $this->ClassName . '.php is not found.');
             } else {
                 header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found", true, 404);
                 include NOT_FOUND;
