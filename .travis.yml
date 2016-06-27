@@ -17,3 +17,6 @@ script: phpunit --verbose Tests/MainTest.php
 
 notifications:
   email: "nurcholid@windowslive.com"
+
+after_success:
+- coveralls
