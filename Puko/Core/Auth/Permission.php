@@ -14,7 +14,10 @@ use Puko\Modules\PermissionModules;
 
 class Permission extends PermissionModules
 {
-
-
-
+    /**
+     * Permission constructor.
+     */
+    public function __construct()
+    {
+    }
 }
