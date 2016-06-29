@@ -1,8 +1,8 @@
 ## Quick installation configuration for Apache and MySQL.
 
-> Warning : This release version now only support Apache PHP server.
+> Warning : Puko Framework for now only support Apache PHP server.
 
-# MySQL Config
+### MySQL Config
 set log_file_size to 25 % of buffer pool size
 ```
 key_buffer = 64M
@@ -13,7 +13,7 @@ read_buffer_size = 5M
 read_rnd_buffer_size = 2M
 myisam_sort_buffer_size = 15M
 ```
-if you want to store long blob file to MySQL, change file structure to Dynamic and file format Barracuda.
+If you want to store long blob file to MySQL, change file structure to Dynamic and file format Barracuda.
 ```
 innodb_buffer_pool_size = 100M
 innodb_additional_mem_pool_size = 125M
@@ -24,7 +24,7 @@ innodb_lock_wait_timeout = 50
 innodb_file_format = Barracuda
 ```
 
-# PHP Config
+### PHP Config
 ```
 upload_max_filesize=25M
 ```
