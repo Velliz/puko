@@ -93,7 +93,7 @@ class RouteParser
                 die('Controller file ' . $this->ClassName . '.php is not found.');
             } else {
                 header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found", true, 404);
-                include NOT_FOUND;
+                include PAGE_404;
                 die();
             }
         }
@@ -127,7 +127,7 @@ class RouteParser
                 die('Method ' . $this->FunctionNames . ' not found');
             } else {
                 header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found", true, 404);
-                include NOT_FOUND;
+                include PAGE_404;
                 die();
             }
         }

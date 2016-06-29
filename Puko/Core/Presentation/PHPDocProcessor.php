@@ -12,6 +12,7 @@ namespace Puko\Core\Presentation;
 
 use DateTime;
 use Puko\Core\Auth\Authentication;
+use Puko\Core\Puko;
 
 /**
  * Class View
@@ -55,7 +56,13 @@ class PHPDocProcessor implements PHPDoc
     {
         if (strtolower($key) == 'authentication' && strtolower($val) == 'true') {
             if (!$this->PukoAuthObject->IsAuthenticated()) {
-                die('Not Authenticated');
+                if (strcmp(Puko::$Environment, 'dev') == 0) {
+                    die('Not Authenticated');
+                } else {
+                    header($_SERVER["SERVER_PROTOCOL"] . " 401 Unauthorized", true, 401);
+                    include PAGE_401;
+                    die();
+                }
             }
         }
     }
@@ -68,12 +75,24 @@ class PHPDocProcessor implements PHPDoc
         switch ($key) {
             case 'before':
                 if ($today > $day) {
-                    die('URL available before ' . $val);
+                    if (strcmp(Puko::$Environment, 'dev') == 0) {
+                        die('URL available before ' . $val);
+                    } else {
+                        header($_SERVER["SERVER_PROTOCOL"] . " 401 Unauthorized", true, 401);
+                        include PAGE_401;
+                        die();
+                    }
                 }
                 break;
             case 'after':
                 if ($today < $day) {
-                    die('URL available after ' . $val);
+                    if (strcmp(Puko::$Environment, 'dev') == 0) {
+                        die('URL available after ' . $val);
+                    } else {
+                        header($_SERVER["SERVER_PROTOCOL"] . " 401 Unauthorized", true, 401);
+                        include PAGE_401;
+                        die();
+                    }
                 }
                 break;
         }

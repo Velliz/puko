@@ -189,7 +189,7 @@ namespace Puko\Core {
                     die('Controller must extends its type');
                 } else {
                     header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found", true, 404);
-                    include NOT_FOUND;
+                    include PAGE_404;
                     die();
                 }
             }
