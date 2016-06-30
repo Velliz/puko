@@ -41,7 +41,7 @@ class PHPDocProcessor implements PHPDoc
      */
     public function DocParser($StrDoc)
     {
-        preg_match_all('(#[ a-zA-Z0-9-:]+)', $StrDoc, $result, PREG_PATTERN_ORDER);
+        preg_match_all('(#[ a-zA-Z0-9-:./]+)', $StrDoc, $result, PREG_PATTERN_ORDER);
         return $result;
     }
 
@@ -108,6 +108,15 @@ class PHPDocProcessor implements PHPDoc
         // TODO: Implement Validation() method.
         // #Validation name required,number,min[30],max[40] ??
     }
+
+    public function View($key, $val)
+    {
+        // TODO: Implement View() method.
+        return array(
+            $key => $val
+        );
+    }
+
 
     public function Output(&$data = array())
     {

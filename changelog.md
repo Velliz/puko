@@ -57,3 +57,4 @@ class Example extends Service {
 * Cleanup Code and Change directory name to lowercase.
 * Creating Puko Doc Command (PDC).
 * Adding Value, Date, User Puko Doc Command (PDC).
+* Set minimum requirement to PHP 5.6 for security.

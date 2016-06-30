@@ -2,7 +2,7 @@
 
 Puko is MVC PHP Framework for quick and fast PHP Application Development.
 
-*Puko Require* **PHP 5.3** *or greater*
+*Puko Require* **PHP 5.6** *or greater*
 
 Download via composer:
 ```

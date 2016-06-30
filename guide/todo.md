@@ -11,17 +11,17 @@
 ```
 
 ### Puko Doc Command (PDC)
-* Adding #User Authentication true
+* Adding #User Authentication true (DONE)
 * Adding #View Template template/directory/master.html
 * Adding #View Template false
 * Adding #View Template null
-* Adding #Date before dd-mm-yyyy
+* Adding #Date before dd-mm-yyyy (DONE)
 * Adding #Date after dd-mm-yyyy
 * Adding #Date bettwen dd-mm-yyyy dd-mm-yyyy
-* Adding #Value PageTitle judulnya boleh pake spasi
-* Adding #Value Key Value
+* Adding #Value PageTitle judulnya boleh pake spasi (DONE)
+* Adding #Value Key Value (DONE)
 * Adding #Throws Exception true
-* Adding #Validation name required,number,min[30],max[40]
+* Adding #Validation name required,number,min[30],max[40] ??
 * Adding #....
 
 ### Security

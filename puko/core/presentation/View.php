@@ -38,12 +38,22 @@ abstract class View
 
     public function ValidateCsrf(){
         if (!empty($_POST['token'])) {
-            if (hash_equals($_POST['token'], $_SESSION['token'])) {
+            if (hash_equals($_POST['token'], $_COOKIE['token'])) {
                 // Proceed to process the form data
+                unset($_POST['token']);
+                return true;
             } else {
                 // Log this as a warning and keep an eye on these attempts
+                return false;
             }
         }
+        return false;
+    }
+
+    protected function IsSubmit() {
+        $result = isset($_POST['_submit']);
+        unset($_POST['_submit']);
+        return $result;
     }
 
     public abstract function Main();

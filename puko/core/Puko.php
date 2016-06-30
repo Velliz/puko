@@ -61,6 +61,9 @@ namespace Puko\Core {
          */
         public static function Init($environment)
         {
+            if (version_compare(phpversion(), '5.6', '<')) {
+                die("PHP installation does not match the requirement.");
+            }
             self::$Environment = $environment;
             self::Autoload();
             if (!is_object(self::$PukoInstance)) {
@@ -174,8 +177,8 @@ namespace Puko\Core {
             if ($routeResult->isSubclassOf($view)) {
                 $language = self::$AuthObject->getSessionData('lang');
                 if($language =='') $language = 'id';
-                $language = '/' . $language . '/';
-                $template = new HtmlParser(ASSETS . $router->ClassName . $language . $router->FunctionNames . '/' . $router->FunctionNames . ".html");
+                $language = $language . '/';
+                $template = new HtmlParser(ASSETS . $language . $router->ClassName . '/' . $router->FunctionNames . ".html");
                 $template->setArrays($this->returnVars);
                 $template->StyleRender($router->ClassName, $router->FunctionNames);
                 $template->ScriptRender($router->ClassName, $router->FunctionNames);

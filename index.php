@@ -9,6 +9,6 @@ define('PAGE_EXCEPTION', 'Assets/templates/exception.html');
 
 include('Puko/Core/Puko.php');
 use Puko\Core\Puko;
-Puko::Init(PRODUCTION)->VariableDump(false)->Start(
+Puko::Init(DEVELOPMENT)->VariableDump(false)->Start(
     array()
 );

@@ -22,4 +22,6 @@ interface PHPDoc
 
     public function Validation($key, $val);
 
+    public function View($key, $val);
+
 }
