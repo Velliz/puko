@@ -28,7 +28,7 @@ class Authentication extends AuthenticationModules
     {
         if (!isset(self::$Instance) && !is_object(self::$Instance)) {
             self::$Instance = new Authentication();
-            $encript = include(FILE . '/Config/encription_config.php');
+            $encript = include(FILE . '/config/encription.php');
             self::$method = $encript['method'];
             self::$key = $encript['key'];
             self::$identifier = $encript['identifier'];
