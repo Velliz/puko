@@ -52,7 +52,7 @@ abstract class Data
     public static function From($query)
     {
         if (!isset(self::$Instance) && !is_object(self::$Instance)) {
-            self::$Instance = new Model();
+            self::$Instance = new Model($query);
         }
         self::$Instance->query = $query;
         return self::$Instance;

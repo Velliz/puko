@@ -17,9 +17,9 @@ class Model extends Data
     /**
      * Model constructor.
      */
-    protected function __construct()
+    protected function __construct($tableName)
     {
-        parent::__construct();
+        parent::__construct($tableName);
     }
 
     protected function Save($array)
