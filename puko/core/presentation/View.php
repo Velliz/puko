@@ -40,10 +40,13 @@ abstract class View
         if (!empty($_POST['token'])) {
             if (hash_equals($_POST['token'], $_COOKIE['token'])) {
                 // Proceed to process the form data
+                unset($_COOKIE['token']);
                 unset($_POST['token']);
+                $this->PukoAuthObject->GenerateToken();
                 return true;
             } else {
                 // Log this as a warning and keep an eye on these attempts
+                $this->PukoAuthObject->GenerateToken();
                 return false;
             }
         }

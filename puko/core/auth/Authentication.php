@@ -24,7 +24,7 @@ class Authentication extends AuthenticationModules
      */
     public static $Instance = null;
 
-    static function GetInstance()
+    public static function GetInstance()
     {
         if (!isset(self::$Instance) && !is_object(self::$Instance)) {
             self::$Instance = new Authentication();
@@ -33,19 +33,7 @@ class Authentication extends AuthenticationModules
             self::$key = $encript['key'];
             self::$identifier = $encript['identifier'];
         }
-
-        if (!isset($_COOKIE['token'])) {
-            if (function_exists('mcrypt_create_iv')) {
-                $csrf = bin2hex(mcrypt_create_iv(32, MCRYPT_DEV_URANDOM));
-                setcookie('token', $csrf, time() + (86400 * 30), '/', $_SERVER['SERVER_NAME']);
-                $_COOKIE['token'] = $csrf;
-            } else {
-                $csrf = bin2hex(openssl_random_pseudo_bytes(32));
-                setcookie('token', $csrf, time() + (86400 * 30), '/', $_SERVER['SERVER_NAME']);
-                $_COOKIE['token'] = $csrf;
-            }
-        }
-
+        self::GenerateToken();
         return self::$Instance;
     }
 
@@ -109,6 +97,21 @@ class Authentication extends AuthenticationModules
 
         $iv = substr(hash('sha256', self::$identifier), 0, 16);
         return openssl_decrypt(base64_decode($string), self::$method, $key, 0, $iv);
+    }
+
+    public function GenerateToken()
+    {
+        if (!isset($_COOKIE['token'])) {
+            if (function_exists('mcrypt_create_iv')) {
+                $csrf = bin2hex(mcrypt_create_iv(32, MCRYPT_DEV_URANDOM));
+                setcookie('token', $csrf, time() + (86400 * 30), '/', $_SERVER['SERVER_NAME']);
+                $_COOKIE['token'] = $csrf;
+            } else {
+                $csrf = bin2hex(openssl_random_pseudo_bytes(32));
+                setcookie('token', $csrf, time() + (86400 * 30), '/', $_SERVER['SERVER_NAME']);
+                $_COOKIE['token'] = $csrf;
+            }
+        }
     }
 }
 
