@@ -26,6 +26,8 @@
 
 ### Security
 * Adding CSRF protection.
+* Sanitize input and output and eliminates html character.
+* Sanitize URL routing params.
 * Adding feature to handle sql injections.
 
 ### Modules
