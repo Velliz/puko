@@ -107,6 +107,13 @@ class PHPDocProcessor implements PHPDoc
     {
         // TODO: Implement Validation() method.
         // #Validation name required,number,min[30],max[40] ??
+        if(isset($_POST[$key])){
+            if($_POST[$key] == '') {
+                return array(
+                    $key => $val
+                );
+            }
+        }
     }
 
     public function View($key, $val)

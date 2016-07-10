@@ -21,6 +21,8 @@ namespace Puko {
 
 namespace Puko\Core {
 
+    use ErrorException;
+    use Exception;
     use Puko\Core\Auth\Authentication;
     use Puko\Core\Presentation\PHPDocProcessor;
     use Puko\Core\Presentation\View;
@@ -70,6 +72,11 @@ namespace Puko\Core {
                 self::$PukoInstance = new Puko();
                 self::$AuthObject = Authentication::GetInstance();
             }
+            error_reporting(E_ALL);
+            ini_set("display_errors", "off");
+            register_shutdown_function(array('\Puko\Core\Puko', 'check_for_fatal'));
+            set_error_handler(array('\Puko\Core\Puko', 'log_error'));
+            set_exception_handler(array('\Puko\Core\Puko', 'log_exception'));
             return self::$PukoInstance;
         }
 
@@ -176,7 +183,9 @@ namespace Puko\Core {
 
             if ($routeResult->isSubclassOf($view)) {
                 $language = self::$AuthObject->getSessionData('lang');
-                if($language =='') $language = 'id';
+                if ($language == '') {
+                    $language = 'id';
+                }
                 $language = $language . '/';
                 $template = new HtmlParser(ASSETS . $language . $router->ClassName . '/' . $router->FunctionNames . ".html");
                 $template->setArrays($this->returnVars);
@@ -228,6 +237,54 @@ namespace Puko\Core {
         {
             self::$VariableDump = $option;
             return self::$PukoInstance;
+        }
+
+        /**
+         * Error handler, passes flow over the exception logger with new ErrorException.
+         * @param $num
+         * @param $str
+         * @param $file
+         * @param $line
+         */
+        static function log_error($num, $str, $file, $line)
+        {
+            self::log_exception(new ErrorException($str, 0, $num, $file, $line));
+        }
+
+        /**
+         * Uncaught exception handler.
+         * @param Exception $e
+         */
+        static function log_exception(Exception $e)
+        {
+            if (strcmp(self::$Environment, 'dev') == 0) {
+                print "<div style='text-align: center;'>";
+                print "<h2 style='color: rgb(190, 50, 50);'>Exception Occured</h2>";
+                print "<table style='width: 800px; display: inline-block;'>";
+                print "<tr style='background-color:rgb(230,230,230);'><th style='width: 80px;'>Type</th><td>" . get_class($e) . "</td></tr>";
+                print "<tr style='background-color:rgb(240,240,240);'><th>Message</th><td>{$e->getMessage()}</td></tr>";
+                print "<tr style='background-color:rgb(230,230,230);'><th>File</th><td>{$e->getFile()}</td></tr>";
+                print "<tr style='background-color:rgb(240,240,240);'><th>Line</th><td>{$e->getLine()}</td></tr>";
+                print "</table></div>";
+            } else {
+                $message = "Type: " . get_class($e) . "; Message: {$e->getMessage()}; File: {$e->getFile()}; Line: {$e->getLine()};";
+                file_put_contents("exceptions.log", $message . PHP_EOL, FILE_APPEND);
+                include PAGE_404;
+            }
+
+            exit();
+        }
+
+        /**
+         * Checks for a fatal error, work around for set_error_handler not working on fatal errors.
+         */
+        static function check_for_fatal()
+        {
+            $error = error_get_last();
+            if ($error["type"] == E_ERROR) {
+                //die('check_for_fatal');
+                self::log_error($error["type"], $error["message"], $error["file"], $error["line"]);
+            }
         }
 
 

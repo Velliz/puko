@@ -99,7 +99,7 @@ class Authentication extends AuthenticationModules
         return openssl_decrypt(base64_decode($string), self::$method, $key, 0, $iv);
     }
 
-    public function GenerateToken()
+    public static function GenerateToken()
     {
         if (!isset($_COOKIE['token'])) {
             if (function_exists('mcrypt_create_iv')) {
