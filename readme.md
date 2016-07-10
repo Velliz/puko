@@ -1,4 +1,4 @@
-# Puko 0.93.0 [![Build Status](https://travis-ci.org/Velliz/puko.svg?branch=master)](https://travis-ci.org/Velliz/puko) [![Total Downloads](https://poser.pugx.org/velliz/puko/downloads)](https://packagist.org/packages/velliz/puko) [![Latest Stable Version](https://poser.pugx.org/velliz/puko/v/stable)](https://packagist.org/packages/velliz/puko) [![Coverage Status](https://coveralls.io/repos/github/Velliz/puko/badge.svg?branch=master)](https://coveralls.io/github/Velliz/puko?branch=master)
+# Puko 0.93.0 [![Build Status](https://travis-ci.org/Velliz/puko.svg?branch=master)](https://travis-ci.org/Velliz/puko) [![Total Downloads](https://poser.pugx.org/velliz/puko/downloads)](https://packagist.org/packages/velliz/puko)
 
 Puko is MVC PHP Framework for quick and fast PHP Application Development.
 
@@ -40,13 +40,13 @@ Puko use **.html** file for view. So if you want to do styling or scripting:
 And the **.html** file has always have their partners. **.css** and **.js** located in Assets
 
 For data Boilerplates, you can print data returned by Controller class like this:
-```
+```HTML
 {!value}
 {!loop} {!value} {/loop}
 {!!condition} {/condition}
 ```
 
-And many more you can find in the [Documentation](https://github.com/Velliz/puko/wiki/Welcome-to-Puko-Docs)
+And many more you can find in the [Documentation](https://velliz.github.io/pukodocs)
 
 ## About
 
