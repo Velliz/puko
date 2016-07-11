@@ -8,8 +8,8 @@ Controllers
 Model
 
 assets/css
-assets/js
-assets/html
 assets/extensions
+assets/html
+assets/js
 
 exceptions.log
