@@ -15,8 +15,9 @@ define('CONTROLLERS', '/Controllers/');
 | -------------------------------------------------------------------
 |
 */
-define('ASSETS', 'Assets/html/');
-define('MASTER', 'Assets/templates/');
+define('ASSETS', 'assets/html/');
+define('MASTER', 'assets/html/templates/');
+define('EXTENSIONS', 'assets/extensions/');
 
 /*
 | -------------------------------------------------------------------
@@ -24,8 +25,8 @@ define('MASTER', 'Assets/templates/');
 | -------------------------------------------------------------------
 |
 */
-define('PAGE_404', 'Assets/templates/not_found.html');
-define('PAGE_401', 'Assets/templates/unauthorized.html');
+define('PAGE_404', 'assets/html/templates/confused.html');
+define('PAGE_401', 'assets/html/templates/unauthorized.html');
 
 /*
 | -------------------------------------------------------------------
@@ -33,8 +34,8 @@ define('PAGE_401', 'Assets/templates/unauthorized.html');
 | -------------------------------------------------------------------
 |
 */
-define('PAGE_ERROR', 'Assets/templates/exception.html');
-define('PAGE_EXCEPTION', 'Assets/templates/exception.html');
+define('PAGE_ERROR', 'assets/html/templates/error.html');
+define('PAGE_EXCEPTION', 'assets/html/templates/exception.html');
 
 /*
 | -------------------------------------------------------------------

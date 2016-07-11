@@ -1,17 +1,15 @@
-*.iml
 .idea
 
 vendor
-composer
 composer.lock
 composer.phar
 
 Controllers
 Model
-Assets/css
-Assets/js
-Assets/html
-Assets/Extensions/css
-Assets/Extensions/js
+
+#assets/css
+#assets/js
+#assets/html
+#assets/extensions
 
 exceptions.log
