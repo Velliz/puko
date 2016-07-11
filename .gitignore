@@ -7,9 +7,6 @@ composer.phar
 Controllers/
 Model/
 
-assets/css/
-assets/extensions/
-assets/html/
-assets/js/
+assets/
 
 exceptions.log
