@@ -1,15 +1,15 @@
 .idea
 
-vendor
+vendor/
 composer.lock
 composer.phar
 
-Controllers
-Model
+Controllers/
+Model/
 
-assets/css
-assets/extensions
-assets/html
-assets/js
+assets/css/
+assets/extensions/
+assets/html/
+assets/js/
 
 exceptions.log
