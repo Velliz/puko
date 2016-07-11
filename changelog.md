@@ -59,5 +59,5 @@ class Example extends Service {
 * Adding Value, Date, User Puko Doc Command (PDC).
 * Set minimum requirement to PHP 5.6 for security.
 
-### 0.94.0 (7 July 2016)
+### 0.9.4 (7 July 2016)
 * customize PHP error handler

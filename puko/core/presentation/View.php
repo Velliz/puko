@@ -59,5 +59,9 @@ abstract class View
         return $result;
     }
 
+    protected function setLanguage($langCode) {
+        $this->PukoAuthObject->setSessionData('lang', $langCode);
+    }
+
     public abstract function Main();
 }

@@ -6,7 +6,6 @@ composer
 composer.lock
 composer.phar
 
-index.php
 Controllers
 Model
 Assets/css

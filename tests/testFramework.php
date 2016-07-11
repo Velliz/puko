@@ -1,6 +1,6 @@
 <?php
 
-class MainTest extends PHPUnit_Framework_TestCase
+class TestFramework extends \PHPUnit_Framework_TestCase
 {
     public function testPushAndPop()
     {
@@ -12,5 +12,4 @@ class MainTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('foo', array_pop($fixture));
         $this->assertEquals(0, count($fixture));
     }
-
 }
