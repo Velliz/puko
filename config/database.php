@@ -1,9 +1,10 @@
 <?php
 
 return array(
-    'dbType' => 'MySQL',
+    'dbType' => 'mysql',
     'host' => 'localhost',
     'user' => 'root',
     'pass' => '',
     'dbName' => 'puko',
+    'port' => 3306
 );

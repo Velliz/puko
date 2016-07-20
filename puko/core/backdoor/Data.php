@@ -32,7 +32,7 @@ abstract class Data
         if (!$db) {
             throw new Exception("Can't connect to database.");
         }
-        $this->pdo = new PDO("mysql:host=" . $db['host'] . ";dbname=" . $db['dbName'],
+        $this->pdo = new PDO($db['dbType'] . ":host=" . $db['host'] . ";port=" . $db['port'] . "dbname=" . $db['dbName'],
             $db['user'],
             $db['pass']
         );
