@@ -12,10 +12,9 @@ cache:
 before_install:
  - composer --prefer-source install
 
-script: phpunit --verbose tests/TestFramework.php
+script: phpunit --verbose tests/TestsFramework.php
 
 notifications:
   email: "nurcholid@windowslive.com"
 
 after_success:
-- coveralls
