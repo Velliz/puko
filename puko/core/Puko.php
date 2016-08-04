@@ -62,11 +62,13 @@ class Puko
             self::$PukoInstance = new Puko();
             self::$AuthObject = Authentication::GetInstance();
         }
+
         error_reporting(E_ALL);
-        ini_set("display_errors", "off");
-        register_shutdown_function(array('\Puko\Core\Puko', 'check_for_fatal'));
-        set_error_handler(array('\Puko\Core\Puko', 'log_error'));
-        set_exception_handler(array('\Puko\Core\Puko', 'log_exception'));
+
+        register_shutdown_function(array('\puko\core\Puko', 'check_for_fatal'));
+        set_error_handler(array('\puko\core\Puko', 'log_error'));
+        set_exception_handler(array('\puko\core\Puko', 'log_exception'));
+
         return self::$PukoInstance;
     }
 
@@ -80,10 +82,23 @@ class Puko
      */
     private static function ClassLoader($className)
     {
-        $className .= '.php';
+        $className = ltrim($className, '');
+        $fileName = '';
+        $namespace = '';
+        if ($lastNsPos = strripos($className, '')) {
+            $namespace = substr($className, 0, $lastNsPos);
+            $className = substr($className, $lastNsPos + 1);
+            $fileName = str_replace('', DIRECTORY_SEPARATOR, $namespace) . DIRECTORY_SEPARATOR;
+        }
+        $fileName .= str_replace('_', DIRECTORY_SEPARATOR, $className) . '.php';
+
+        require $fileName;
+
+        /*
+        $className = DIRECTORY . $className . '.php';
         if (file_exists($className)) {
             require_once($className);
-        }
+        }*/
     }
 
     public function Start($routeConfig = array())
@@ -112,56 +127,6 @@ class Puko
         $docParser->Output($this->returnVars);
         $fnParser = new PHPDocProcessor($fnDocs);
         $fnParser->Output($this->returnVars);
-        /*
-        $classParse = $router->DocParser($classDocs);
-        $fnParse = $router->DocParser($fnDocs);
-
-        if (sizeof($classParse[0]) > 0) {
-            foreach ($classParse[0] as $k => $v) {
-                $preg = explode(' ', $v);
-                $params = null;
-                foreach ($preg as $key => $val) {
-                    switch ($key) {
-                        case 0:
-                            break;
-                        case 1:
-                            break;
-                        default:
-                            if ($key != sizeof($preg) - 1) {
-                                $params .= $val . ' ';
-                            } else {
-                                $params .= $val;
-                            }
-                            break;
-                    }
-                }
-                call_user_func(array($this, str_replace('#', '', $preg[1])), $params);
-            }
-        }
-
-        if (sizeof($fnParse[0]) > 0) {
-            foreach ($fnParse[0] as $k => $v) {
-                $preg = explode(' ', $v);
-                $params = null;
-                foreach ($preg as $key => $val) {
-                    switch ($key) {
-                        case 0:
-                            break;
-                        case 1:
-                            break;
-                        default:
-                            if ($key != sizeof($preg) - 1) {
-                                $params .= $val . ' ';
-                            } else {
-                                $params .= $val;
-                            }
-                            break;
-                    }
-                }
-                call_user_func(array($this, str_replace('#', '', $preg[1])), $params);
-            }
-        }
-        */
 
         if (self::$VariableDump && strcmp(self::$Environment, 'dev') == 0) {
             $dump['LoginData'] = Authentication::GetInstance()->GetUserData();
@@ -266,28 +231,15 @@ class Puko
     }
 
     /**
-     * Checks for a fatal error, work around for set_error_handler not working on fatal errors.
+     * Checks for a fatal error.
+     * work around for set_error_handler not working on fatal errors.
      */
     static function check_for_fatal()
     {
         $error = error_get_last();
         if ($error["type"] == E_ERROR) {
-            //die('check_for_fatal');
             self::log_error($error["type"], $error["message"], $error["file"], $error["line"]);
         }
     }
-
-
-    #region php docs tags
-    /**
-     * @param $value
-     */
-    /*
-    public function PageTitle($value)
-    {
-        $this->returnVars['PageTitle'] = $value;
-    }
-    */
-    #endregion php docs tags
 
 }

@@ -14,6 +14,7 @@
  * FILE ENVIRONMENT
  *---------------------------------------------------------------
  */
+define('DIRECTORY', dirname(__DIR__));
 define('FILE', dirname(__FILE__));
 
 include('config/routes.php');
