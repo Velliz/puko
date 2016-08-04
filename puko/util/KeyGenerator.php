@@ -6,7 +6,7 @@
  * Time: 11:41 AM
  */
 
-namespace Puko\Util;
+namespace puko\util;
 
 
 class SecuredKey

@@ -8,11 +8,11 @@
  * @since version 0.92
  * @package Puko Core
  */
-namespace Puko\Core\Presentation;
+namespace puko\core\presentation;
 
 use DateTime;
-use Puko\Core\Auth\Authentication;
-use Puko\Core\Puko;
+use puko\core\auth\Authentication;
+use puko\core\Puko;
 
 /**
  * Class View

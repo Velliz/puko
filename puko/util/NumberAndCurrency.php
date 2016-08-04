@@ -8,7 +8,7 @@
  * @since version 1.0
  * @package Puko Core
  */
-namespace Puko\Util;
+namespace puko\util;
 
 
 class NumberAndCurrency

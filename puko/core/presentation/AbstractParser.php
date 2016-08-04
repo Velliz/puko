@@ -8,7 +8,7 @@
  * @since version 0.5
  * @package Puko Core
  */
-namespace Puko\Core\Presentation;
+namespace puko\core\presentation;
 
 /**
  * Class AbstractParser

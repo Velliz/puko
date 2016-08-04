@@ -9,7 +9,7 @@
  * @package Puko Core
  */
 
-namespace Puko\Util;
+namespace uko\util;
 
 use DateTime as Dates;
 

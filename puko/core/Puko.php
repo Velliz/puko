@@ -74,7 +74,7 @@ class Puko
 
     private static function Autoload()
     {
-        spl_autoload_register(array('\Puko\Core\Puko', 'ClassLoader'));
+        spl_autoload_register(array('\puko\core\Puko', 'ClassLoader'));
     }
 
     /**

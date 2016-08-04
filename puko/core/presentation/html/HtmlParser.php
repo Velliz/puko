@@ -8,9 +8,9 @@
  * @since version 0.92
  * @package Puko Core
  */
-namespace Puko\Core\Presentation\Html;
+namespace puko\core\presentation\html;
 
-use Puko\Core\Presentation\AbstractParser;
+use puko\core\presentation\AbstractParser;
 
 class HtmlParser extends AbstractParser
 {

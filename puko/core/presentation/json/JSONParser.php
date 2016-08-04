@@ -8,9 +8,9 @@
  * @since version 0.92
  * @package Puko Core
  */
-namespace Puko\Core\Presentation\Json;
+namespace puko\core\presentation\json;
 
-use Puko\Core\Presentation\AbstractParser;
+use puko\core\presentation\AbstractParser;
 
 class JSONParser extends AbstractParser
 {

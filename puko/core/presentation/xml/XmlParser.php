@@ -1,5 +1,7 @@
 <?php
-use Puko\Core\Presentation\AbstractParser;
+namespace puko\core\presentation\xml;
+
+use puko\core\presentation\AbstractParser;
 
 /**
  * Parser engine for Puko Framework

@@ -8,7 +8,7 @@
  * @since version 0.92
  * @package Puko Core
  */
-namespace Puko\Core\Backdoor;
+namespace puko\core\backdoor;
 
 use Exception;
 use PDO;

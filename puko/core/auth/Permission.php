@@ -8,7 +8,7 @@
  * @since version 0.92
  * @package Puko Core
  */
-namespace Auth;
+namespace puko\core\auth;
 
 use Puko\Modules\PermissionModules;
 

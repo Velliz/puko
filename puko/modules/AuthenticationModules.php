@@ -9,7 +9,7 @@
  * @package Puko Core
  */
 
-namespace Puko\Modules;
+namespace Puko\modules;
 
 class AuthenticationModules
 {

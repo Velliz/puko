@@ -8,9 +8,9 @@
  * @since version 0.92
  * @package Puko Core
  */
-namespace Puko\Core\Presentation;
+namespace puko\core\presentation;
 
-use Puko\Core\Auth\Authentication;
+use puko\core\auth\Authentication;
 
 /**
  * Class Service

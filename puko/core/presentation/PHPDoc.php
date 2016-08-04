@@ -6,7 +6,7 @@
  * Time: 10:12 PM
  */
 
-namespace Puko\Core\Presentation;
+namespace puko\core\presentation;
 
 
 interface PHPDoc
