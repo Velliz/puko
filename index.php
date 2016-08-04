@@ -18,6 +18,9 @@ define('DIRECTORY', __DIR__);
 define('FILE', dirname(__FILE__));
 
 include DIRECTORY . '/config/routes.php';
+
+var_dump(DEVELOPMENT);
+
 include DIRECTORY . '/puko/core/Puko.php';
 
 use puko\core\Puko;
