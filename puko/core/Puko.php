@@ -13,13 +13,13 @@ namespace puko\core;
 
 use ErrorException;
 use Exception;
-use Puko\Core\Auth\Authentication;
-use Puko\Core\Presentation\PHPDocProcessor;
-use Puko\Core\Presentation\View;
-use Puko\Core\Presentation\Service;
-use Puko\Core\Presentation\Html\HtmlParser;
-use Puko\Core\Presentation\Json\JSONParser;
-use Puko\Core\Router\RouteParser;
+use puko\core\auth\Authentication;
+use puko\core\presentation\html\HtmlParser;
+use puko\core\presentation\json\JSONParser;
+use puko\core\presentation\PHPDocProcessor;
+use puko\core\presentation\Service;
+use puko\core\presentation\View;
+use puko\core\router\RouteParser;
 use ReflectionClass;
 
 class Puko
