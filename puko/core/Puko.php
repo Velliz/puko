@@ -72,7 +72,7 @@ class Puko
         return self::$PukoInstance;
     }
 
-    private function Autoload()
+    private static function Autoload()
     {
         spl_autoload_register(array('\Puko\Core\Puko', 'ClassLoader'));
     }

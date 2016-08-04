@@ -20,7 +20,7 @@ define('FILE', dirname(__FILE__));
 include DIRECTORY . '/config/routes.php';
 include DIRECTORY . '/puko/core/Puko.php';
 
-use Puko\Core\Puko;
+use puko\core\Puko;
 
 /*
  *---------------------------------------------------------------
