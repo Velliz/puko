@@ -17,8 +17,8 @@
 define('DIRECTORY', dirname(__DIR__));
 define('FILE', dirname(__FILE__));
 
-include('config/routes.php');
-include('Puko/Core/Puko.php');
+require DIRECTORY . '/config/routes.php';
+require DIRECTORY . '/puko/core/Puko.php';
 
 use Puko\Core\Puko;
 
