@@ -9,7 +9,7 @@
  * @package Puko Core
  */
 
-namespace Puko\Core\Auth;
+namespace puko\core\validator;
 
 class Validation {
 

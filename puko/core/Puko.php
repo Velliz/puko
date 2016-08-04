@@ -9,7 +9,7 @@
  * @package Puko Core
  */
 
-namespace Puko\Core;
+namespace puko\core;
 
 use ErrorException;
 use Exception;
@@ -91,8 +91,6 @@ class Puko
             $fileName = str_replace('', DIRECTORY_SEPARATOR, $namespace) . DIRECTORY_SEPARATOR;
         }
         $fileName .= str_replace('_', DIRECTORY_SEPARATOR, $className) . '.php';
-
-        var_dump($fileName);
 
         require $fileName;
 

@@ -9,9 +9,9 @@
  * @package Puko Core
  */
 
-namespace Puko\Core\Router;
+namespace puko\core\router;
 
-use Puko\Core\Puko;
+use puko\core\Puko;
 
 class RouteParser
 {
