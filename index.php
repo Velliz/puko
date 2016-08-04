@@ -14,11 +14,11 @@
  * FILE ENVIRONMENT
  *---------------------------------------------------------------
  */
-define('DIRECTORY', dirname(__DIR__));
+define('DIRECTORY', __DIR__);
 define('FILE', dirname(__FILE__));
 
-require DIRECTORY . '/config/routes.php';
-require DIRECTORY . '/puko/core/Puko.php';
+include DIRECTORY . '/config/routes.php';
+include DIRECTORY . '/vendor/autoload.php';
 
 use Puko\Core\Puko;
 

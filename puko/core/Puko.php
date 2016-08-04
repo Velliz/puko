@@ -92,6 +92,8 @@ class Puko
         }
         $fileName .= str_replace('_', DIRECTORY_SEPARATOR, $className) . '.php';
 
+        var_dump($fileName);
+
         require $fileName;
 
         /*
