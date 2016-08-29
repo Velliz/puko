@@ -1,5 +1,6 @@
 {
     "name": "velliz/puko",
+    "description": "PSR 4 modular based MVC Puko Framework",
     "require": {
         "puko/framework": "dev-master"
     },
