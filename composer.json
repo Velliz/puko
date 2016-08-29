@@ -1,4 +1,5 @@
 {
+    "name": "velliz/puko",
     "require": {
         "puko/framework": "dev-master"
     },
