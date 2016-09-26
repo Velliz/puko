@@ -1,14 +1,13 @@
 <?php
 namespace controller;
 
+use pukoframework\auth\Auth;
+use pukoframework\pte\View;
+
 class main extends View implements Auth
 {
 
     public function main()
-    {
-    }
-
-    public function about()
     {
     }
 
