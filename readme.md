@@ -1,4 +1,8 @@
 # Puko Framework Starter Kit
+
+[![Latest Stable Version](https://poser.pugx.org/puko/framework/v/stable)](https://packagist.org/packages/puko/framework)
+[![Total Downloads](https://poser.pugx.org/puko/framework/downloads)](https://packagist.org/packages/puko/framework)
+
 Puko is MVC PHP Framework for quick and fast PHP Application Development.
 
 *Puko Require* **PHP 5.4** *or greater*
