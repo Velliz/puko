@@ -5,7 +5,7 @@ Puko Framework is MVC PHP Framework for quick and fast PHP Application Developme
 [![Latest Stable Version](https://poser.pugx.org/velliz/puko/v/stable)](https://packagist.org/packages/velliz/puko)
 [![Total Downloads](https://poser.pugx.org/velliz/puko/downloads)](https://packagist.org/packages/velliz/puko)
 
-**this is Starter Kit for building apps using Puko Framework**
+**this is [Starter Kit] for building apps using Puko Framework**
 
 ## Requirement
 
@@ -14,12 +14,12 @@ Puko Framework is MVC PHP Framework for quick and fast PHP Application Developme
 
 ## Install
 
-Download
+Download via composer:
 ```
 composer create-project velliz/puko myapp "1.0.0" --prefer-dist
 ```
 
-After download, Setup dependency via composer:
+Setup dependency via composer:
 ```
 composer install
 ```
