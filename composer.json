@@ -3,10 +3,10 @@
     "description": "PSR 4 modular based MVC Puko Framework",
     "license": "MIT",
     "require": {
-        "puko/framework": "1.0.0"
+        "puko/framework": "dev-master"
     },
     "require-dev": {
-        "puko/framework": "1.0.0"
+        "puko/framework": "dev-master"
     },
     "autoload": {
         "psr-4": {
