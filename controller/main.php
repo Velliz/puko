@@ -10,6 +10,12 @@ class main extends View implements Auth
     public function main()
     {
     }
+    
+    public function example()
+    {
+        $data['name'] = "Puko Framework";
+        return $data;
+    }
 
     #region auth
     public function Login($username, $password)
