@@ -1,12 +1,12 @@
 {
     "name": "velliz/puko",
-    "description": "PSR 4 modular based MVC Puko Framework",
+    "description": "PSR 4 MVC Framework for quick and fast PHP application development",
     "license": "MIT",
     "require": {
-        "puko/framework": "dev-master"
+        "puko/framework": "1.0.3"
     },
     "require-dev": {
-        "puko/framework": "dev-master"
+        "puko/framework": "1.0.3"
     },
     "autoload": {
         "psr-4": {
