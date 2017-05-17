@@ -1,0 +1,126 @@
+#!/usr/bin/env php
+<?php
+if (PHP_SAPI !== 'cli') {
+    die('You are not allowed to perform this action');
+}
+
+$command = $argv[0];
+$entity = isset($argv[1]) ? $argv[1] : null;
+$parameter = isset($argv[2]) ? $argv[2] : null;
+
+if ($entity === null && $parameter === null) {
+    help();
+}
+
+switch ($entity) {
+    case "setup":
+        setup($parameter);
+        break;
+    case "model":
+        //TODO: model cli generator
+        echo "\ncoming soon\n";
+        exit;
+        break;
+    case "modules":
+        //TODO: modules cli generator
+        echo "\ncoming soon\n";
+        exit;
+        break;
+    case "help":
+        help();
+        break;
+    case "version":
+        version();
+        break;
+    default:
+        exit('command not supported');
+        break;
+}
+
+function setup($parameter)
+{
+    switch ($parameter) {
+        case "db":
+            database();
+            break;
+        case "secure":
+            secure();
+            break;
+        default:
+            break;
+    }
+}
+
+function database()
+{
+    echo "\nStart database initialization ...\n\n";
+    echo "host name    : ";
+    $host = preg_replace('/\s+/', '', fgets(STDIN));
+    echo "host port    : ";
+    $port = preg_replace('/\s+/', '', fgets(STDIN));
+    echo "username     : ";
+    $user = preg_replace('/\s+/', '', fgets(STDIN));
+    echo "password     : ";
+    $pass = preg_replace('/\s+/', '', fgets(STDIN));
+    echo "database name: ";
+    $dbName = preg_replace('/\s+/', '', fgets(STDIN));
+
+    $configuration = <<<PHP
+<?php return [
+    'dbType' => 'mysql',
+    'host'   => '$host',
+    'user'   => '$user',
+    'pass'   => '$pass',
+    'dbName' => '$dbName',
+    'port'   => $port,
+];
+PHP;
+
+    file_put_contents("config/database.php", $configuration);
+
+    echo "\n... initialization completed.\n\n";
+    exit;
+}
+
+function secure()
+{
+    echo "\nStart AES-256 secure initialization ...\n\n";
+    echo "identifier   : ";
+    $identifier = preg_replace('/\s+/', '', fgets(STDIN));
+    echo "secure key   : ";
+    $key = preg_replace('/\s+/', '', fgets(STDIN));
+    echo "cookies name : ";
+    $cookies = preg_replace('/\s+/', '', fgets(STDIN));
+
+    $configuration = <<<PHP
+<?php return [
+    'method'     => 'AES-256-CBC',
+    'key'        => '$key',
+    'identifier' => '$identifier',
+    'cookies'    => '$cookies',
+];
+PHP;
+
+    file_put_contents("config/encryption.php", $configuration);
+
+    echo "\n... initialization completed.\n\n";
+    exit;
+}
+
+function help()
+{
+    echo "\npukoframework console commands list:\n";
+    echo "  setup    Setup puko framework installation\n";
+    echo "  model    Create new puko framework model\n";
+    echo "  modules  Create new puko framework modules\n";
+    echo "  help     Show help menu\n";
+    echo "  version  Show console version\n";
+    exit;
+}
+
+function version()
+{
+    echo "\npukoframework console\n";
+    echo "version 0.0.1-beta\n";
+    exit;
+}
