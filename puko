@@ -16,11 +16,6 @@ switch ($entity) {
     case "setup":
         setup($parameter);
         break;
-    case "model":
-        //TODO: model cli generator
-        echo "\ncoming soon\n";
-        exit;
-        break;
     case "modules":
         //TODO: modules cli generator
         echo "\ncoming soon\n";
@@ -65,6 +60,61 @@ function database()
     echo "database name: ";
     $dbName = preg_replace('/\s+/', '', fgets(STDIN));
 
+    try {
+
+        $pdoConnection = "mysql:host=$host;port=$port;dbname=$dbName";
+
+        $dbi = new PDO($pdoConnection, $user, $pass);
+        $dbi->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $table_list = "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES
+                       WHERE TABLE_NAME like '%' AND TABLE_SCHEMA = '$dbName'";
+
+        $statement = $dbi->prepare($table_list);
+        $statement->execute();
+        $table = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        echo "\n";
+
+        foreach ($table as $key => $value) {
+            echo "Creating model " . $value['TABLE_NAME'] . ".php\n";
+            $model_file = <<<'EOT'
+<?php
+namespace model;
+
+use pukoframework\pda\DBI;
+
+class {?}
+{
+    public static function Create($data)
+    {
+        return DBI::Prepare('{?}')->Save($data);
+    }
+
+    public static function Update($where, $data)
+    {
+        return DBI::Prepare('{?}')->Update($where, $data);
+    }
+
+    public static function GetAll()
+    {
+        return DBI::Prepare('SELECT * FROM {?}')->GetData();
+    }
+
+}
+EOT;
+            $model_file = str_replace('{?}', $value['TABLE_NAME'], $model_file);
+            file_put_contents("model/".$value['TABLE_NAME'].".php", $model_file);
+        }
+
+
+    } catch (PDOException $e) {
+
+        echo "\nConnection failed: " . $e->getMessage();
+        echo "\n";
+        database();
+
+    }
     $configuration = <<<PHP
 <?php return [
     'dbType' => 'mysql',
@@ -111,7 +161,6 @@ function help()
 {
     echo "\npukoframework console commands list:\n";
     echo "  setup    Setup puko framework installation\n";
-    echo "  model    Create new puko framework model\n";
     echo "  modules  Create new puko framework modules\n";
     echo "  help     Show help menu\n";
     echo "  version  Show console version\n";

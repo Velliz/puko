@@ -1,6 +1,4 @@
-<?php
-
-return [
+<?php return [
     'dbType' => 'mysql',
     'host'   => 'localhost',
     'user'   => 'root',
