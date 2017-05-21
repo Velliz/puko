@@ -80,7 +80,7 @@ function database()
             echo "Creating model " . $value['TABLE_NAME'] . ".php\n";
             $model_file = <<<'EOT'
 <?php
-namespace model;
+namespace model\base;
 
 use pukoframework\pda\DBI;
 
@@ -104,7 +104,10 @@ class {?}
 }
 EOT;
             $model_file = str_replace('{?}', $value['TABLE_NAME'], $model_file);
-            file_put_contents("model/".$value['TABLE_NAME'].".php", $model_file);
+            if (!is_dir('model/base')) {
+              mkdir('model/base');
+            }
+            file_put_contents("model/base/".$value['TABLE_NAME'].".php", $model_file);
         }
 
 

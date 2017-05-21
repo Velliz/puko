@@ -11,14 +11,21 @@ Puko Framework is MVC PHP Framework for quick and fast PHP Application Developme
 
 ## Requirement
 
-* Puko Require **PHP 5.4** or greater
+* Puko Require **PHP 5.5** or greater
 * Composer
 
 ## Install
 
 download and install via composer:
-```
+```php
 composer create-project velliz/puko app_name
+```
+
+## Setup
+
+run database setup via puko console:
+```php
+php puko setup db
 ```
 
 usage and sample you can see it in documentation in [bahasa indonesia](https://velliz.github.io/pukodocs)
