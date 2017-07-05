@@ -5,14 +5,13 @@
   "require": {
     "puko/framework": "dev-master"
   },
-  "require-dev": {
-    "puko/framework": "dev-master"
-  },
   "autoload": {
     "psr-4": {
       "controller\\": "controller/",
       "model\\": "model/",
-      "config\\": "config/"
+      "config\\": "config/",
+      "plugins\\": "plugins/",
+      "tests\\": "tests/"
     }
   }
 }
