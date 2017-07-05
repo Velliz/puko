@@ -18,4 +18,9 @@ class main extends View
     public function main()
     {
     }
+
+    public function OnInitialize()
+    {
+
+    }
 }

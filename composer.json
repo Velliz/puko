@@ -1,18 +1,18 @@
 {
-    "name": "velliz/puko",
-    "description": "PSR 4 MVC Framework for quick and fast PHP application development",
-    "license": "MIT",
-    "require": {
-        "puko/framework": "1.0.3"
-    },
-    "require-dev": {
-        "puko/framework": "1.0.3"
-    },
-    "autoload": {
-        "psr-4": {
-            "controller\\": "controller/",
-            "model\\": "model/",
-            "config\\": "config/"
-        }
+  "name": "velliz/puko",
+  "description": "PSR 4 MVC Framework for quick and fast PHP application development",
+  "license": "MIT",
+  "require": {
+    "puko/framework": "dev-master"
+  },
+  "require-dev": {
+    "puko/framework": "dev-master"
+  },
+  "autoload": {
+    "psr-4": {
+      "controller\\": "controller/",
+      "model\\": "model/",
+      "config\\": "config/"
     }
+  }
 }
