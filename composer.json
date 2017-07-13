@@ -3,7 +3,7 @@
   "description": "PSR 4 MVC Framework for quick and fast PHP application development",
   "license": "MIT",
   "require": {
-    "puko/framework": "dev-master"
+    "puko/framework": "1.1.0"
   },
   "autoload": {
     "psr-4": {
