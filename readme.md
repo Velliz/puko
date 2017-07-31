@@ -31,9 +31,19 @@ Puko Framework is MVC PHP Framework for quick PHP Application Development.
 
 ## Installation
 
-Wanna try? just hit on composer:
+Want to try? Just hit on composer:
 ```php
 composer create-project velliz/puko appname
+```
+
+Setup your database:
+```php
+php puko setup db
+```
+
+Setup your encryption configuration:
+```php
+php puko setup secure
 ```
 
 See starter kit for puko framework in [here](https://github.com/Velliz/puko) 
