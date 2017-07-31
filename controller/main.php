@@ -20,6 +20,11 @@ class main extends View
 
     }
 
+    public function another()
+    {
+
+    }
+
     public function OnInitialize()
     {
     }

@@ -5,6 +5,11 @@ $routes['page'] = array(
         'controller' => 'main',
         'function' => 'main',
         'accept' => ['GET', 'POST'],
+    ],
+    'another' => [
+        'controller' => 'main',
+        'function' => 'another',
+        'accept' => ['GET', 'POST'],
     ]
 );
 
