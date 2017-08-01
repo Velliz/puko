@@ -7,6 +7,8 @@ if (PHP_SAPI !== 'cli') {
 $command = $argv[0];
 $entity = isset($argv[1]) ? $argv[1] : null;
 $parameter = isset($argv[2]) ? $argv[2] : null;
+$value = isset($argv[3]) ? $argv[3] : null;
+$customValue = isset($argv[4]) ? $argv[4] : null;
 
 if ($entity === null && $parameter === null) {
     help();
@@ -21,6 +23,9 @@ switch ($entity) {
         echo "\ncoming soon\n";
         exit;
         break;
+    case "routes":
+        routes($parameter, $value, $customValue);
+        break;
     case "help":
         help();
         break;
@@ -31,6 +36,7 @@ switch ($entity) {
         echo "Puko project initialized at localhost:8000\n";
         echo "Press Ctrl + C to stop\n";
         echo exec('php -S localhost:8000 routes.php');
+        break;
     default:
         exit('command not supported');
         break;
@@ -109,9 +115,9 @@ class {?}
 EOT;
             $model_file = str_replace('{?}', $value['TABLE_NAME'], $model_file);
             if (!is_dir('model/base')) {
-              mkdir('model/base');
+                mkdir('model/base');
             }
-            file_put_contents("model/base/".$value['TABLE_NAME'].".php", $model_file);
+            file_put_contents("model/base/" . $value['TABLE_NAME'] . ".php", $model_file);
         }
 
 
@@ -172,6 +178,8 @@ function help()
     echo "  modules  Create new puko framework modules\n";
     echo "  help     Show help menu\n";
     echo "  version  Show console version\n";
+    echo "\nexperimental\n";
+    echo "  php puko routes page add webroutes\n";
     exit;
 }
 
@@ -180,4 +188,77 @@ function version()
     echo "\npukoframework console\n";
     echo "version 0.0.1-beta\n";
     exit;
+}
+
+function routes($type, $parameter, $value)
+{
+    //type = page / error / not_found
+    //parameter = add / update / delete / list
+    //value = the web browser url
+    $routes = include "config/routes.php";
+    $active = $routes[$type];
+    switch ($parameter) {
+        case "add":
+            if (isset($routes[$type][$value])) {
+                echo "\nroutes already registered\n";
+                exit;
+            }
+            echo "controller                  : ";
+            $controller = preg_replace('/\s+/', '', fgets(STDIN));
+            echo "function                    : ";
+            $function = preg_replace('/\s+/', '', fgets(STDIN));
+            echo "accept(separate with comma) : ";
+            $accept = preg_replace('/\s+/', '', fgets(STDIN));
+            $data = [
+                "controller" => $controller,
+                "function" => $function,
+                "accept" => explode(",", $accept)
+            ];
+            $routes[$type][$value] = $data;
+            file_put_contents("config/routes.php", '<?php $routes = ' . var_export54($routes) . '; return $routes;');
+            break;
+        case "update":
+            if (!isset($routes[$type][$value])) {
+                echo "\nroutes not found\n";
+                exit;
+            }
+            break;
+        case "delete":
+            if (!isset($routes[$type][$value])) {
+                echo "\nroutes not found\n";
+                exit;
+            }
+            break;
+        case "list":
+            echo "\nRoutes list found (" . count($active) . ") entries\n\n";
+            foreach ($active as $key => $value) {
+                echo "'" . $key . "' => " . $value["controller"] . "@" . $value["function"] . " [" . implode(",", $value["accept"]) . "] " . "\n";
+            }
+            break;
+        default:
+            echo "\ncommand " . $parameter . " not found. try list/add/update/delete\n";
+            exit;
+            break;
+    }
+}
+
+function var_export54($var, $indent = "")
+{
+    switch (gettype($var)) {
+        case "string":
+            return '"' . addcslashes($var, "\\\$\"\r\n\t\v\f") . '"';
+        case "array":
+            $indexed = array_keys($var) === range(0, count($var) - 1);
+            $r = [];
+            foreach ($var as $key => $value) {
+                $r[] = "$indent    "
+                    . ($indexed ? "" : var_export54($key) . " => ")
+                    . var_export54($value, "$indent    ");
+            }
+            return "[\n" . implode(",\n", $r) . "\n" . $indent . "]";
+        case "boolean":
+            return $var ? "TRUE" : "FALSE";
+        default:
+            return var_export($var, TRUE);
+    }
 }
