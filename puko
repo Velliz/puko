@@ -180,6 +180,10 @@ function help()
     echo "  version  Show console version\n";
     echo "\nexperimental\n";
     echo "  php puko routes page add webroutes\n";
+    echo "  php puko routes page update webroutes\n";
+    echo "  php puko routes not_found\n";
+    echo "  php puko routes error\n";
+    echo "  php puko routes page list\n";
     exit;
 }
 
@@ -197,48 +201,81 @@ function routes($type, $parameter, $value)
     //value = the web browser url
     $routes = include "config/routes.php";
     $active = $routes[$type];
-    switch ($parameter) {
-        case "add":
-            if (isset($routes[$type][$value])) {
-                echo "\nroutes already registered\n";
+    if ($type == "page") {
+        switch ($parameter) {
+            case "add":
+                if (isset($routes[$type][$value])) {
+                    echo "\nroutes already registered\n";
+                    exit;
+                }
+                echo "controller                  : ";
+                $controller = preg_replace('/\s+/', '', fgets(STDIN));
+                echo "function                    : ";
+                $function = preg_replace('/\s+/', '', fgets(STDIN));
+                echo "accept(separate with comma) : ";
+                $accept = preg_replace('/\s+/', '', fgets(STDIN));
+                $data = [
+                    "controller" => $controller,
+                    "function" => $function,
+                    "accept" => explode(",", $accept)
+                ];
+                $routes[$type][$value] = $data;
+                file_put_contents("config/routes.php", '<?php $routes = ' . var_export54($routes) . '; return $routes;');
+                break;
+            case "update":
+                if (!isset($routes[$type][$value])) {
+                    echo "\nroutes not found\n";
+                    exit;
+                }
+                echo "controller                  : ";
+                $controller = preg_replace('/\s+/', '', fgets(STDIN));
+                echo "function                    : ";
+                $function = preg_replace('/\s+/', '', fgets(STDIN));
+                echo "accept(separate with comma) : ";
+                $accept = preg_replace('/\s+/', '', fgets(STDIN));
+                $data = [
+                    "controller" => $controller,
+                    "function" => $function,
+                    "accept" => explode(",", $accept)
+                ];
+                $routes[$type][$value] = $data;
+                file_put_contents("config/routes.php", '<?php $routes = ' . var_export54($routes) . '; return $routes;');
+                break;
+            case "delete":
+                if (!isset($routes[$type][$value])) {
+                    echo "\nroutes not found\n";
+                    exit;
+                }
+                unset($routes[$type][$value]);
+                file_put_contents("config/routes.php", '<?php $routes = ' . var_export54($routes) . '; return $routes;');
+                break;
+            case "list":
+                echo "\nRoutes list found (" . count($active) . ") entries\n\n";
+                foreach ($active as $key => $value) {
+                    echo "'" . $key . "' => " . $value["controller"] . "@" . $value["function"] . " [" . implode(",", $value["accept"]) . "] " . "\n";
+                }
+                break;
+            default:
+                echo "\ncommand " . $parameter . " not found. try list/add/update/delete\n";
                 exit;
-            }
-            echo "controller                  : ";
-            $controller = preg_replace('/\s+/', '', fgets(STDIN));
-            echo "function                    : ";
-            $function = preg_replace('/\s+/', '', fgets(STDIN));
-            echo "accept(separate with comma) : ";
-            $accept = preg_replace('/\s+/', '', fgets(STDIN));
-            $data = [
-                "controller" => $controller,
-                "function" => $function,
-                "accept" => explode(",", $accept)
-            ];
-            $routes[$type][$value] = $data;
-            file_put_contents("config/routes.php", '<?php $routes = ' . var_export54($routes) . '; return $routes;');
-            break;
-        case "update":
-            if (!isset($routes[$type][$value])) {
-                echo "\nroutes not found\n";
-                exit;
-            }
-            break;
-        case "delete":
-            if (!isset($routes[$type][$value])) {
-                echo "\nroutes not found\n";
-                exit;
-            }
-            break;
-        case "list":
-            echo "\nRoutes list found (" . count($active) . ") entries\n\n";
-            foreach ($active as $key => $value) {
-                echo "'" . $key . "' => " . $value["controller"] . "@" . $value["function"] . " [" . implode(",", $value["accept"]) . "] " . "\n";
-            }
-            break;
-        default:
-            echo "\ncommand " . $parameter . " not found. try list/add/update/delete\n";
-            exit;
-            break;
+                break;
+        }
+    }
+
+    if ($type == "error" || $type == "not_found") {
+        echo "controller                  : ";
+        $controller = preg_replace('/\s+/', '', fgets(STDIN));
+        echo "function                    : ";
+        $function = preg_replace('/\s+/', '', fgets(STDIN));
+        echo "accept(separate with comma) : ";
+        $accept = preg_replace('/\s+/', '', fgets(STDIN));
+        $data = [
+            "controller" => $controller,
+            "function" => $function,
+            "accept" => explode(",", $accept)
+        ];
+        $routes[$type] = $data;
+        file_put_contents("config/routes.php", '<?php $routes = ' . var_export54($routes) . '; return $routes;');
     }
 }
 

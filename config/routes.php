@@ -9,41 +9,27 @@
             ]
         ],
         "another" => [
-            "controller" => "main",
-            "function" => "another",
+            "controller" => "mainupdate",
+            "function" => "testya",
             "accept" => [
-                "GET",
-                "POST"
-            ]
-        ],
-        "multiple/folder" => [
-            "controller" => "folders\\user",
-            "function" => "folders",
-            "accept" => [
-                "GET"
-            ]
-        ],
-        "welcome/puko" => [
-            "controller" => "welcome",
-            "function" => "puko",
-            "accept" => [
-                "GET",
                 "POST"
             ]
         ]
     ],
     "error" => [
-        "controller" => "",
-        "function" => "",
+        "controller" => "error",
+        "function" => "display",
         "accept" => [
-            "GET"
+            "GET",
+            "POST"
         ]
     ],
     "not_found" => [
-        "controller" => "",
-        "function" => "",
+        "controller" => "error",
+        "function" => "notfound",
         "accept" => [
-            "GET"
+            "GET",
+            "POST"
         ]
     ]
 ]; return $routes;
