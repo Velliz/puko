@@ -196,9 +196,6 @@ function version()
 
 function routes($type, $parameter, $value)
 {
-    //type = page / error / not_found
-    //parameter = add / update / delete / list
-    //value = the web browser url
     $routes = include "config/routes.php";
     $active = $routes[$type];
     if ($type == "page") {
@@ -220,7 +217,74 @@ function routes($type, $parameter, $value)
                     "accept" => explode(",", $accept)
                 ];
                 $routes[$type][$value] = $data;
+
                 file_put_contents("config/routes.php", '<?php $routes = ' . var_export54($routes) . '; return $routes;');
+
+                if (!file_exists("assets/html/id/" . str_replace('\\', '/', $controller))) {
+                    mkdir("assets/html/id/" . str_replace('\\', '/', $controller), 0777, true);
+                }
+
+                if (!file_exists("assets/html/en/" . str_replace('\\', '/', $controller))) {
+                    mkdir("assets/html/en/" . str_replace('\\', '/', $controller), 0777, true);
+                }
+
+                $html = <<<HTML
+{!CSS}
+<!-- your custom CSS here -->
+{/CSS} 
+<table>
+<tr>
+<td>controller</td>
+<td>$controller.php</td>
+</tr>
+</table> 
+{!JS}
+<!-- your custom JS here -->
+{/JS}
+HTML;
+
+
+                file_put_contents("assets/html/id/" . str_replace('\\', '/', $controller) . '/' . $function . '.html', $html);
+                file_put_contents("assets/html/en/" . str_replace('\\', '/', $controller) . '/' . $function . '.html', $html);
+
+                $controllerExplode = explode('\\', $controller);
+                $className = $controllerExplode[sizeof($controllerExplode) - 1];
+                $namespaces = '';
+                for ($i = 0; $i < sizeof($controllerExplode) - 1; $i++) {
+                    $namespaces .= $controllerExplode[$i] . "\\";
+                }
+                $namespaces = "controller\\" . rtrim($namespaces, "\\");
+                $namespaceFolder = str_replace("\\", "/", $namespaces);
+                if (!file_exists($namespaceFolder)) {
+                    mkdir($namespaceFolder, 0777, true);
+                    $var = <<<PHP
+<?php
+
+namespace $namespaces;
+
+use pukoframework\pte\View;
+
+/**
+ * #Master master.html
+ */
+class $className extends View
+{
+
+    public function $function()
+    {
+
+    }
+    
+    public function OnInitialize()
+    {
+        // TODO: Implement OnInitialize() method.
+    }
+    
+}
+
+PHP;
+                    file_put_contents('controller/' . str_replace('\\', '/', $controller . '.php'), $var);
+                }
                 break;
             case "update":
                 if (!isset($routes[$type][$value])) {
