@@ -248,16 +248,17 @@ HTML;
                 file_put_contents("assets/html/en/" . str_replace('\\', '/', $controller) . '/' . $function . '.html', $html);
 
                 $controllerExplode = explode('\\', $controller);
+
                 $className = $controllerExplode[sizeof($controllerExplode) - 1];
                 $namespaces = '';
                 for ($i = 0; $i < sizeof($controllerExplode) - 1; $i++) {
                     $namespaces .= $controllerExplode[$i] . "\\";
                 }
-                $namespaces = "controller\\" . rtrim($namespaces, "\\");
-                $namespaceFolder = str_replace("\\", "/", $namespaces);
-                if (!file_exists($namespaceFolder)) {
-                    mkdir($namespaceFolder, 0777, true);
-                    $var = <<<PHP
+                if (sizeof($controllerExplode) == 1) {
+                    $namespaces = "controller";
+                    $className = $controller;
+                    if (!file_exists($namespaces . "/" . $className)) {
+                        $var = <<<PHP
 <?php
 
 namespace $namespaces;
@@ -283,8 +284,44 @@ class $className extends View
 }
 
 PHP;
-                    file_put_contents('controller/' . str_replace('\\', '/', $controller . '.php'), $var);
+                        file_put_contents($namespaces . "/" . $className . '.php', $var);
+                    }
+                } else {
+                    $namespaces = "controller\\" . rtrim($namespaces, "\\");
+                    $namespaceFolder = str_replace("\\", "/", $namespaces);
+                    if (!file_exists($namespaceFolder)) {
+                        mkdir($namespaceFolder, 0777, true);
+                        $var = <<<PHP
+<?php
+
+namespace $namespaces;
+
+use pukoframework\pte\View;
+
+/**
+ * #Master master.html
+ */
+class $className extends View
+{
+
+    public function $function()
+    {
+
+    }
+    
+    public function OnInitialize()
+    {
+        // TODO: Implement OnInitialize() method.
+    }
+    
+}
+
+PHP;
+                        file_put_contents('controller/' . str_replace('\\', '/', $controller . '.php'), $var);
+                    }
                 }
+                echo "\nroutes added\n";
+                exit;
                 break;
             case "update":
                 if (!isset($routes[$type][$value])) {
@@ -304,6 +341,9 @@ PHP;
                 ];
                 $routes[$type][$value] = $data;
                 file_put_contents("config/routes.php", '<?php $routes = ' . var_export54($routes) . '; return $routes;');
+
+                echo "\nroutes modified\n";
+                exit;
                 break;
             case "delete":
                 if (!isset($routes[$type][$value])) {
@@ -312,6 +352,9 @@ PHP;
                 }
                 unset($routes[$type][$value]);
                 file_put_contents("config/routes.php", '<?php $routes = ' . var_export54($routes) . '; return $routes;');
+
+                echo "\nroutes deleted\n";
+                exit;
                 break;
             case "list":
                 echo "\nRoutes list found (" . count($active) . ") entries\n\n";
