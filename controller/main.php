@@ -13,16 +13,10 @@ use pukoframework\pte\View;
 class main extends View
 {
     /**
-     * #Value title Welcome to Pukoframework
+     * #Value title Puko Framework
      */
     public function main()
     {
-
-    }
-
-    public function another()
-    {
-
     }
 
     public function OnInitialize()
