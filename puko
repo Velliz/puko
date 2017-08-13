@@ -254,11 +254,12 @@ HTML;
                 for ($i = 0; $i < sizeof($controllerExplode) - 1; $i++) {
                     $namespaces .= $controllerExplode[$i] . "\\";
                 }
+
                 if (sizeof($controllerExplode) == 1) {
+                    //region base
                     $namespaces = "controller";
                     $className = $controller;
-                    if (!file_exists($namespaces . "/" . $className)) {
-                        $var = <<<PHP
+                    $varNewFile = <<<PHP
 <?php
 
 namespace $namespaces;
@@ -271,27 +272,26 @@ use pukoframework\pte\View;
 class $className extends View
 {
 
-    public function $function()
-    {
+    public function OnInitialize(){}
 
-    }
-    
-    public function OnInitialize()
-    {
-        // TODO: Implement OnInitialize() method.
-    }
-    
+    public function $function(){}
+
 }
 
 PHP;
-                        file_put_contents($namespaces . "/" . $className . '.php', $var);
+                    if (!file_exists($namespaces . "/" . $className . ".php")) {
+                        file_put_contents($namespaces . "/" . $className . '.php', $varNewFile);
+                    } else {
+                        $existingController = file_get_contents($namespaces . "/" . $className . '.php');
+                        $pos = strrpos($existingController, "}");
+                        $existingController = substr_replace($existingController, "public function $function(){}\n}", $pos);
+                        file_put_contents($namespaces . "/" . $className . '.php', $existingController);
                     }
                 } else {
+                    //region complex namespaces
                     $namespaces = "controller\\" . rtrim($namespaces, "\\");
                     $namespaceFolder = str_replace("\\", "/", $namespaces);
-                    if (!file_exists($namespaceFolder)) {
-                        mkdir($namespaceFolder, 0777, true);
-                        $var = <<<PHP
+                    $varNewFile = <<<PHP
 <?php
 
 namespace $namespaces;
@@ -304,21 +304,25 @@ use pukoframework\pte\View;
 class $className extends View
 {
 
-    public function $function()
-    {
+    public function OnInitialize(){}
 
-    }
-    
-    public function OnInitialize()
-    {
-        // TODO: Implement OnInitialize() method.
-    }
-    
+    public function $function(){}
+
 }
 
 PHP;
-                        file_put_contents('controller/' . str_replace('\\', '/', $controller . '.php'), $var);
+                    if (!file_exists($namespaceFolder)) {
+                        mkdir($namespaceFolder, 0777, true);
                     }
+                    if (!file_exists('controller/' . str_replace('\\', '/', $controller . '.php'))) {
+                        file_put_contents('controller/' . str_replace('\\', '/', $controller . '.php'), $varNewFile);
+                    } else {
+                        $existingController = file_get_contents('controller/' . str_replace('\\', '/', $controller . '.php'));
+                        $pos = strrpos($existingController, "}");
+                        $existingController = substr_replace($existingController, "public function $function(){}\n}", $pos);
+                        file_put_contents('controller/' . str_replace('\\', '/', $controller . '.php'), $existingController);
+                    }
+
                 }
                 echo "\nroutes added\n";
                 exit;
