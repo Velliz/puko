@@ -284,7 +284,7 @@ PHP;
                     } else {
                         $existingController = file_get_contents($namespaces . "/" . $className . '.php');
                         $pos = strrpos($existingController, "}");
-                        $existingController = substr_replace($existingController, "public function $function(){}\n}", $pos);
+                        $existingController = substr_replace($existingController, "    public function $function(){}\n\n}", $pos);
                         file_put_contents($namespaces . "/" . $className . '.php', $existingController);
                     }
                 } else {
@@ -319,7 +319,7 @@ PHP;
                     } else {
                         $existingController = file_get_contents('controller/' . str_replace('\\', '/', $controller . '.php'));
                         $pos = strrpos($existingController, "}");
-                        $existingController = substr_replace($existingController, "public function $function(){}\n}", $pos);
+                        $existingController = substr_replace($existingController, "    public function $function(){}\n\n}", $pos);
                         file_put_contents('controller/' . str_replace('\\', '/', $controller . '.php'), $existingController);
                     }
 
