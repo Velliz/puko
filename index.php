@@ -9,7 +9,7 @@
 use pukoframework\Framework;
 
 require __DIR__ . '/vendor/autoload.php';
-require 'config/application.php';
+define('BASE_URL', 'localhost');
 
 /*
  *---------------------------------------------------------------
