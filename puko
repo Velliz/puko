@@ -33,9 +33,12 @@ switch ($entity) {
         version();
         break;
     case "serve":
-        echo "Puko project initialized at localhost:8000\n";
+        if ($parameter === null) {
+            exit('specify a valid port. example php puko serve 8000');
+        }
+        echo "Puko project initialized at localhost:$parameter\n";
         echo "Press Ctrl + C to stop\n";
-        echo exec('php -S localhost:8000 routes.php');
+        echo exec("php -S localhost:$parameter routes.php");
         break;
     default:
         exit('command not supported');
@@ -174,23 +177,22 @@ function help()
 {
     echo "\npukoframework console commands list:\n";
     echo "  setup    Setup puko framework installation\n";
-    echo "  serve    Start puko on localhost:8000\n";
+    echo "           [db/secure/base_auth/base_page/base_api]\n";
+    echo "\n";
+    echo "  routes   Setup puko framework routes\n";
+    echo "           [page/api/error/not_found] [add/update/delete/list] [url]\n";
+    echo "\n";
+    echo "  serve    Start puko on localhost:[port]\n";
     echo "  modules  Create new puko framework modules\n";
     echo "  help     Show help menu\n";
     echo "  version  Show console version\n";
-    echo "\nexperimental\n";
-    echo "  php puko routes page add webroutes\n";
-    echo "  php puko routes page update webroutes\n";
-    echo "  php puko routes not_found\n";
-    echo "  php puko routes error\n";
-    echo "  php puko routes page list\n";
     exit;
 }
 
 function version()
 {
     echo "\npukoframework console\n";
-    echo "version 0.0.1-beta\n";
+    echo "version 0.0.1\n";
     exit;
 }
 
