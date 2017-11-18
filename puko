@@ -16,7 +16,7 @@ if ($entity === null && $parameter === null) {
 
 switch ($entity) {
     case "setup":
-        setup($parameter);
+        setup($parameter, $value);
         break;
     case "modules":
         //TODO: modules cli generator
@@ -45,7 +45,7 @@ switch ($entity) {
         break;
 }
 
-function setup($parameter)
+function setup($parameter, $value)
 {
     switch ($parameter) {
         case "db":
@@ -53,6 +53,57 @@ function setup($parameter)
             break;
         case "secure":
             secure();
+            break;
+        case 'base_auth':
+            $varNewFile = <<<'EOT'
+<?php
+
+namespace controller\base;
+
+use pukoframework\auth\Auth;
+
+class {?} implements Auth
+{
+
+    /**
+     * @var {?}
+     */
+    static $authenticator;
+
+    public static function Instance()
+    {
+        if (!self::$authenticator instanceof {?}) {
+            self::$authenticator = new {?}();
+        }
+        return self::$authenticator;
+    }
+
+    public function Login($username, $password)
+    {
+        //todo: your custom login code here
+    }
+
+    public function Logout()
+    {
+        //todo: create or clear log in databases
+    }
+
+    public function GetLoginData($id)
+    {
+        //todo: return your user data here
+    }
+
+}
+EOT;
+            if ($value === null) {
+                exit('class_name not specified. example: php puko setup base_auth UserAuth');
+            }
+            $varNewFile = str_replace('{?}', $value, $varNewFile);
+            if (!is_dir('controller/base')) {
+                mkdir('controller/base');
+            }
+            file_put_contents("controller/base/" . $value . '.php', $varNewFile);
+            exit('base auth class created');
             break;
         default:
             break;
@@ -177,7 +228,11 @@ function help()
 {
     echo "\npukoframework console commands list:\n";
     echo "  setup    Setup puko framework installation\n";
-    echo "           [db/secure/base_auth/base_page/base_api]\n";
+    echo "           [db]\n";
+    echo "           [secure]\n";
+    echo "           [base_auth] [class_name]\n";
+    echo "           [base_page] [class_name]\n";
+    echo "           [base_api] [class_name]\n";
     echo "\n";
     echo "  routes   Setup puko framework routes\n";
     echo "           [page/api/error/not_found] [add/update/delete/list] [url]\n";

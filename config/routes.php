@@ -7,13 +7,6 @@
                 "GET",
                 "POST"
             ]
-        ],
-        "another" => [
-            "controller" => "mainupdate",
-            "function" => "testya",
-            "accept" => [
-                "POST"
-            ]
         ]
     ],
     "error" => [
