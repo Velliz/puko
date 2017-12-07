@@ -2,7 +2,7 @@
 
 namespace controller;
 
-use pukoframework\pte\View;
+use pukoframework\middleware\View;
 
 /**
  * Class main
@@ -14,6 +14,7 @@ class main extends View
 {
     /**
      * #Value title Puko Framework
+     * #Template master false
      */
     public function main()
     {
