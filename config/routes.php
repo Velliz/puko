@@ -25,4 +25,5 @@
             "POST"
         ]
     ]
-]; return $routes;
+];
+return $routes;
