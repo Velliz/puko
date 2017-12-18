@@ -14,7 +14,7 @@ class main extends View
 {
     /**
      * #Value title Puko Framework
-     * #Template master false
+     * #Template master true
      */
     public function main()
     {
