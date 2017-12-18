@@ -2,7 +2,7 @@
 
 namespace controller;
 
-use pukoframework\pte\View;
+use pukoframework\middleware\View;
 
 /**
  * Class main
@@ -22,4 +22,5 @@ class main extends View
     public function OnInitialize()
     {
     }
+
 }
