@@ -1,4 +1,4 @@
-<img align="left" src="https://github.com/Velliz/pukodocs/blob/gh-pages/icon/material/puko-material-50.png">
+<img align="left" src="https://github.com/Velliz/pukodocs/blob/master/icon/material/puko-material-50.png">
 
 # Puko Framework [Starter Kit]
 
