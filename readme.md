@@ -1,4 +1,4 @@
-<img align="left" src="https://github.com/Velliz/pukodocs/blob/master/icon/material/puko-material-50.png">
+<img align="left" src="https://raw.githubusercontent.com/Velliz/puko/master/assets/icon/material/puko-material-50.png">
 
 # Puko Framework [Starter Kit]
 
@@ -56,4 +56,4 @@ Fell free to post an issue and pull request to make puko framework better.
 
 Crafted with <3 from Bandung, Indonesia.
 
-Copyright 2016 - 2017 by Didit Velliz
+Copyright 2016 - present by Didit Velliz
