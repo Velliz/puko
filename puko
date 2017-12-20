@@ -24,6 +24,9 @@ switch ($entity) {
     case "routes":
         routes($parameter, $value, $customValue);
         break;
+    case "elements":
+        elements($parameter, $value, $customValue);
+        break;
     case "help":
         help();
         break;
@@ -640,6 +643,17 @@ PHP;
 function plugins($type, $parameter, $value)
 {
     echo 'coming soon';
+}
+
+function elements($parameter, $value, $customValue)
+{
+    switch ($parameter) {
+        case "add":
+            //todo: scaffolds the elements
+            break;
+        default:
+            break;
+    }
 }
 
 function var_export54($var, $indent = "")

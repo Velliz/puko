@@ -1,0 +1,32 @@
+{!css(<link href="plugins/elements/userbadge/userbadge.css" rel="stylesheet" type="text/css"/>)}
+{!js(<script type="text/javascript" src="plugins/elements/userbadge/userbadge.js"></script>)}
+
+<!--<link href="userbadge.css" rel="stylesheet" type="text/css"/>-->
+<!--<script type="text/javascript" src="userbadge.js"></script>-->
+
+<div class="container">
+    <div class="row">
+        <h1>
+            Dynamically blurring avatar images using Canvas.
+        </h1>
+    </div>
+    <div class="row">
+        <div class="col-sm-3">
+            <div class="card">
+                <canvas class="header-bg" width="250" height="70" id="header-blur"></canvas>
+                <div class="avatar">
+                    <img src="https://avatars3.githubusercontent.com/u/4044364?s=460&v=4" alt="test" />
+                </div>
+                <div class="content">
+                    <p>
+                        {!Name}
+                        <br>
+                        {!Jobs}
+                    </p>
+                    <p><button type="button" class="btn btn-default">{!Contacts}</button></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{!User}
