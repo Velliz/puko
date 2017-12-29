@@ -2,8 +2,6 @@
 
 namespace controller;
 
-use plugins\elements\avatar\avatar;
-use plugins\elements\userbadge\UserBadge;
 use pukoframework\middleware\View;
 
 /**
