@@ -18,14 +18,11 @@ switch ($entity) {
     case "setup":
         setup($parameter, $value, $customValue);
         break;
-    case "plugins":
-        plugins($parameter, $value, $customValue);
-        break;
     case "routes":
         routes($parameter, $value, $customValue);
         break;
-    case "elements":
-        elements($parameter, $value, $customValue);
+    case "element":
+        elements($parameter);
         break;
     case "help":
         help();
@@ -287,7 +284,7 @@ function help()
     echo "           [view/service/error/not_found] [add/update/delete/list] [url]\n";
     echo "\n";
     echo "  serve    Start puko on localhost:[port]\n";
-    echo "  plugins  Puko framework plugins\n";
+    echo "  element  Puko elements\n";
     echo "\n";
     echo "  help     Show help menu\n";
     echo "  version  Show console version\n";
@@ -640,20 +637,70 @@ PHP;
 
 }
 
-function plugins($type, $parameter, $value)
+function elements($type)
 {
-    echo 'coming soon';
-}
+    $lowerType = strtolower($type);
 
-function elements($parameter, $value, $customValue)
+    $varPhpFile = "<?php
+    
+namespace plugins\\elements\\$lowerType;
+
+use pte\\Parts;
+
+class $type extends Parts
 {
-    switch ($parameter) {
-        case "add":
-            //todo: scaffolds the elements
-            break;
-        default:
-            break;
+
+    /**
+     * @return string
+     */
+    public function Parse()
+    {" . '
+        $this->pte->SetValue($this->data);
+        $this->pte->SetHtml(' . $type . "::class . '.html');
+        return" . ' $this->pte->Output();' . "
     }
+
+}";
+
+    if (!file_exists('plugins/elements/' . $lowerType)) {
+        mkdir('plugins/elements/' . $lowerType, 0777, true);
+    }
+    if (!file_exists('plugins/elements/' . $lowerType . '/' . $type . '.php')) {
+        file_put_contents('plugins/elements/' . $lowerType . '/' . $type . '.php', $varPhpFile);
+    }
+
+    $newHtmlFile = <<<HTML
+{!css(<link href="plugins/elements/?/?.css" rel="stylesheet" type="text/css"/>)}
+{!js(<script type="text/javascript" src="plugins/elements/?/?.js"></script>)}
+<!-- your code here -->
+HTML;
+
+    $newHtmlFile = str_replace('?', $lowerType, $newHtmlFile);
+
+    if (!file_exists('plugins/elements/' . $lowerType . '/' . $lowerType . '.html')) {
+        file_put_contents('plugins/elements/' . $lowerType . '/' . $lowerType . '.html', $newHtmlFile);
+    }
+
+
+    $newJsFile = <<<JS
+// your code here
+JS;
+
+    if (!file_exists('plugins/elements/' . $lowerType . '/' . $lowerType . '.js')) {
+        file_put_contents('plugins/elements/' . $lowerType . '/' . $lowerType . '.js', $newJsFile);
+    }
+
+
+    $newCssFile = <<<CSS
+/* your css here */
+CSS;
+
+    if (!file_exists('plugins/elements/' . $lowerType . '/' . $lowerType . '.css')) {
+        file_put_contents('plugins/elements/' . $lowerType . '/' . $lowerType . '.css', $newCssFile);
+    }
+
+    echo "\n";
+    echo 'elements created';
 }
 
 function var_export54($var, $indent = "")

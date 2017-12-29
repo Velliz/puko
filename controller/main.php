@@ -2,6 +2,7 @@
 
 namespace controller;
 
+use plugins\elements\avatar\avatar;
 use plugins\elements\userbadge\UserBadge;
 use pukoframework\middleware\View;
 
@@ -19,18 +20,6 @@ class main extends View
      */
     public function main()
     {
-        $data['User'] = new UserBadge('User', array(
-            'Name' => 'Didit Velliz',
-            'Jobs' => 'Web Developer',
-            'Contacts' => '081381461286',
-            'User' => new UserBadge('User', array(
-                'Name' => 'Didit Velliz',
-                'Jobs' => 'Web Developer',
-                'Contacts' => '081381461286',
-                'User' => 'END'
-            ))
-        ));
-        return $data;
     }
 
     public function OnInitialize()
