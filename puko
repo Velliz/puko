@@ -639,6 +639,10 @@ PHP;
 
 function elements($type)
 {
+    if ($type === '' || $type === null) {
+        die('element name must defined');
+    }
+
     $lowerType = strtolower($type);
 
     $varPhpFile = "<?php
