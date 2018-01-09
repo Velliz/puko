@@ -22,7 +22,7 @@ switch ($entity) {
         routes($parameter, $value, $customValue);
         break;
     case "element":
-        elements($parameter);
+        elements($parameter, $value);
         break;
     case "help":
         help();
@@ -284,9 +284,12 @@ function help()
     echo "           [view/service/error/not_found] [add/update/delete/list] [url]\n";
     echo "\n";
     echo "  serve    Start puko on localhost:[port]\n";
+    echo "\n";
     echo "  element  Puko elements\n";
+    echo "           [add/download]\n";
     echo "\n";
     echo "  help     Show help menu\n";
+    echo "\n";
     echo "  version  Show console version\n";
     exit;
 }
@@ -637,7 +640,7 @@ PHP;
 
 }
 
-function elements($type)
+function elements($command, $type)
 {
     if ($type === '' || $type === null) {
         die('element name must defined');
@@ -645,7 +648,9 @@ function elements($type)
 
     $lowerType = strtolower($type);
 
-    $varPhpFile = "<?php
+    if ($command === 'add') {
+
+        $varPhpFile = "<?php
     
 namespace plugins\\elements\\$lowerType;
 
@@ -666,45 +671,74 @@ class $type extends Parts
 
 }";
 
-    if (!file_exists('plugins/elements/' . $lowerType)) {
-        mkdir('plugins/elements/' . $lowerType, 0777, true);
-    }
-    if (!file_exists('plugins/elements/' . $lowerType . '/' . $type . '.php')) {
-        file_put_contents('plugins/elements/' . $lowerType . '/' . $type . '.php', $varPhpFile);
-    }
+        if (!file_exists('plugins/elements/' . $lowerType)) {
+            mkdir('plugins/elements/' . $lowerType, 0777, true);
+        }
+        if (!file_exists('plugins/elements/' . $lowerType . '/' . $type . '.php')) {
+            file_put_contents('plugins/elements/' . $lowerType . '/' . $type . '.php', $varPhpFile);
+        }
 
-    $newHtmlFile = <<<HTML
+        $newHtmlFile = <<<HTML
 {!css(<link href="plugins/elements/?/?.css" rel="stylesheet" type="text/css"/>)}
 {!js(<script type="text/javascript" src="plugins/elements/?/?.js"></script>)}
 <!-- your code here -->
 HTML;
 
-    $newHtmlFile = str_replace('?', $lowerType, $newHtmlFile);
+        $newHtmlFile = str_replace('?', $lowerType, $newHtmlFile);
 
-    if (!file_exists('plugins/elements/' . $lowerType . '/' . $lowerType . '.html')) {
-        file_put_contents('plugins/elements/' . $lowerType . '/' . $lowerType . '.html', $newHtmlFile);
-    }
+        if (!file_exists('plugins/elements/' . $lowerType . '/' . $lowerType . '.html')) {
+            file_put_contents('plugins/elements/' . $lowerType . '/' . $lowerType . '.html', $newHtmlFile);
+        }
 
 
-    $newJsFile = <<<JS
+        $newJsFile = <<<JS
 // your code here
 JS;
 
-    if (!file_exists('plugins/elements/' . $lowerType . '/' . $lowerType . '.js')) {
-        file_put_contents('plugins/elements/' . $lowerType . '/' . $lowerType . '.js', $newJsFile);
-    }
+        if (!file_exists('plugins/elements/' . $lowerType . '/' . $lowerType . '.js')) {
+            file_put_contents('plugins/elements/' . $lowerType . '/' . $lowerType . '.js', $newJsFile);
+        }
 
 
-    $newCssFile = <<<CSS
+        $newCssFile = <<<CSS
 /* your css here */
 CSS;
 
-    if (!file_exists('plugins/elements/' . $lowerType . '/' . $lowerType . '.css')) {
-        file_put_contents('plugins/elements/' . $lowerType . '/' . $lowerType . '.css', $newCssFile);
+        if (!file_exists('plugins/elements/' . $lowerType . '/' . $lowerType . '.css')) {
+            file_put_contents('plugins/elements/' . $lowerType . '/' . $lowerType . '.css', $newCssFile);
+        }
+
+        echo "\n";
+        echo 'elements created';
+        echo "\n";
     }
 
-    echo "\n";
-    echo 'elements created';
+    if ($command === 'download') {
+        $url = 'https://api.github.com/repos/Velliz/elements/contents/' . $type;
+        $data = json_decode(download($url), true);
+
+        if (!file_exists('plugins/elements/' . $lowerType)) {
+            mkdir('plugins/elements/' . $lowerType, 0777, true);
+        }
+
+        foreach ($data as $single) {
+            if (!isset($single['download_url'])) {
+                die('error when downloading elements');
+            }
+
+            $file = download($single['download_url']);
+            if (!file_exists('plugins/elements/' . $single['path'])) {
+                file_put_contents('plugins/elements/' . $single['path'], $file);
+                echo 'downloading... ' . $single['name'];
+                echo "\n";
+            }
+        }
+
+        echo "\n";
+        echo 'elements downloaded';
+        echo "\n";
+    }
+
 }
 
 function var_export54($var, $indent = "")
@@ -726,4 +760,26 @@ function var_export54($var, $indent = "")
         default:
             return var_export($var, TRUE);
     }
+}
+
+function download($url)
+{
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_USERAGENT, 'elements');
+    $contents = curl_exec($ch);
+    if (curl_errno($ch)) {
+        return curl_error($ch);
+    } else {
+        curl_close($ch);
+    }
+
+    if (!is_string($contents) || !strlen($contents)) {
+        return false;
+    }
+
+    return $contents;
 }
