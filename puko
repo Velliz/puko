@@ -519,9 +519,6 @@ namespace $namespaces;
 
 use pukoframework\middleware\Service;
 
-/**
- * #Master master.html
- */
 class $className extends Service
 {
 
@@ -549,9 +546,6 @@ namespace $namespaces;
 
 use pukoframework\middleware\Service;
 
-/**
- * #Master master.html
- */
 class $className extends Service
 {
 
