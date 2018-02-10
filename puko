@@ -659,7 +659,7 @@ class $type extends Parts
     public function Parse()
     {" . '
         $this->pte->SetValue($this->data);
-        $this->pte->SetHtml(' . $type . "::class . '.html');
+        $this->pte->SetHtml(ROOT . ' . $type . "::class . '.html');
         return" . ' $this->pte->Output();' . "
     }
 
