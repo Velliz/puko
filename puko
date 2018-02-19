@@ -95,14 +95,38 @@ function database()
 
         foreach ($table as $key => $value) {
             echo "Creating model " . $value['TABLE_NAME'] . ".php\n";
+
+            $statement = $dbi->prepare("DESC " . $value['TABLE_NAME']);
+            $statement->execute();
+            $column = $statement->fetchAll(PDO::FETCH_ASSOC);
+            $property = "";
+            $primary = "";
+            foreach ($column as $k => $v) {
+                if ($v['Key'] === 'PRI') {
+                    $primary = $v['Field'];
+                }
+                $property .= "
+    /**
+     * #Column " . $v['Field'] . " " . $v['Type'] . "
+     */
+    var $" . $v['Field'] . " = null;
+";
+
+            }
             $model_file = <<<'EOT'
 <?php
 namespace plugins\model;
 
 use pukoframework\pda\DBI;
+use pukoframework\pda\Model;
 
-class {?}
+/**
+ * #Table {?}
+ * #PrimaryKey {!}
+ */
+class {?} extends Model
 {
+    {~}
     public static function Create($data)
     {
         return DBI::Prepare('{?}')->Save($data);
@@ -121,6 +145,8 @@ class {?}
 }
 EOT;
             $model_file = str_replace('{?}', $value['TABLE_NAME'], $model_file);
+            $model_file = str_replace('{!}', $primary, $model_file);
+            $model_file = str_replace('{~}', $property, $model_file);
             if (!is_dir('plugins/model')) {
                 mkdir('plugins/model');
             }
