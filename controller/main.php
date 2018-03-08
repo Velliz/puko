@@ -20,8 +20,4 @@ class main extends View
     {
     }
 
-    public function OnInitialize()
-    {
-    }
-
 }
