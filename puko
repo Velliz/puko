@@ -105,6 +105,19 @@ function database()
                 if ($v['Key'] === 'PRI') {
                     $primary = $v['Field'];
                 }
+                $initValue = 'null';
+                if (strpos($v['Type'], 'char') !== false) {
+                    $initValue = "''";
+                }
+                if (strpos($v['Type'], 'text') !== false) {
+                    $initValue = "''";
+                }
+                if (strpos($v['Type'], 'int') !== false) {
+                    $initValue = 0;
+                }
+                if (strpos($v['Type'], 'double') !== false) {
+                    $initValue = 0;
+                }
                 $property .= "
     /**
      * #Column " . $v['Field'] . " " . $v['Type'] . "
@@ -211,6 +224,7 @@ function base_auth($value)
 namespace plugins\auth;
 
 use pukoframework\auth\Auth;
+use pukoframework\auth\PukoAuth;
 
 class {?} implements Auth
 {
@@ -231,6 +245,7 @@ class {?} implements Auth
     public function Login($username, $password)
     {
         //todo: your custom login code here
+        return new PukoAuth(null, array());
     }
 
     public function Logout()
