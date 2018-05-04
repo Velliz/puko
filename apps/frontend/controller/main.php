@@ -1,6 +1,6 @@
 <?php
 
-namespace controller;
+namespace apps\frontend\controller;
 
 use pukoframework\middleware\View;
 
@@ -18,6 +18,16 @@ class main extends View
      */
     public function main()
     {
+    }
+
+    /**
+     * @return array
+     */
+    public function didit()
+    {
+        return array(
+            'nama' => 'Velliz'
+        );
     }
 
 }

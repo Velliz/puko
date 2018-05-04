@@ -1,6 +1,6 @@
 <?php
 
-namespace controller;
+namespace apps\frontend\controller;
 
 use pukoframework\middleware\View;
 

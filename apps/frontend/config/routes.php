@@ -7,6 +7,14 @@
                 "GET",
                 "POST"
             ]
+        ],
+        "didit" => [
+            "controller" => "main",
+            "function" => "didit",
+            "accept" => [
+                "GET",
+                "POST"
+            ]
         ]
     ],
     "error" => [

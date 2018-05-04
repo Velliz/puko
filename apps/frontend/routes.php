@@ -6,5 +6,5 @@ if (preg_match('/\.(?:png|jpg|jpeg|gif|ico|js*([?=a-zA-Z0-9_-]+)|css*([?=a-zA-Z0
 } else {
     $_GET['request'] = substr($_SERVER['REQUEST_URI'], 1);
     $_GET['lang'] = 'id';
-    include_once 'index.php';
+    include_once "index.php";
 }
