@@ -1,0 +1,19 @@
+<?php
+
+namespace plugins\elements\{{namespaces}};
+
+use pte\Parts;
+
+class {{class}} extends Parts
+{
+
+    /**
+     * @return string
+     */
+    public function Parse()
+        $this->pte->SetValue($this->data);
+        $this->pte->SetHtml('{{path}}');
+        return $this->pte->Output();
+    }
+
+}

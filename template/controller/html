@@ -1,0 +1,10 @@
+{!css(<!-- your custom CSS file here -->)}
+
+<table>
+    <tr>
+        <td>controller {{controller}}() {}</td>
+        <td>{{class}}.php</td>
+    </tr>
+</table>
+
+{!js(<!-- your custom JavaScript file here -->)}

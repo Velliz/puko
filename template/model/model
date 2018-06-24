@@ -1,0 +1,32 @@
+<?php
+
+namespace plugins\model;
+
+use pukoframework\pda\DBI;
+use pukoframework\pda\Model;
+
+/**
+ * #Table {{table}}
+ * #PrimaryKey {{primary}}
+ */
+class {{table}} extends Model
+{
+
+    {{variables}}
+
+    public static function Create($data)
+    {
+        return DBI::Prepare('{{table}}')->Save($data);
+    }
+
+    public static function Update($where, $data)
+    {
+        return DBI::Prepare('{{table}}')->Update($where, $data);
+    }
+
+    public static function GetAll()
+    {
+        return DBI::Prepare('SELECT * FROM {{table}}')->GetData();
+    }
+
+}

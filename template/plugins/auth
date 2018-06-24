@@ -1,0 +1,45 @@
+<?php
+
+namespace plugins\auth;
+
+use pukoframework\auth\Auth;
+use pukoframework\auth\PukoAuth;
+
+class {{class}} implements Auth
+{
+
+    /**
+     * @var {{class}}
+     */
+    static $authenticator;
+
+    public static function Instance()
+    {
+        if (!self::$authenticator instanceof {{class}}) {
+            self::$authenticator = new {{class}}();
+        }
+        return self::$authenticator;
+    }
+
+    /**
+     * @return PukoAuth|bool
+     * This method should return instance of PukoAuth if login success.
+     * Reurn fase if login failed.
+     */
+    public function Login($username, $password)
+    {
+        //todo: replace null with login data and array with permission code
+        return new PukoAuth(1, array());
+    }
+
+    public function Logout()
+    {
+        //todo: create or clear log in databases
+    }
+
+    public function GetLoginData($id)
+    {
+        //todo: return your user data here
+    }
+
+}

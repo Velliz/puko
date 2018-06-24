@@ -1,0 +1,17 @@
+<?php
+
+namespace plugins\controller;
+
+use pukoframework\middleware\{{controller}};
+
+/**
+ * #Master master.html
+ */
+class {{class}} extends {{controller}}
+{
+
+    public function BeforeInitialize()
+    {
+    }
+
+}

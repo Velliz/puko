@@ -1,0 +1,8 @@
+<?php return [
+    'dbType' => '{{dbtype}}',
+    'host'   => '{{host}}',
+    'user'   => '{{user}}',
+    'pass'   => '{{pass}}',
+    'dbName' => '{{dbname}}',
+    'port'   => {{port}},
+];
