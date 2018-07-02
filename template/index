@@ -48,7 +48,7 @@ define('START', microtime(true));
 try {
     $framework = new Framework();
     //Start framework
-    $framework->Start('\\apps\\frontend');
+    $framework->Start('\\apps\\{{apps}}');
 } catch (Exception $e) {
     die($e->getMessage());
 }
