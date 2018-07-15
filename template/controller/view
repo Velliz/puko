@@ -1,0 +1,14 @@
+<?php
+
+namespace plugins\controller;
+
+use pukoframework\middleware\View;
+
+/**
+ * #Master master.html
+ * #Value title Hello World
+ */
+class {{class}} extends View
+{
+
+}

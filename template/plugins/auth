@@ -37,7 +37,7 @@ class {{class}} implements Auth
         //todo: create or clear log in databases
     }
 
-    public function GetLoginData($id)
+    public function GetLoginData($id, $permission)
     {
         //todo: return your user data here
     }

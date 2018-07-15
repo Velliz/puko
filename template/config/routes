@@ -1,14 +1,5 @@
 <?php $routes = [
-    "page" => [
-        "" => [
-            "controller" => "main",
-            "function" => "main",
-            "accept" => [
-                "GET",
-                "POST"
-            ]
-        ]
-    ],
+    "page" => [],
     "error" => [
         "controller" => "error",
         "function" => "display",

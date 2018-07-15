@@ -1,8 +1,8 @@
 <?php return [
-    'dbType' => 'mysql',
-    'host'   => 'localhost',
-    'user'   => 'root',
-    'pass'   => '',
-    'dbName' => 'puko',
-    'port'   => 3306,
+    'dbType' => '{{type}}',
+    'host'   => '{{host}}',
+    'user'   => '{{user}}',
+    'pass'   => '{{pass}}',
+    'dbName' => '{{dbname}}',
+    'port'   => '{{port}}',
 ];

@@ -8,11 +8,12 @@ class {{class}} extends Parts
 {
 
     /**
+     * @throws \pte\exception\PteException
      * @return string
      */
-    public function Parse()
+    public function Parse() {
         $this->pte->SetValue($this->data);
-        $this->pte->SetHtml('{{path}}');
+        $this->pte->SetHtml({{path}});
         return $this->pte->Output();
     }
 

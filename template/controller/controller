@@ -1,17 +1,15 @@
 <?php
 
-namespace plugins\controller;
+namespace {{namespace}};
 
-use pukoframework\middleware\{{controller}};
+use pukoframework\middleware\View;
 
 /**
  * #Master master.html
  */
-class {{class}} extends {{controller}}
+class {{classname}} extends {{type}}
 {
 
-    public function BeforeInitialize()
-    {
-    }
+    public function {{function}}(){}
 
 }

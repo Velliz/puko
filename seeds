@@ -6,17 +6,21 @@ if (PHP_SAPI !== 'cli') {
 
 echo "Puko Framework Material Development Tool";
 echo "\n";
-echo "apps name: ";
+echo "app name : ";
 $app = preg_replace('/\s+/', '', fgets(STDIN));
+echo "app type [api or reg] : ";
+$type = preg_replace('/\s+/', '', fgets(STDIN));
 
 $dir = sprintf('apps/%s', $app);
 if (!is_dir($dir)) {
     mkdir($dir, 0777, true);
-    mkdir(sprintf("%s/assets/html", $dir), 0777, true);
-    mkdir(sprintf("%s/assets/html/id", $dir), 0777, true);
-    mkdir(sprintf("%s/assets/html/en", $dir), 0777, true);
-    mkdir(sprintf("%s/assets/master", $dir), 0777, true);
-    mkdir(sprintf("%s/assets/system", $dir), 0777, true);
+    if ($type === 'reg') {
+        mkdir(sprintf("%s/assets/html", $dir), 0777, true);
+        mkdir(sprintf("%s/assets/html/id", $dir), 0777, true);
+        mkdir(sprintf("%s/assets/html/en", $dir), 0777, true);
+        mkdir(sprintf("%s/assets/master", $dir), 0777, true);
+        mkdir(sprintf("%s/assets/system", $dir), 0777, true);
+    }
     mkdir(sprintf("%s/config", $dir), 0777, true);
     mkdir(sprintf("%s/controller", $dir), 0777, true);
 } else {
@@ -32,6 +36,10 @@ file_put_contents(sprintf("%s/index.php", $dir), $index);
 $routes = file_get_contents("template/routes");
 file_put_contents(sprintf("%s/routes.php", $dir), $routes);
 
+$puko = file_get_contents("template/puko");
+$puko = str_replace("{{appsx}}", $app, $puko);
+file_put_contents(sprintf("%s/puko", $dir), $puko);
+
 $apache = file_get_contents("template/.htaccess");
 file_put_contents(sprintf("%s/.htaccess", $dir), $apache);
 
@@ -44,7 +52,21 @@ file_put_contents(sprintf("%s/config/encryption.php", $dir), $encryption);
 $routes = file_get_contents("template/config/routes");
 file_put_contents(sprintf("%s/config/routes.php", $dir), $routes);
 
+if ($type === 'reg') {
+    $master = file_get_contents("template/assets/master");
+    file_put_contents(sprintf("%s/assets/master.html", $dir), $master);
+
+    $auth = file_get_contents("template/assets/system/auth");
+    file_put_contents(sprintf("%s/assets/system/auth.html", $dir), $auth);
+
+    $error = file_get_contents("template/assets/system/error");
+    file_put_contents(sprintf("%s/assets/system/error.html", $dir), $error);
+
+    $exception = file_get_contents("template/assets/system/exception");
+    file_put_contents(sprintf("%s/assets/system/exception.html", $dir), $exception);
+}
+
 echo "\n";
-echo "Success: apps with name %s created!";
+echo sprintf("Success: %s app with name %s created!", $type, $app);
 echo "\n";
 exit();
