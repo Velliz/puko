@@ -21,7 +21,7 @@ switch ($entity) {
         setup($parameter, $value, $customValue);
         break;
     case "routes":
-        routes($parameter, $value, $customValue);
+        routes($parameter, $value, $customValue, $apps);
         break;
     case "element":
         elements($parameter, $value);
@@ -346,7 +346,7 @@ function version()
     exit;
 }
 
-function routes($type, $parameter, $value)
+function routes($type, $parameter, $value, $apps)
 {
     $routes = include "config/routes.php";
 
@@ -431,10 +431,10 @@ class $className extends View
 }
 
 PHP;
-                    if (!file_exists($namespaces . "/" . $className . ".php")) {
-                        file_put_contents($namespaces . "/" . $className . '.php', $varNewFile);
+                    if (!file_exists(__DIR__ . $namespaces . "/" . $className . ".php")) {
+                        file_put_contents(__DIR__ . $namespaces . "/" . $className . '.php', $varNewFile);
                     } else {
-                        $existingController = file_get_contents($namespaces . "/" . $className . '.php');
+                        $existingController = file_get_contents(__DIR__ . $namespaces . "/" . $className . '.php');
                         $pos = strrpos($existingController, "}");
                         $existingController = substr_replace($existingController, "    public function $function(){}\n\n}", $pos);
                         file_put_contents($namespaces . "/" . $className . '.php', $existingController);
