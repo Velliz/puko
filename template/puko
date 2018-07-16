@@ -313,13 +313,13 @@ function routes($type, $parameter, $value, $apps)
                     $varNewFile = file_get_contents("../../template/controller/view");
                     $varNewFile = str_replace('{{class}}', $className, $varNewFile);
                     $varNewFile = str_replace('{{type}}', 'View', $varNewFile);
-                    if (!file_exists(__DIR__ . "\\" . $namespaces . "\\" . $className . ".php")) {
-                        file_put_contents(__DIR__ . "\\" . $namespaces . "\\" . $className . '.php', $varNewFile);
+                    if (!file_exists($className . ".php")) {
+                        file_put_contents($className . '.php', $varNewFile);
                     } else {
-                        $existingController = file_get_contents(__DIR__ . "\\" . $namespaces . "\\" . $className . '.php');
+                        $existingController = file_get_contents($namespaces . "\\" . $className . '.php');
                         $pos = strrpos($existingController, "}");
                         $existingController = substr_replace($existingController, "    public function $function(){}\n\n}", $pos);
-                        file_put_contents(__DIR__ . "\\" . $namespaces . "\\" . $className . '.php', $existingController);
+                        file_put_contents($namespaces . "\\" . $className . '.php', $existingController);
                     }
                 } else {
                     //region complex namespaces
