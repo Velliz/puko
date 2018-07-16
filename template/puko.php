@@ -10,7 +10,7 @@ $parameter = isset($argv[2]) ? $argv[2] : null;
 $value = isset($argv[3]) ? $argv[3] : null;
 $customValue = isset($argv[4]) ? $argv[4] : null;
 
-$apps = "apps\\{{appsx}}\\";
+$apps = "apps\\{{apps}}\\";
 
 if ($entity === null && $parameter === null) {
     help();
@@ -120,7 +120,6 @@ function database()
                 if (strpos($v['Type'], 'double') !== false) {
                     $initValue = 0;
                 }
-
                 $property .= "
     /**
      * #Column " . $v['Field'] . " " . $v['Type'] . "
@@ -129,40 +128,10 @@ function database()
 ";
 
             }
-            $model_file = <<<'EOT'
-<?php
-namespace plugins\model;
-
-use pukoframework\pda\DBI;
-use pukoframework\pda\Model;
-
-/**
- * #Table {?}
- * #PrimaryKey {!}
- */
-class {?} extends Model
-{
-    {~}
-    public static function Create($data)
-    {
-        return DBI::Prepare('{?}')->Save($data);
-    }
-
-    public static function Update($where, $data)
-    {
-        return DBI::Prepare('{?}')->Update($where, $data);
-    }
-
-    public static function GetAll()
-    {
-        return DBI::Prepare('SELECT * FROM {?}')->GetData();
-    }
-
-}
-EOT;
-            $model_file = str_replace('{?}', $value['TABLE_NAME'], $model_file);
-            $model_file = str_replace('{!}', $primary, $model_file);
-            $model_file = str_replace('{~}', $property, $model_file);
+            $model_file = file_get_contents("../../template/model/model");
+            $model_file = str_replace('{{table}}', $value['TABLE_NAME'], $model_file);
+            $model_file = str_replace('{{primary}}', $primary, $model_file);
+            $model_file = str_replace('{{variables}}', $property, $model_file);
             if (!is_dir('../../plugins/model')) {
                 mkdir('../../plugins/model');
             }
@@ -177,16 +146,13 @@ EOT;
         database();
 
     }
-    $configuration = <<<PHP
-<?php return [
-    'dbType' => 'mysql',
-    'host'   => '$host',
-    'user'   => '$user',
-    'pass'   => '$pass',
-    'dbName' => '$dbName',
-    'port'   => $port,
-];
-PHP;
+    $configuration = file_get_contents("../../template/config/database");
+    $configuration = str_replace('{{type}}', 'mysql', $configuration);
+    $configuration = str_replace('{{host}}', $host, $configuration);
+    $configuration = str_replace('{{user}}', $user, $configuration);
+    $configuration = str_replace('{{pass}}', $pass, $configuration);
+    $configuration = str_replace('{{dbname}}', $dbName, $configuration);
+    $configuration = str_replace('{{port}}', $port, $configuration);
 
     file_put_contents("config/database.php", $configuration);
 
@@ -206,15 +172,11 @@ function secure()
     echo "session name : ";
     $session = preg_replace('/\s+/', '', fgets(STDIN));
 
-    $configuration = <<<PHP
-<?php return [
-    'method'     => 'AES-256-CBC',
-    'key'        => '$key',
-    'identifier' => '$identifier',
-    'cookies'    => '$cookies',
-    'session'    => '$session',
-];
-PHP;
+    $configuration = file_get_contents("../../template/config/encryption");
+    $configuration = str_replace('{{key}}', $identifier, $configuration);
+    $configuration = str_replace('{{identifier}}', $key, $configuration);
+    $configuration = str_replace('{{cookies}}', $cookies, $configuration);
+    $configuration = str_replace('{{session}}', $session, $configuration);
 
     file_put_contents("config/encryption.php", $configuration);
 
@@ -224,50 +186,11 @@ PHP;
 
 function base_auth($value)
 {
-    $varNewFile = <<<'EOT'
-<?php
-
-namespace plugins\auth;
-
-use pukoframework\auth\Auth;
-
-class {?} implements Auth
-{
-
-    /**
-     * @var {?}
-     */
-    static $authenticator;
-
-    public static function Instance()
-    {
-        if (!self::$authenticator instanceof {?}) {
-            self::$authenticator = new {?}();
-        }
-        return self::$authenticator;
-    }
-
-    public function Login($username, $password)
-    {
-        //todo: your custom login code here
-    }
-
-    public function Logout()
-    {
-        //todo: create or clear log in databases
-    }
-
-    public function GetLoginData($id, $permission)
-    {
-        //todo: return your user data here
-    }
-
-}
-EOT;
+    $varNewFile = file_get_contents("../../template/plugins/auth");
     if ($value === null) {
         exit('class_name not specified. example: php puko setup base_auth UserAuth');
     }
-    $varNewFile = str_replace('{?}', $value, $varNewFile);
+    $varNewFile = str_replace('{{class}}', $value, $varNewFile);
     if (!is_dir('../../plugins/auth')) {
         mkdir('../../plugins/auth');
     }
@@ -279,34 +202,17 @@ EOT;
 
 function base_controller($value, $customValue)
 {
-
-    $flavour = "View";
-
     if ($customValue === 'service') {
-        $flavour = "Service";
+        $varNewFile = file_get_contents("../../template/controller/service");
     }
-
     if ($customValue === 'view') {
-        $flavour = "View";
+        $varNewFile = file_get_contents("../../template/controller/view");
     }
 
-    $varNewFile = <<<'PHP'
-<?php
-
-namespace plugins\controller;
-
-use pukoframework\middleware\{!};
-
-class {?} extends {!}
-{
-
-}
-PHP;
     if ($value === null) {
         exit('class_name not specified. example: php puko setup base_auth UserAuth');
     }
-    $varNewFile = str_replace('{?}', $value, $varNewFile);
-    $varNewFile = str_replace('{!}', $flavour, $varNewFile);
+    $varNewFile = str_replace('{{class}}', $value, $varNewFile);
     if (!is_dir('../../plugins/controller')) {
         mkdir('../../plugins/controller');
     }
@@ -386,16 +292,7 @@ function routes($type, $parameter, $value, $apps)
                     mkdir("assets/html/en/" . str_replace('\\', '/', $controller), 0777, true);
                 }
 
-                $html = <<<HTML
-{!css(<!-- your custom CSS file here -->)}
-<table>
-<tr>
-<td>controller</td>
-<td>$controller.php</td>
-</tr>
-</table> 
-{!js(<!-- your custom JavaScript file here -->)}
-HTML;
+                $html = file_get_contents("../../template/assets/html");
 
 
                 file_put_contents("assets/html/id/" . str_replace('\\', '/', $controller) . '/' . $function . '.html', $html);
@@ -413,24 +310,9 @@ HTML;
                     //region base
                     $namespaces = $apps . "controller";
                     $className = $controller;
-                    $varNewFile = <<<PHP
-<?php
-
-namespace $namespaces;
-
-use pukoframework\middleware\View;
-
-/**
- * #Master master.html
- */
-class $className extends View
-{
-
-    public function $function(){}
-
-}
-
-PHP;
+                    $varNewFile = file_get_contents("../../template/controller/view");
+                    $varNewFile = str_replace('{{class}}', $className, $varNewFile);
+                    $varNewFile = str_replace('{{type}}', 'View', $varNewFile);
                     if (!file_exists(__DIR__ . "\\" . $namespaces . "\\" . $className . ".php")) {
                         file_put_contents(__DIR__ . "\\" . $namespaces . "\\" . $className . '.php', $varNewFile);
                     } else {
@@ -443,24 +325,9 @@ PHP;
                     //region complex namespaces
                     $namespaces = $apps . "controller\\" . rtrim($namespaces, "\\");
                     $namespaceFolder = str_replace("\\", "/", $namespaces);
-                    $varNewFile = <<<PHP
-<?php
-
-namespace $namespaces;
-
-use pukoframework\middleware\View;
-
-/**
- * #Master master.html
- */
-class $className extends View
-{
-
-    public function $function(){}
-
-}
-
-PHP;
+                    $varNewFile = file_get_contents("../../template/controller/view");
+                    $varNewFile = str_replace('{{class}}', $className, $varNewFile);
+                    $varNewFile = str_replace('{{type}}', 'View', $varNewFile);
                     if (!file_exists($namespaceFolder)) {
                         mkdir($namespaceFolder, 0777, true);
                     }
@@ -557,21 +424,9 @@ PHP;
                     //region base
                     $namespaces = $apps . "controller";
                     $className = $controller;
-                    $varNewFile = <<<PHP
-<?php
-
-namespace $namespaces;
-
-use pukoframework\middleware\Service;
-
-class $className extends Service
-{
-
-    public function $function(){}
-
-}
-
-PHP;
+                    $varNewFile = $varNewFile = file_get_contents("../../template/controller/service");
+                    $varNewFile = str_replace('{{class}}', $className, $varNewFile);
+                    $varNewFile = str_replace('{{type}}', 'Service', $varNewFile);
                     if (!file_exists($namespaces . "/" . $className . ".php")) {
                         file_put_contents($namespaces . "/" . $className . '.php', $varNewFile);
                     } else {
@@ -584,21 +439,9 @@ PHP;
                     //region complex namespaces
                     $namespaces = $apps . "controller\\" . rtrim($namespaces, "\\");
                     $namespaceFolder = str_replace("\\", "/", $namespaces);
-                    $varNewFile = <<<PHP
-<?php
-
-namespace $namespaces;
-
-use pukoframework\middleware\Service;
-
-class $className extends Service
-{
-
-    public function $function(){}
-
-}
-
-PHP;
+                    $varNewFile = file_get_contents("../../template/controller/service");
+                    $varNewFile = str_replace('{{class}}', $className, $varNewFile);
+                    $varNewFile = str_replace('{{type}}', 'Service', $varNewFile);
                     if (!file_exists($namespaceFolder)) {
                         mkdir($namespaceFolder, 0777, true);
                     }
@@ -692,26 +535,11 @@ function elements($command, $type)
         $html = sprintf("strtolower(%s::class . '.html')", $type);
         $path = sprintf("ROOT . '/' . str_replace('\\\\', '/', %s)", $html);
 
-        $varPhpFile = "<?php
-    
-namespace plugins\\elements\\$lowerType;
+        $varPhpFile = file_get_contents("../../plugins/elements");
+        $varPhpFile = str_replace('{{path}}', $path, $varPhpFile);
+        $varPhpFile = str_replace('{{class}}', $type, $varPhpFile);
+        $varPhpFile = str_replace('{{{{namespaces}}}}', $type, $varPhpFile);
 
-use pte\\Parts;
-
-class $type extends Parts
-{
-
-    /**
-     * @return string
-     */
-    public function Parse()
-    {" . '
-        $this->pte->SetValue($this->data);
-        $this->pte->SetHtml(' . $path . ");
-        return" . ' $this->pte->Output();' . "
-    }
-
-}";
 
         if (!file_exists('../../plugins/elements/' . $lowerType)) {
             mkdir('../../plugins/elements/' . $lowerType, 0777, true);
@@ -720,11 +548,7 @@ class $type extends Parts
             file_put_contents('../../plugins/elements/' . $lowerType . '/' . $type . '.php', $varPhpFile);
         }
 
-        $newHtmlFile = <<<HTML
-{!css(<link href="plugins/elements/?/?.css" rel="stylesheet" type="text/css"/>)}
-{!js(<script type="text/javascript" src="plugins/elements/?/?.js"></script>)}
-<!-- your code here -->
-HTML;
+        $newHtmlFile = file_get_contents("../../plugins/html");
 
         $newHtmlFile = str_replace('?', $lowerType, $newHtmlFile);
 
@@ -733,18 +557,14 @@ HTML;
         }
 
 
-        $newJsFile = <<<JS
-// your code here
-JS;
+        $newJsFile = file_get_contents("../../plugins/js");
 
         if (!file_exists('../../plugins/elements/' . $lowerType . '/' . $lowerType . '.js')) {
             file_put_contents('../../plugins/elements/' . $lowerType . '/' . $lowerType . '.js', $newJsFile);
         }
 
 
-        $newCssFile = <<<CSS
-/* your css here */
-CSS;
+        $newCssFile = file_get_contents("../../plugins/css");
 
         if (!file_exists('../../plugins/elements/' . $lowerType . '/' . $lowerType . '.css')) {
             file_put_contents('../../plugins/elements/' . $lowerType . '/' . $lowerType . '.css', $newCssFile);

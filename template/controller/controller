@@ -2,7 +2,7 @@
 
 namespace {{namespace}};
 
-use pukoframework\middleware\View;
+use pukoframework\middleware\{{type}};
 
 /**
  * #Master master.html

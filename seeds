@@ -37,7 +37,7 @@ $routes = file_get_contents("template/routes");
 file_put_contents(sprintf("%s/routes.php", $dir), $routes);
 
 $puko = file_get_contents("template/puko");
-$puko = str_replace("{{appsx}}", $app, $puko);
+$puko = str_replace("{{apps}}", $app, $puko);
 file_put_contents(sprintf("%s/puko", $dir), $puko);
 
 $apache = file_get_contents("template/.htaccess");
