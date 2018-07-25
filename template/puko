@@ -468,6 +468,9 @@ namespace $namespaces;
 
 use pukoframework\middleware\Service;
 
+/**
+ * #Template html false
+ */
 class $className extends Service
 {
 
@@ -495,6 +498,9 @@ namespace $namespaces;
 
 use pukoframework\middleware\Service;
 
+/**
+ * #Template html false
+ */
 class $className extends Service
 {
 
@@ -582,7 +588,6 @@ PHP;
     }
 
 }
-
 
 function elements($command, $type)
 {
