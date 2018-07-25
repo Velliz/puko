@@ -54,7 +54,7 @@ file_put_contents(sprintf("%s/config/routes.php", $dir), $routes);
 
 if ($type === 'reg') {
     $master = file_get_contents("template/assets/master");
-    file_put_contents(sprintf("%s/assets/master.html", $dir), $master);
+    file_put_contents(sprintf("%s/assets/master/master.html", $dir), $master);
 
     $auth = file_get_contents("template/assets/system/auth");
     file_put_contents(sprintf("%s/assets/system/auth.html", $dir), $auth);

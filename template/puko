@@ -10,8 +10,6 @@ $parameter = isset($argv[2]) ? $argv[2] : null;
 $value = isset($argv[3]) ? $argv[3] : null;
 $customValue = isset($argv[4]) ? $argv[4] : null;
 
-$apps = "apps\\{{apps}}\\";
-
 if ($entity === null && $parameter === null) {
     help();
 }
@@ -21,7 +19,7 @@ switch ($entity) {
         setup($parameter, $value, $customValue);
         break;
     case "routes":
-        routes($parameter, $value, $customValue, $apps);
+        routes($parameter, $value, $customValue);
         break;
     case "element":
         elements($parameter, $value);
@@ -252,7 +250,7 @@ function version()
     exit;
 }
 
-function routes($type, $parameter, $value, $apps)
+function routes($type, $parameter, $value)
 {
     $routes = include "config/routes.php";
 
@@ -292,7 +290,16 @@ function routes($type, $parameter, $value, $apps)
                     mkdir("assets/html/en/" . str_replace('\\', '/', $controller), 0777, true);
                 }
 
-                $html = file_get_contents("../../template/assets/html");
+                $html = <<<HTML
+{!css(<!-- your custom CSS file here -->)}
+<table>
+<tr>
+<td>controller</td>
+<td>$controller.php</td>
+</tr>
+</table>
+{!js(<!-- your custom JavaScript file here -->)}
+HTML;
 
 
                 file_put_contents("assets/html/id/" . str_replace('\\', '/', $controller) . '/' . $function . '.html', $html);
@@ -308,36 +315,66 @@ function routes($type, $parameter, $value, $apps)
 
                 if (sizeof($controllerExplode) == 1) {
                     //region base
-                    $namespaces = $apps . "controller";
+                    $namespaces = "controller";
                     $className = $controller;
-                    $varNewFile = file_get_contents("../../template/controller/view");
-                    $varNewFile = str_replace('{{class}}', $className, $varNewFile);
-                    $varNewFile = str_replace('{{type}}', 'View', $varNewFile);
-                    if (!file_exists($className . ".php")) {
-                        file_put_contents($className . '.php', $varNewFile);
+                    $varNewFile = <<<PHP
+<?php
+
+namespace $namespaces;
+
+use pukoframework\middleware\View;
+
+/**
+ * #Master master.html
+ */
+class $className extends View
+{
+
+    public function $function(){}
+
+}
+
+PHP;
+                    if (!file_exists($namespaces . "/" . $className . ".php")) {
+                        file_put_contents($namespaces . "/" . $className . '.php', $varNewFile);
                     } else {
-                        $existingController = file_get_contents($namespaces . "\\" . $className . '.php');
+                        $existingController = file_get_contents($namespaces . "/" . $className . '.php');
                         $pos = strrpos($existingController, "}");
                         $existingController = substr_replace($existingController, "    public function $function(){}\n\n}", $pos);
-                        file_put_contents($namespaces . "\\" . $className . '.php', $existingController);
+                        file_put_contents($namespaces . "/" . $className . '.php', $existingController);
                     }
                 } else {
                     //region complex namespaces
-                    $namespaces = $apps . "controller\\" . rtrim($namespaces, "\\");
+                    $namespaces = "controller\\" . rtrim($namespaces, "\\");
                     $namespaceFolder = str_replace("\\", "/", $namespaces);
-                    $varNewFile = file_get_contents("../../template/controller/view");
-                    $varNewFile = str_replace('{{class}}', $className, $varNewFile);
-                    $varNewFile = str_replace('{{type}}', 'View', $varNewFile);
+                    $varNewFile = <<<PHP
+<?php
+
+namespace $namespaces;
+
+use pukoframework\middleware\View;
+
+/**
+ * #Master master.html
+ */
+class $className extends View
+{
+
+    public function $function(){}
+
+}
+
+PHP;
                     if (!file_exists($namespaceFolder)) {
                         mkdir($namespaceFolder, 0777, true);
                     }
-                    if (!file_exists(__DIR__ . "\\" . $namespaces . str_replace('\\', '/', $controller . '.php'))) {
-                        file_put_contents(__DIR__ . "\\" . $namespaces . str_replace('\\', '/', $controller . '.php'), $varNewFile);
+                    if (!file_exists('controller/' . str_replace('\\', '/', $controller . '.php'))) {
+                        file_put_contents('controller/' . str_replace('\\', '/', $controller . '.php'), $varNewFile);
                     } else {
-                        $existingController = file_get_contents(__DIR__ . "\\" . $namespaces . str_replace('\\', '/', $controller . '.php'));
+                        $existingController = file_get_contents('controller/' . str_replace('\\', '/', $controller . '.php'));
                         $pos = strrpos($existingController, "}");
                         $existingController = substr_replace($existingController, "    public function $function(){}\n\n}", $pos);
-                        file_put_contents(__DIR__ . "\\" . $namespaces . str_replace('\\', '/', $controller . '.php'), $existingController);
+                        file_put_contents('controller/' . str_replace('\\', '/', $controller . '.php'), $existingController);
                     }
 
                 }
@@ -422,11 +459,23 @@ function routes($type, $parameter, $value, $apps)
 
                 if (sizeof($controllerExplode) == 1) {
                     //region base
-                    $namespaces = $apps . "controller";
+                    $namespaces = "controller";
                     $className = $controller;
-                    $varNewFile = $varNewFile = file_get_contents("../../template/controller/service");
-                    $varNewFile = str_replace('{{class}}', $className, $varNewFile);
-                    $varNewFile = str_replace('{{type}}', 'Service', $varNewFile);
+                    $varNewFile = <<<PHP
+<?php
+
+namespace $namespaces;
+
+use pukoframework\middleware\Service;
+
+class $className extends Service
+{
+
+    public function $function(){}
+
+}
+
+PHP;
                     if (!file_exists($namespaces . "/" . $className . ".php")) {
                         file_put_contents($namespaces . "/" . $className . '.php', $varNewFile);
                     } else {
@@ -437,11 +486,23 @@ function routes($type, $parameter, $value, $apps)
                     }
                 } else {
                     //region complex namespaces
-                    $namespaces = $apps . "controller\\" . rtrim($namespaces, "\\");
+                    $namespaces = "controller\\" . rtrim($namespaces, "\\");
                     $namespaceFolder = str_replace("\\", "/", $namespaces);
-                    $varNewFile = file_get_contents("../../template/controller/service");
-                    $varNewFile = str_replace('{{class}}', $className, $varNewFile);
-                    $varNewFile = str_replace('{{type}}', 'Service', $varNewFile);
+                    $varNewFile = <<<PHP
+<?php
+
+namespace $namespaces;
+
+use pukoframework\middleware\Service;
+
+class $className extends Service
+{
+
+    public function $function(){}
+
+}
+
+PHP;
                     if (!file_exists($namespaceFolder)) {
                         mkdir($namespaceFolder, 0777, true);
                     }
@@ -522,6 +583,7 @@ function routes($type, $parameter, $value, $apps)
 
 }
 
+
 function elements($command, $type)
 {
     if ($type === '' || $type === null) {
@@ -535,11 +597,26 @@ function elements($command, $type)
         $html = sprintf("strtolower(%s::class . '.html')", $type);
         $path = sprintf("ROOT . '/' . str_replace('\\\\', '/', %s)", $html);
 
-        $varPhpFile = file_get_contents("../../plugins/elements");
-        $varPhpFile = str_replace('{{path}}', $path, $varPhpFile);
-        $varPhpFile = str_replace('{{class}}', $type, $varPhpFile);
-        $varPhpFile = str_replace('{{{{namespaces}}}}', $type, $varPhpFile);
+        $varPhpFile = "<?php
 
+namespace plugins\\elements\\$lowerType;
+
+use pte\\Parts;
+
+class $type extends Parts
+{
+
+    /**
+     * @return string
+     */
+    public function Parse()
+    {" . '
+        $this->pte->SetValue($this->data);
+        $this->pte->SetHtml(' . $path . ");
+        return" . ' $this->pte->Output();' . "
+    }
+
+}";
 
         if (!file_exists('../../plugins/elements/' . $lowerType)) {
             mkdir('../../plugins/elements/' . $lowerType, 0777, true);
@@ -548,7 +625,11 @@ function elements($command, $type)
             file_put_contents('../../plugins/elements/' . $lowerType . '/' . $type . '.php', $varPhpFile);
         }
 
-        $newHtmlFile = file_get_contents("../../plugins/html");
+        $newHtmlFile = <<<HTML
+{!css(<link href="plugins/elements/?/?.css" rel="stylesheet" type="text/css"/>)}
+{!js(<script type="text/javascript" src="plugins/elements/?/?.js"></script>)}
+<!-- your code here -->
+HTML;
 
         $newHtmlFile = str_replace('?', $lowerType, $newHtmlFile);
 
@@ -557,14 +638,18 @@ function elements($command, $type)
         }
 
 
-        $newJsFile = file_get_contents("../../plugins/js");
+        $newJsFile = <<<JS
+// your code here
+JS;
 
         if (!file_exists('../../plugins/elements/' . $lowerType . '/' . $lowerType . '.js')) {
             file_put_contents('../../plugins/elements/' . $lowerType . '/' . $lowerType . '.js', $newJsFile);
         }
 
 
-        $newCssFile = file_get_contents("../../plugins/css");
+        $newCssFile = <<<CSS
+/* your css here */
+CSS;
 
         if (!file_exists('../../plugins/elements/' . $lowerType . '/' . $lowerType . '.css')) {
             file_put_contents('../../plugins/elements/' . $lowerType . '/' . $lowerType . '.css', $newCssFile);
@@ -579,8 +664,8 @@ function elements($command, $type)
         $url = 'https://api.github.com/repos/Velliz/elements/contents/' . $type;
         $data = json_decode(download($url), true);
 
-        if (!file_exists('../../plugins/elements/' . $lowerType)) {
-            mkdir('../../plugins/elements/' . $lowerType, 0777, true);
+        if (!file_exists('plugins/elements/' . $lowerType)) {
+            mkdir('plugins/elements/' . $lowerType, 0777, true);
         }
 
         foreach ($data as $single) {
@@ -589,8 +674,8 @@ function elements($command, $type)
             }
 
             $file = download($single['download_url']);
-            if (!file_exists('../../plugins/elements/' . $single['path'])) {
-                file_put_contents('../../plugins/elements/' . $single['path'], $file);
+            if (!file_exists('plugins/elements/' . $single['path'])) {
+                file_put_contents('plugins/elements/' . $single['path'], $file);
                 echo 'downloading... ' . $single['name'];
                 echo "\n";
             }
