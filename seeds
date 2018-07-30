@@ -67,6 +67,9 @@ if ($type === 'reg') {
 
     $permission = file_get_contents("template/assets/system/permission");
     file_put_contents(sprintf("%s/assets/system/permission.html", $dir), $permission);
+
+    $construction = file_get_contents("template/assets/system/construction");
+    file_put_contents(sprintf("%s/assets/system/construction.html", $dir), $construction);
 }
 
 echo "\n";
