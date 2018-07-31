@@ -45,10 +45,6 @@ define('ROOT', __DIR__);
 define('START', microtime(true));
 
 //Initialize framework object
-try {
-    $framework = new Framework();
-    //Start framework
-    $framework->Start('\\apps\\{{apps}}');
-} catch (Exception $e) {
-    die($e->getMessage());
-}
+$framework = new Framework();
+//Start framework
+$framework->Start('\\apps\\{{apps}}');
