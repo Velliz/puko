@@ -10,6 +10,12 @@ use pukoframework\Framework;
 
 require '../../vendor/autoload.php';
 
+/*
+ *---------------------------------------------------------------
+ * APP BASE URL
+ *---------------------------------------------------------------
+ *
+ */
 $protocol = 'http';
 if (isset($_SERVER['HTTPS'])) {
     $protocol = 'https';
@@ -25,7 +31,6 @@ if (isset($_SERVER['HTTPS'])) {
         $protocol = 'https';
     }
 }
-
 define('BASE_URL', ($protocol . "://" . $_SERVER['HTTP_HOST'] . "/"));
 
 /*

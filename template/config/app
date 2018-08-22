@@ -1,0 +1,13 @@
+<?php return [
+    'const' => array(
+        'OWNER' => 'puko'
+    ),
+    'logs' => array(
+        'active' => false,
+        'driver' => 'slack',
+        'url' => '',
+        'username' => 'puko',
+        'emoji' => ':boom:',
+        'level' => 'critical'
+    )
+];
