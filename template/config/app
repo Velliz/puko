@@ -1,4 +1,10 @@
 <?php return [
+    'cache' => {
+        'expired' => 100,
+        'kind' => 'MEMCACHED',
+        'host' => 'root',
+        'port' => 11211,
+    }
     'const' => array(
         'OWNER' => 'puko'
     ),
