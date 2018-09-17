@@ -46,8 +46,8 @@ file_put_contents(sprintf("%s/.htaccess", $dir), $apache);
 $database = file_get_contents("template/config/database");
 file_put_contents(sprintf("%s/config/database.php", $dir), $database);
 
-$app = file_get_contents("template/config/app");
-file_put_contents(sprintf("%s/config/app.php", $dir), $app);
+$appf = file_get_contents("template/config/app");
+file_put_contents(sprintf("%s/config/app.php", $dir), $appf);
 
 $encryption = file_get_contents("template/config/encryption");
 file_put_contents(sprintf("%s/config/encryption.php", $dir), $encryption);
