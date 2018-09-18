@@ -4,7 +4,7 @@
 
 Puko Framework is MVC PHP Framework for quick PHP Application Development.
 
-[![Build Status](https://travis-ci.org/Velliz/pukoframework.svg?branch=master)](https://travis-ci.org/Velliz/pukoframework)
+[![Build Status](https://travis-ci.org/Velliz/pukoframework.svg?branch=master)](https://travis-ci.org/Velliz/puko)
 [![StyleCI Status](https://styleci.io/repos/65143717/shield)](https://styleci.io/repos/65143717/shield)
 [![Latest Stable Version](https://poser.pugx.org/velliz/puko/v/stable)](https://packagist.org/packages/velliz/puko)
 [![Total Downloads](https://poser.pugx.org/velliz/puko/downloads)](https://packagist.org/packages/velliz/puko)
@@ -13,7 +13,7 @@ Puko Framework is MVC PHP Framework for quick PHP Application Development.
 
 ## Requirement
 
-* Puko Require **PHP 7.0** or greater
+* Puko Require **PHP 7.1** or greater
 * Composer
 
 ## Feature
