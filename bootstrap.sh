@@ -13,6 +13,9 @@ apt-get install -y nginx
 apt-add-repository ppa:ondrej/php
 apt-get update
 
+# Install Memcached
+apt-get install memcached
+
 # Install PHP
 apt-get install -y php7.2
 
