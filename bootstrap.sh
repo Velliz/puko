@@ -97,3 +97,18 @@ EOF
 
 # Restart Service
 sudo service nginx restart
+
+# Remote MySQL Access - doing manually (Optional)
+
+# vagrant ssh
+
+# vim etc/mysql/my.cnf
+# bind-address = 127.0.0.1
+# :w !sudo tee %
+
+# mysql -u root -p
+
+# GRANT ALL PRIVILEGES ON *.* TO `root`@`%` IDENTIFIED BY 'root' WITH GRANT OPTION;
+# FLUSH PRIVILEGES;
+
+# sudo service mysql restart
