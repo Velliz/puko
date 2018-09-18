@@ -31,6 +31,7 @@ apt-get install -y php7.2-mcrypt
 apt-get install -y php7.2-mbstring
 apt-get install -y php7.2-xml
 apt-get install -y php7.2-xmlrpc
+apt-get install -y php7.2-memcached
 apt-get install -y php7.2-zip
 
 # Install Composer
@@ -102,7 +103,7 @@ sudo service nginx restart
 
 # vagrant ssh
 
-# vim etc/mysql/my.cnf
+# vim /etc/mysql/my.cnf
 # bind-address = 127.0.0.1
 # :w !sudo tee %
 
