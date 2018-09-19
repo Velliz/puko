@@ -5,4 +5,5 @@
     'pass'   => '{{pass}}',
     'dbName' => '{{dbname}}',
     'port'   => '{{port}}',
+    'cache'   => false,
 ];

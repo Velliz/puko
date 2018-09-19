@@ -1,8 +1,9 @@
 <?php return [
     'cache' => array(
-        'expired' => 100,
+        'identifier' => 'pukocache',
         'kind' => 'MEMCACHED',
-        'host' => 'root',
+        'expired' => 100,
+        'host' => 'localhost',
         'port' => 11211,
     ),
     'const' => array(
