@@ -1,0 +1,743 @@
+#!/usr/bin/env php
+<?php
+if (PHP_SAPI !== 'cli') {
+    die('You are not allowed to perform this action');
+}
+
+$command = $argv[0];
+$entity = isset($argv[1]) ? $argv[1] : null;
+$parameter = isset($argv[2]) ? $argv[2] : null;
+$value = isset($argv[3]) ? $argv[3] : null;
+$customValue = isset($argv[4]) ? $argv[4] : null;
+
+$apps = "";
+
+if ($entity === null && $parameter === null) {
+    help();
+}
+
+switch ($entity) {
+    case "setup":
+        setup($parameter, $value, $customValue);
+        break;
+    case "routes":
+        routes($parameter, $value, $customValue, $apps);
+        break;
+    case "element":
+        elements($parameter, $value);
+        break;
+    case "help":
+        help();
+        break;
+    case "version":
+        version();
+        break;
+    case "serve":
+        if ($parameter === null) {
+            exit('specify a valid port. example php puko serve 8000');
+        }
+        echo "Puko project initialized at localhost:$parameter\n";
+        echo "Press Ctrl + C to stop\n";
+        echo exec("php -S localhost:$parameter routes.php");
+        break;
+    default:
+        exit('command not supported');
+        break;
+}
+
+function setup($parameter, $value, $customValue)
+{
+    switch ($parameter) {
+        case "db":
+            database();
+            break;
+        case "secure":
+            secure();
+            break;
+        case 'base_auth':
+            base_auth($value);
+            break;
+        case 'base_controller':
+            base_controller($value, $customValue);
+            break;
+        default:
+            break;
+    }
+}
+
+function database()
+{
+    echo "\nStart database initialization ...\n\n";
+    echo "host name    : ";
+    $host = preg_replace('/\s+/', '', fgets(STDIN));
+    echo "host port    : ";
+    $port = preg_replace('/\s+/', '', fgets(STDIN));
+    echo "username     : ";
+    $user = preg_replace('/\s+/', '', fgets(STDIN));
+    echo "password     : ";
+    $pass = preg_replace('/\s+/', '', fgets(STDIN));
+    echo "database name: ";
+    $dbName = preg_replace('/\s+/', '', fgets(STDIN));
+
+    try {
+
+        $pdoConnection = "mysql:host=$host;port=$port;dbname=$dbName";
+
+        $dbi = new PDO($pdoConnection, $user, $pass);
+        $dbi->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $table_list = "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES
+                       WHERE TABLE_NAME like '%' AND TABLE_SCHEMA = '$dbName'";
+
+        $statement = $dbi->prepare($table_list);
+        $statement->execute();
+        $table = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        echo "\n";
+
+        foreach ($table as $key => $value) {
+            echo "Creating model " . $value['TABLE_NAME'] . ".php\n";
+
+            $statement = $dbi->prepare("DESC " . $value['TABLE_NAME']);
+            $statement->execute();
+            $column = $statement->fetchAll(PDO::FETCH_ASSOC);
+            $property = "";
+            $primary = "";
+            foreach ($column as $k => $v) {
+                if ($v['Key'] === 'PRI') {
+                    $primary = $v['Field'];
+                }
+                $initValue = 'null';
+                if (strpos($v['Type'], 'char') !== false) {
+                    $initValue = "''";
+                }
+                if (strpos($v['Type'], 'text') !== false) {
+                    $initValue = "''";
+                }
+                if (strpos($v['Type'], 'int') !== false) {
+                    $initValue = 0;
+                }
+                if (strpos($v['Type'], 'double') !== false) {
+                    $initValue = 0;
+                }
+                $property .= "
+    /**
+     * #Column " . $v['Field'] . " " . $v['Type'] . "
+     */
+    var $" . $v['Field'] . " = " . $initValue . ";
+";
+
+            }
+            $model_file = file_get_contents("template/model/model");
+            $model_file = str_replace('{{table}}', $value['TABLE_NAME'], $model_file);
+            $model_file = str_replace('{{primary}}', $primary, $model_file);
+            $model_file = str_replace('{{variables}}', $property, $model_file);
+            if (!is_dir('plugins/model')) {
+                mkdir('plugins/model');
+            }
+            file_put_contents("plugins/model/" . $value['TABLE_NAME'] . ".php", $model_file);
+        }
+
+
+    } catch (PDOException $e) {
+
+        echo "\nConnection failed: " . $e->getMessage();
+        echo "\n";
+        database();
+
+    }
+    $configuration = file_get_contents("template/config/database");
+    $configuration = str_replace('{{type}}', 'mysql', $configuration);
+    $configuration = str_replace('{{host}}', $host, $configuration);
+    $configuration = str_replace('{{user}}', $user, $configuration);
+    $configuration = str_replace('{{pass}}', $pass, $configuration);
+    $configuration = str_replace('{{dbname}}', $dbName, $configuration);
+    $configuration = str_replace('{{port}}', $port, $configuration);
+
+    file_put_contents("config/database.php", $configuration);
+
+    echo "\n... initialization completed.\n\n";
+    exit;
+}
+
+function secure()
+{
+    echo "\nStart AES-256 secure initialization ...\n\n";
+    echo "identifier   : ";
+    $identifier = preg_replace('/\s+/', '', fgets(STDIN));
+    echo "secure key   : ";
+    $key = preg_replace('/\s+/', '', fgets(STDIN));
+    echo "cookies name : ";
+    $cookies = preg_replace('/\s+/', '', fgets(STDIN));
+    echo "session name : ";
+    $session = preg_replace('/\s+/', '', fgets(STDIN));
+
+    $configuration = file_get_contents("template/config/encryption");
+    $configuration = str_replace('{{key}}', $identifier, $configuration);
+    $configuration = str_replace('{{identifier}}', $key, $configuration);
+    $configuration = str_replace('{{cookies}}', $cookies, $configuration);
+    $configuration = str_replace('{{session}}', $session, $configuration);
+
+    file_put_contents("config/encryption.php", $configuration);
+
+    echo "\n... initialization completed.\n";
+    exit;
+}
+
+function base_auth($value)
+{
+    $varNewFile = file_get_contents("template/plugins/auth");
+    if ($value === null) {
+        exit('class_name not specified. example: php puko setup base_auth UserAuth');
+    }
+    $varNewFile = str_replace('{{class}}', $value, $varNewFile);
+    if (!is_dir('plugins/auth')) {
+        mkdir('plugins/auth');
+    }
+    file_put_contents("plugins/auth/" . $value . '.php', $varNewFile);
+
+    echo "\n... initialization completed.\n";
+    exit;
+}
+
+function base_controller($value, $customValue)
+{
+    if ($customValue === 'service') {
+        $varNewFile = file_get_contents("template/controller/service");
+    }
+    if ($customValue === 'view') {
+        $varNewFile = file_get_contents("template/controller/view");
+    }
+
+    if ($value === null) {
+        exit('class_name not specified. example: php puko setup base_auth UserAuth');
+    }
+    $varNewFile = str_replace('{{class}}', $value, $varNewFile);
+    if (!is_dir('plugins/controller')) {
+        mkdir('plugins/controller');
+    }
+    file_put_contents("plugins/controller/" . $value . '.php', $varNewFile);
+
+    echo "\n... initialization completed.\n";
+    exit;
+}
+
+function help()
+{
+    echo "\npukoframework console commands list:\n";
+    echo "  setup    Setup puko framework installation\n";
+    echo "           [db]\n";
+    echo "           [secure]\n";
+    echo "           [base_auth] [class_name]\n";
+    echo "           [base_controller] [class_name] [view/service]\n";
+    echo "\n";
+    echo "  routes   Setup puko framework routes\n";
+    echo "           [view/service/error/not_found] [add/update/delete/list] [url]\n";
+    echo "\n";
+    echo "  serve    Start puko on localhost:[port]\n";
+    echo "\n";
+    echo "  element  Puko elements\n";
+    echo "           [add/download]\n";
+    echo "\n";
+    echo "  help     Show help menu\n";
+    echo "\n";
+    echo "  version  Show console version\n";
+    exit;
+}
+
+function version()
+{
+    echo "\npukoframework console\n";
+    echo "version 0.0.1\n";
+    exit;
+}
+
+function routes($type, $parameter, $value, $apps)
+{
+    $routes = include "config/routes.php";
+
+    if ($type === 'view' || $type === 'service') {
+        $active = $routes['page'];
+    } else {
+        $active = $routes[$type];
+    }
+
+    if ($type == "view") {
+        switch ($parameter) {
+            case "add":
+                if (isset($routes['page'][$value])) {
+                    echo "\nroutes already registered\n";
+                    exit;
+                }
+                echo "controller                  : ";
+                $controller = preg_replace('/\s+/', '', fgets(STDIN));
+                echo "function                    : ";
+                $function = preg_replace('/\s+/', '', fgets(STDIN));
+                echo "accept(separate with comma) : ";
+                $accept = preg_replace('/\s+/', '', fgets(STDIN));
+                $data = [
+                    "controller" => $controller,
+                    "function" => $function,
+                    "accept" => explode(",", $accept)
+                ];
+                $routes['page'][$value] = $data;
+
+                file_put_contents("config/routes.php", '<?php $routes = ' . var_export54($routes) . '; return $routes;');
+
+                if (!file_exists("assets/html/id/" . str_replace('\\', '/', $controller))) {
+                    mkdir("assets/html/id/" . str_replace('\\', '/', $controller), 0777, true);
+                }
+
+                if (!file_exists("assets/html/en/" . str_replace('\\', '/', $controller))) {
+                    mkdir("assets/html/en/" . str_replace('\\', '/', $controller), 0777, true);
+                }
+
+                $html = <<<HTML
+{!css(<!-- your custom CSS file here -->)}
+<table>
+<tr>
+<td>controller</td>
+<td>$controller.php</td>
+</tr>
+</table>
+{!js(<!-- your custom JavaScript file here -->)}
+HTML;
+
+
+                file_put_contents("assets/html/id/" . str_replace('\\', '/', $controller) . '/' . $function . '.html', $html);
+                file_put_contents("assets/html/en/" . str_replace('\\', '/', $controller) . '/' . $function . '.html', $html);
+
+                $controllerExplode = explode('\\', $controller);
+
+                $className = $controllerExplode[sizeof($controllerExplode) - 1];
+                $namespaces = '';
+                for ($i = 0; $i < sizeof($controllerExplode) - 1; $i++) {
+                    $namespaces .= $controllerExplode[$i] . "\\";
+                }
+
+                if (sizeof($controllerExplode) == 1) {
+                    //region base
+                    $namespaces = "controller";
+                    $cNamespaces = $apps . $namespaces;
+                    $className = $controller;
+                    $varNewFile = <<<PHP
+<?php
+
+namespace $cNamespaces;
+
+use pukoframework\middleware\View;
+
+/**
+ * #Master master.html
+ */
+class $className extends View
+{
+
+    public function $function(){}
+
+}
+
+PHP;
+                    if (!file_exists($namespaces . "/" . $className . ".php")) {
+                        file_put_contents($namespaces . "/" . $className . '.php', $varNewFile);
+                    } else {
+                        $existingController = file_get_contents($namespaces . "/" . $className . '.php');
+                        $pos = strrpos($existingController, "}");
+                        $existingController = substr_replace($existingController, "    public function $function(){}\n\n}", $pos);
+                        file_put_contents($namespaces . "/" . $className . '.php', $existingController);
+                    }
+                } else {
+                    //region complex namespaces
+                    $namespaces = "controller\\" . rtrim($namespaces, "\\");
+                    $cNamespaces = $apps . $namespaces;
+                    $namespaceFolder = str_replace("\\", "/", $namespaces);
+                    $varNewFile = <<<PHP
+<?php
+
+namespace $cNamespaces;
+
+use pukoframework\middleware\View;
+
+/**
+ * #Master master.html
+ */
+class $className extends View
+{
+
+    public function $function(){}
+
+}
+
+PHP;
+                    if (!file_exists($namespaceFolder)) {
+                        mkdir($namespaceFolder, 0777, true);
+                    }
+                    if (!file_exists('controller/' . str_replace('\\', '/', $controller . '.php'))) {
+                        file_put_contents('controller/' . str_replace('\\', '/', $controller . '.php'), $varNewFile);
+                    } else {
+                        $existingController = file_get_contents('controller/' . str_replace('\\', '/', $controller . '.php'));
+                        $pos = strrpos($existingController, "}");
+                        $existingController = substr_replace($existingController, "    public function $function(){}\n\n}", $pos);
+                        file_put_contents('controller/' . str_replace('\\', '/', $controller . '.php'), $existingController);
+                    }
+
+                }
+                echo "\nroutes added\n";
+                exit;
+                break;
+            case "update":
+                if (!isset($routes['page'][$value])) {
+                    echo "\nroutes not found\n";
+                    exit;
+                }
+                echo "controller                  : ";
+                $controller = preg_replace('/\s+/', '', fgets(STDIN));
+                echo "function                    : ";
+                $function = preg_replace('/\s+/', '', fgets(STDIN));
+                echo "accept(separate with comma) : ";
+                $accept = preg_replace('/\s+/', '', fgets(STDIN));
+                $data = [
+                    "controller" => $controller,
+                    "function" => $function,
+                    "accept" => explode(",", $accept)
+                ];
+                $routes['page'][$value] = $data;
+                file_put_contents("config/routes.php", '<?php $routes = ' . var_export54($routes) . '; return $routes;');
+
+                echo "\nroutes modified\n";
+                exit;
+                break;
+            case "delete":
+                if (!isset($routes['page'][$value])) {
+                    echo "\nroutes not found\n";
+                    exit;
+                }
+                unset($routes['page'][$value]);
+                file_put_contents("config/routes.php", '<?php $routes = ' . var_export54($routes) . '; return $routes;');
+
+                echo "\nroutes deleted\n";
+                exit;
+                break;
+            case "list":
+                echo "\nRoutes list found (" . count($active) . ") entries\n\n";
+                foreach ($active as $key => $value) {
+                    echo "'" . $key . "' => " . $value["controller"] . "@" . $value["function"] . " [" . implode(",", $value["accept"]) . "] " . "\n";
+                }
+                break;
+            default:
+                echo "\ncommand " . $parameter . " not found. try list/add/update/delete\n";
+                exit;
+                break;
+        }
+    }
+
+    if ($type == "service") {
+        switch ($parameter) {
+            case "add":
+                if (isset($routes['page'][$value])) {
+                    echo "\nroutes already registered\n";
+                    exit;
+                }
+                echo "controller                  : ";
+                $controller = preg_replace('/\s+/', '', fgets(STDIN));
+                echo "function                    : ";
+                $function = preg_replace('/\s+/', '', fgets(STDIN));
+                echo "accept(separate with comma) : ";
+                $accept = preg_replace('/\s+/', '', fgets(STDIN));
+                $data = [
+                    "controller" => $controller,
+                    "function" => $function,
+                    "accept" => explode(",", $accept)
+                ];
+                $routes['page'][$value] = $data;
+
+                file_put_contents("config/routes.php", '<?php $routes = ' . var_export54($routes) . '; return $routes;');
+
+                $controllerExplode = explode('\\', $controller);
+
+                $className = $controllerExplode[sizeof($controllerExplode) - 1];
+                $namespaces = '';
+                for ($i = 0; $i < sizeof($controllerExplode) - 1; $i++) {
+                    $namespaces .= $controllerExplode[$i] . "\\";
+                }
+
+                if (sizeof($controllerExplode) == 1) {
+                    //region base
+                    $namespaces = "controller";
+                    $cNamespaces = $apps . $namespaces;
+                    $className = $controller;
+                    $varNewFile = <<<PHP
+<?php
+
+namespace $cNamespaces;
+
+use pukoframework\middleware\Service;
+
+/**
+ * #Template html false
+ */
+class $className extends Service
+{
+
+    public function $function(){}
+
+}
+
+PHP;
+                    if (!file_exists($namespaces . "/" . $className . ".php")) {
+                        file_put_contents($namespaces . "/" . $className . '.php', $varNewFile);
+                    } else {
+                        $existingController = file_get_contents($namespaces . "/" . $className . '.php');
+                        $pos = strrpos($existingController, "}");
+                        $existingController = substr_replace($existingController, "    public function $function(){}\n\n}", $pos);
+                        file_put_contents($namespaces . "/" . $className . '.php', $existingController);
+                    }
+                } else {
+                    //region complex namespaces
+                    $namespaces = "controller\\" . rtrim($namespaces, "\\");
+                    $cNamespaces = $apps . $namespaces;
+                    $namespaceFolder = str_replace("\\", "/", $namespaces);
+                    $varNewFile = <<<PHP
+<?php
+
+namespace $cNamespaces;
+
+use pukoframework\middleware\Service;
+
+/**
+ * #Template html false
+ */
+class $className extends Service
+{
+
+    public function $function(){}
+
+}
+
+PHP;
+                    if (!file_exists($namespaceFolder)) {
+                        mkdir($namespaceFolder, 0777, true);
+                    }
+                    if (!file_exists('controller/' . str_replace('\\', '/', $controller . '.php'))) {
+                        file_put_contents('controller/' . str_replace('\\', '/', $controller . '.php'), $varNewFile);
+                    } else {
+                        $existingController = file_get_contents('controller/' . str_replace('\\', '/', $controller . '.php'));
+                        $pos = strrpos($existingController, "}");
+                        $existingController = substr_replace($existingController, "    public function $function(){}\n\n}", $pos);
+                        file_put_contents('controller/' . str_replace('\\', '/', $controller . '.php'), $existingController);
+                    }
+
+                }
+                echo "\nroutes added\n";
+                exit;
+                break;
+            case "update":
+                if (!isset($routes['page'][$value])) {
+                    echo "\nroutes not found\n";
+                    exit;
+                }
+                echo "controller                  : ";
+                $controller = preg_replace('/\s+/', '', fgets(STDIN));
+                echo "function                    : ";
+                $function = preg_replace('/\s+/', '', fgets(STDIN));
+                echo "accept(separate with comma) : ";
+                $accept = preg_replace('/\s+/', '', fgets(STDIN));
+                $data = [
+                    "controller" => $controller,
+                    "function" => $function,
+                    "accept" => explode(",", $accept)
+                ];
+                $routes['page'][$value] = $data;
+                file_put_contents("config/routes.php", '<?php $routes = ' . var_export54($routes) . '; return $routes;');
+
+                echo "\nroutes modified\n";
+                exit;
+                break;
+            case "delete":
+                if (!isset($routes['page'][$value])) {
+                    echo "\nroutes not found\n";
+                    exit;
+                }
+                unset($routes['page'][$value]);
+                file_put_contents("config/routes.php", '<?php $routes = ' . var_export54($routes) . '; return $routes;');
+
+                echo "\nroutes deleted\n";
+                exit;
+                break;
+            case "list":
+                echo "\nRoutes list found (" . count($active) . ") entries\n\n";
+                foreach ($active as $key => $value) {
+                    echo "'" . $key . "' => " . $value["controller"] . "@" . $value["function"] . " [" . implode(",", $value["accept"]) . "] " . "\n";
+                }
+                break;
+            default:
+                echo "\ncommand " . $parameter . " not found. try list/add/update/delete\n";
+                exit;
+                break;
+        }
+    }
+
+    if ($type == "error" || $type == "not_found") {
+        echo "controller                  : ";
+        $controller = preg_replace('/\s+/', '', fgets(STDIN));
+        echo "function                    : ";
+        $function = preg_replace('/\s+/', '', fgets(STDIN));
+        echo "accept(separate with comma) : ";
+        $accept = preg_replace('/\s+/', '', fgets(STDIN));
+        $data = [
+            "controller" => $controller,
+            "function" => $function,
+            "accept" => explode(",", $accept)
+        ];
+        $routes[$type] = $data;
+        file_put_contents("config/routes.php", '<?php $routes = ' . var_export54($routes) . '; return $routes;');
+    }
+
+}
+
+function elements($command, $type)
+{
+    if ($type === '' || $type === null) {
+        die('element name must defined');
+    }
+
+    $lowerType = strtolower($type);
+
+    if ($command === 'add') {
+
+        $html = sprintf("strtolower(%s::class . '.html')", $type);
+        $path = sprintf("ROOT . '/' . str_replace('\\\\', '/', %s)", $html);
+
+        $varPhpFile = "<?php
+
+namespace plugins\\elements\\$lowerType;
+
+use pte\\Parts;
+
+class $type extends Parts
+{
+
+    /**
+     * @return string
+     */
+    public function Parse()
+    {" . '
+        $this->pte->SetValue($this->data);
+        $this->pte->SetHtml(' . $path . ");
+        return" . ' $this->pte->Output();' . "
+    }
+
+}";
+
+        if (!file_exists('plugins/elements/' . $lowerType)) {
+            mkdir('plugins/elements/' . $lowerType, 0777, true);
+        }
+        if (!file_exists('plugins/elements/' . $lowerType . '/' . $type . '.php')) {
+            file_put_contents('plugins/elements/' . $lowerType . '/' . $type . '.php', $varPhpFile);
+        }
+
+        $newHtmlFile = <<<HTML
+{!css(<link href="plugins/elements/?/?.css" rel="stylesheet" type="text/css"/>)}
+{!js(<script type="text/javascript" src="plugins/elements/?/?.js"></script>)}
+<!-- your code here -->
+HTML;
+
+        $newHtmlFile = str_replace('?', $lowerType, $newHtmlFile);
+
+        if (!file_exists('plugins/elements/' . $lowerType . '/' . $lowerType . '.html')) {
+            file_put_contents('plugins/elements/' . $lowerType . '/' . $lowerType . '.html', $newHtmlFile);
+        }
+
+
+        $newJsFile = <<<JS
+// your code here
+JS;
+
+        if (!file_exists('plugins/elements/' . $lowerType . '/' . $lowerType . '.js')) {
+            file_put_contents('plugins/elements/' . $lowerType . '/' . $lowerType . '.js', $newJsFile);
+        }
+
+
+        $newCssFile = <<<CSS
+/* your css here */
+CSS;
+
+        if (!file_exists('plugins/elements/' . $lowerType . '/' . $lowerType . '.css')) {
+            file_put_contents('plugins/elements/' . $lowerType . '/' . $lowerType . '.css', $newCssFile);
+        }
+
+        echo "\n";
+        echo 'elements created';
+        echo "\n";
+    }
+
+    if ($command === 'download') {
+        $url = 'https://api.github.com/repos/Velliz/elements/contents/' . $type;
+        $data = json_decode(download($url), true);
+
+        if (!file_exists('plugins/elements/' . $lowerType)) {
+            mkdir('plugins/elements/' . $lowerType, 0777, true);
+        }
+
+        foreach ($data as $single) {
+            if (!isset($single['download_url'])) {
+                die('error when downloading elements');
+            }
+
+            $file = download($single['download_url']);
+            if (!file_exists('plugins/elements/' . $single['path'])) {
+                file_put_contents('plugins/elements/' . $single['path'], $file);
+                echo 'downloading... ' . $single['name'];
+                echo "\n";
+            }
+        }
+
+        echo "\n";
+        echo 'elements downloaded';
+        echo "\n";
+    }
+
+}
+
+function var_export54($var, $indent = "")
+{
+    switch (gettype($var)) {
+        case "string":
+            return '"' . addcslashes($var, "\\\$\"\r\n\t\v\f") . '"';
+        case "array":
+            $indexed = array_keys($var) === range(0, count($var) - 1);
+            $r = [];
+            foreach ($var as $key => $value) {
+                $r[] = "$indent    "
+                    . ($indexed ? "" : var_export54($key) . " => ")
+                    . var_export54($value, "$indent    ");
+            }
+            return "[\n" . implode(",\n", $r) . "\n" . $indent . "]";
+        case "boolean":
+            return $var ? "TRUE" : "FALSE";
+        default:
+            return var_export($var, TRUE);
+    }
+}
+
+function download($url)
+{
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_USERAGENT, 'elements');
+    $contents = curl_exec($ch);
+    if (curl_errno($ch)) {
+        return curl_error($ch);
+    } else {
+        curl_close($ch);
+    }
+
+    if (!is_string($contents) || !strlen($contents)) {
+        return false;
+    }
+
+    return $contents;
+}

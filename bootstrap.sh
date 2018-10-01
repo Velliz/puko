@@ -64,7 +64,7 @@ server {
 	client_max_body_size  100m;
 
 	# The location of our projects public directory.
-	root /home/www_app/apps/puko;
+	root /home/www_app;
 
 	# Point index to the Laravel front controller.
 	index index.php index.html;
