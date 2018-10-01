@@ -1,12 +1,11 @@
 <?php
 
-namespace apps\front\controller;
+namespace controller;
 
 use pukoframework\middleware\View;
 
 /**
  * Class error
- * #Master master.html
  */
 class error extends View
 {
