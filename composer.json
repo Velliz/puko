@@ -2,9 +2,9 @@
   "name": "velliz/puko",
   "description": "PSR 4 MVC Framework for quick and fast PHP application development",
   "license": "MIT",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "require": {
-    "puko/framework": "1.1.4"
+    "puko/framework": "1.1.5"
   },
   "minimum-stability": "dev",
   "autoload": {
