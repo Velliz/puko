@@ -7,6 +7,7 @@
  */
 
 use pukoframework\Framework;
+use pukoframework\config\Factory;
 
 require 'vendor/autoload.php';
 
@@ -31,25 +32,16 @@ if (isset($_SERVER['HTTPS'])) {
         $protocol = 'https';
     }
 }
-define('BASE_URL', ($protocol . "://" . $_SERVER['HTTP_HOST'] . "/"));
 
-/*
- *---------------------------------------------------------------
- * APP ROOT
- *---------------------------------------------------------------
- *
- */
-define('ROOT', __DIR__);
-/*
- *---------------------------------------------------------------
- * APP START
- *---------------------------------------------------------------
- *
- * This variable used to calculate the framework performance.
- */
-define('START', microtime(true));
+$factory = array(
+    'base' => ($protocol . "://" . $_SERVER['HTTP_HOST'] . "/"),
+    'root' => __DIR__,
+    'start' => microtime(true)
+);
+
+$fo = new Factory($factory);
 
 //Initialize framework object
-$framework = new Framework();
+$framework = new Framework($fo);
 //Start framework
 $framework->Start();
