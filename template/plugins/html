@@ -1,6 +1,0 @@
-{!css(<link href="plugins/elements/{{namespaces}}/{{namespaces}}.css" rel="stylesheet" type="text/css"/>)}
-{!js(<script type="text/javascript" src="plugins/elements/{{namespaces}}/{{namespaces}}.js"></script>)}
-
-<!-- your code start here -->
-
-<!-- your code end here -->

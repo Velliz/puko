@@ -1,8 +1,0 @@
-{!css(<!-- your custom CSS file here -->)}
-<table>
-<tr>
-<td>controller</td>
-<td>$controller.php</td>
-</tr>
-</table>
-{!js(<!-- your custom JavaScript file here -->)}
