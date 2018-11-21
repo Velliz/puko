@@ -7,18 +7,15 @@
     "puko/framework": "1.1.5"
   },
   "require-dev": {
-    "puko/console": "0.1.0"
+    "puko/console": "0.1.0",
+    "phpunit/phpunit": "6.5.13"
   },
   "minimum-stability": "dev",
   "autoload": {
     "psr-4": {
-      "apps\\": "apps/",
       "controller\\": "controller/",
       "model\\": "model/",
-      "config\\": "config/",
-      "plugins\\": "plugins/",
-      "template\\": "template/",
-      "tests\\": "tests/"
+      "plugins\\": "plugins/"
     }
   }
 }
