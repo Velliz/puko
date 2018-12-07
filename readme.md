@@ -40,11 +40,6 @@ Setup your database:
 php puko setup db
 ```
 
-Setup your encryption configuration:
-```php
-php puko setup secure
-```
-
 See starter kit for puko framework in [here](https://github.com/Velliz/puko) 
 and see usage and sample in [documentation](https://velliz.github.io/pudo)
 

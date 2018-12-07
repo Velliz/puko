@@ -14,7 +14,7 @@
         <server name="REQUEST_METHOD" value="GET"/>
     </php>
     <testsuites>
-        <testsuite name="Model Test">
+        <testsuite name="Base Test">
             <directory>./tests</directory>
         </testsuite>
     </testsuites>

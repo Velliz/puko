@@ -1,22 +1,10 @@
 <?php
-/*
- *---------------------------------------------------------------
- * PUKO FRAMEWORK
- *---------------------------------------------------------------
- *
- */
 
 use pukoframework\Framework;
 use pukoframework\config\Factory;
 
 require 'vendor/autoload.php';
 
-/*
- *---------------------------------------------------------------
- * APP BASE URL
- *---------------------------------------------------------------
- *
- */
 $protocol = 'http';
 if (isset($_SERVER['HTTPS'])) {
     $protocol = 'https';
@@ -38,10 +26,7 @@ $factory = array(
     'root' => __DIR__,
     'start' => microtime(true)
 );
-
 $fo = new Factory($factory);
 
-//Initialize framework object
 $framework = new Framework($fo);
-//Start framework
 $framework->Start();
