@@ -1,5 +1,5 @@
 <?php $routes = [
-    "page" => [],
+    "router" => [],
     "error" => [
         "controller" => "error",
         "function" => "display",

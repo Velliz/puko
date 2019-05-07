@@ -1,6 +1,5 @@
 <?php return [
     'const' => [
-        'OWNER' => 'Puko Framework',
         'API' => '',
     ],
     'cache' => [
