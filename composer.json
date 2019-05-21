@@ -2,7 +2,7 @@
   "name": "velliz/puko",
   "description": "PSR 4 MVC Framework for quick PHP application development",
   "license": "MIT",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "require": {
     "php": ">=7.0",
     "puko/framework": "1.1.6"
