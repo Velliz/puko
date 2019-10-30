@@ -1,0 +1,17 @@
+<?php
+
+use pukoframework\Framework;
+use pukoframework\config\Factory;
+
+require 'vendor/autoload.php';
+
+$factory = array(
+    'cli_param' => $_SERVER['argv'][1],
+    'base' => 'cli',
+    'root' => __DIR__,
+    'start' => microtime(true)
+);
+$fo = new Factory($factory);
+
+$framework = new Framework($fo);
+$framework->Start();
