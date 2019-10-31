@@ -22,6 +22,7 @@ if (isset($_SERVER['HTTPS'])) {
 }
 
 $factory = array(
+    'cli_param' => null,
     'base' => ($protocol . "://" . $_SERVER['HTTP_HOST'] . "/"),
     'root' => __DIR__,
     'start' => microtime(true)
