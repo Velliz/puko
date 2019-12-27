@@ -5,10 +5,10 @@
   "version": "1.1.8",
   "require": {
     "php": ">=7.0",
-    "puko/framework": "dev-master"
+    "puko/framework": "1.1.7"
   },
   "require-dev": {
-    "puko/console": "dev-master",
+    "puko/console": "0.1.5",
     "phpunit/phpunit": "6.5.13"
   },
   "minimum-stability": "dev",
