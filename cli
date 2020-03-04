@@ -6,7 +6,8 @@ use pukoframework\config\Factory;
 require 'vendor/autoload.php';
 
 $factory = array(
-    'cli_param' => $_SERVER['argv'][1],
+    'cli_param' => null,
+    'environment' => 'DEV', //possible value: PROD, DEV, MAINTENANCE
     'base' => 'cli',
     'root' => __DIR__,
     'start' => microtime(true)
