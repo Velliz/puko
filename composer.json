@@ -8,7 +8,7 @@
     "puko/framework": "1.1.8"
   },
   "require-dev": {
-    "puko/console": "0.1.6",
+    "puko/console": "0.1.5",
     "phpunit/phpunit": "6.5.13"
   },
   "minimum-stability": "dev",
