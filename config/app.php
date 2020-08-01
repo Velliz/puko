@@ -1,25 +1,27 @@
-<?php return [
+<?php
+
+return [
     'const' => [
         'API' => '',
     ],
     'cache' => [
-        'kind' => 'MEMCACHED',
+        'kind'    => 'MEMCACHED',
         'expired' => 100,
-        'host' => 'localhost',
-        'port' => 11211,
+        'host'    => 'localhost',
+        'port'    => 11211,
     ],
     'logs' => [
         'slack' => [
-            'url' => '',
-            'secure' => '',
+            'url'      => '',
+            'secure'   => '',
             'username' => 'puko-log',
-            'active' => false
+            'active'   => false,
         ],
         'hook' => [
-            'url' => '',
-            'secure' => '',
+            'url'      => '',
+            'secure'   => '',
             'username' => 'puko-log',
-            'active' => false
-        ]
-    ]
+            'active'   => false,
+        ],
+    ],
 ];
