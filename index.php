@@ -1,33 +1,33 @@
 <?php
 
-use pukoframework\Framework;
 use pukoframework\config\Factory;
+use pukoframework\Framework;
 
 require 'vendor/autoload.php';
 
 $protocol = 'http';
 if (isset($_SERVER['HTTPS'])) {
     $protocol = 'https';
-} else if (isset($_SERVER['HTTP_X_SCHEME'])) {
+} elseif (isset($_SERVER['HTTP_X_SCHEME'])) {
     $protocol = strtolower($_SERVER['HTTP_X_SCHEME']);
-} else if (isset($_SERVER['HTTP_X_FORWARDED_PROTO'])) {
+} elseif (isset($_SERVER['HTTP_X_FORWARDED_PROTO'])) {
     $protocol = strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']);
-} else if (isset($_SERVER['SERVER_PORT'])) {
-    $serverPort = (int)$_SERVER['SERVER_PORT'];
+} elseif (isset($_SERVER['SERVER_PORT'])) {
+    $serverPort = (int) $_SERVER['SERVER_PORT'];
     if ($serverPort == 80) {
         $protocol = 'http';
-    } else if ($serverPort == 443) {
+    } elseif ($serverPort == 443) {
         $protocol = 'https';
     }
 }
 
-$factory = array(
-    'cli_param' => null,
+$factory = [
+    'cli_param'   => null,
     'environment' => 'DEV', //possible value: PROD, DEV, MAINTENANCE
-    'base' => ($protocol . "://" . $_SERVER['HTTP_HOST'] . "/"),
-    'root' => __DIR__,
-    'start' => microtime(true)
-);
+    'base'        => ($protocol.'://'.$_SERVER['HTTP_HOST'].'/'),
+    'root'        => __DIR__,
+    'start'       => microtime(true),
+];
 $fo = new Factory($factory);
 
 $framework = new Framework($fo);

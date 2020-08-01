@@ -5,23 +5,21 @@ namespace controller;
 use pukoframework\middleware\View;
 
 /**
- * Class error
+ * Class error.
  */
 class error extends View
 {
-
     /**
-     * #Value title Error Display
+     * #Value title Error Display.
      */
     public function display()
     {
     }
 
     /**
-     * #Value title Error Not Found (404)
+     * #Value title Error Not Found (404).
      */
     public function notfound()
     {
     }
-
 }
