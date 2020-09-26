@@ -22,4 +22,11 @@ class error extends View
     public function notfound()
     {
     }
+
+    /**
+     * #Value title Under Maintenance
+     */
+    public function maintenance()
+    {
+    }
 }

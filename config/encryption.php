@@ -1,6 +1,4 @@
-<?php
-
-return [
+<?php return [
     'method'      => 'AES-256-CBC',
     'key'         => 'pukoframework',
     'identifier'  => 'p43mgf59nFR108dFD',
@@ -8,5 +6,5 @@ return [
     'session'     => 'puko',
     'expired'     => 30,
     'expiredText' => 'Login to continue',
-    'errorText'   => "You don't have akses",
+    'errorText'   => "You don't have enough permission to access this feature!",
 ];
