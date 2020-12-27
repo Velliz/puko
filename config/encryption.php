@@ -4,7 +4,7 @@
     'identifier'  => 'p43mgf59nFR108dFD',
     'cookies'     => 'puko',
     'session'     => 'puko',
-    'expired'     => 30,
+    'expired'     => 9999,
     'expiredText' => 'Login to continue',
     'errorText'   => "You don't have enough permission to access this feature!",
 ];
