@@ -18,3 +18,8 @@ boxes/*
 /website/build
 /vagrant-spec.config.rb
 test/vagrant-spec/.vagrant/
+
+# Node stuff
+node_modules
+yarn.lock
+package-lock.json
