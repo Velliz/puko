@@ -23,3 +23,7 @@ test/vagrant-spec/.vagrant/
 node_modules
 yarn.lock
 package-lock.json
+
+# Bower web dependencies
+assets/libraries
+
