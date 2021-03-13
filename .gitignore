@@ -24,6 +24,9 @@ node_modules
 yarn.lock
 package-lock.json
 
+# Dotnev stuff
+.env
+
 # Bower web dependencies
 assets/libraries
 
