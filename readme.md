@@ -13,9 +13,10 @@ Puko Framework is MVC PHP Framework for quick PHP based Web/API/Console Applicat
 
 ## Requirement
 
-* php 7.0
+* php >= 7.0
 * composer
 * ext-json
+* Node.js
 
 ## Feature
 
@@ -41,7 +42,7 @@ Then start a build-in development server:
 php puko serve
 ```
 
-If you find bugs, error or you want contribute to this project, please post an issue and pull request to make puko framework better.
+If you find bugs, error or you want to contribute to this project, please post an issue and pull request to make Puko Framework better.
 
 ## About
 

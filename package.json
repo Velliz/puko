@@ -1,0 +1,34 @@
+{
+  "name": "puko",
+  "version": "1.0.0",
+  "description": "puko frontend module bundler",
+  "main": "gulpfile.js",
+  "scripts": {
+    "minify": "gulp minify",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/velliz/puko.git"
+  },
+  "keywords": [
+    "ui"
+  ],
+  "author": "Didit Velliz",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/velliz/puko/issues"
+  },
+  "homepage": "https://github.com/velliz/puko",
+  "dependencies": {
+    "@babel/core": "^7.4.4",
+    "@babel/preset-env": "^7.12.1",
+    "gulp": "^4.0.2",
+    "gulp-babel": "^8.0.0",
+    "gulp-connect-php": "^1.0.3",
+    "gulp-htmlmin": "^5.0.1",
+    "gulp-minify-css": "^1.2.4",
+    "gulp-uglify": "^3.0.2",
+    "gulp-strip-debug": "^3.0.0"
+  }
+}
