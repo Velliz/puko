@@ -34,7 +34,7 @@ gulp.task('minifyjs', function () {
         }))
         .pipe(uglify())
         .pipe(stripDebug())
-        .pipe(gulp.dest('./assets/scripts/'))
+        .pipe(gulp.dest('./assets/scripts/'));
 });
 
 gulp.task('minify', gulp.parallel(

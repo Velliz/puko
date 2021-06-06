@@ -1,4 +1,7 @@
 <?php
+/**
+ * This file is used only for php build in web-server.
+ */
 
 define('APPLICATION_ENV', 'development');
 
