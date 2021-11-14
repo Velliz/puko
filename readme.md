@@ -41,11 +41,3 @@ Then start a build-in development server:
 ```text
 php puko serve
 ```
-
-If you find bugs, error or you want to contribute to this project, please post an issue and pull request to make Puko Framework better.
-
-## About
-
-Crafted with <3 from Bandung, Indonesia.
-
-2016 - 2020 by Didit Velliz

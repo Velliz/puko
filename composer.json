@@ -1,6 +1,6 @@
 {
   "name": "velliz/puko",
-  "description": "PSR 4 MVC Framework for quick PHP application development",
+  "description": "PSR-4 MVC Framework for quick PHP application development",
   "license": "MIT",
   "version": "1.2.0",
   "require": {
