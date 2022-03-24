@@ -5,7 +5,8 @@
   "version": "1.2.1",
   "require": {
     "php": ">=7.0|>=8.0",
-    "puko/framework": "1.2.1"
+    "puko/framework": "1.2.1",
+    "vlucas/phpdotenv": "^5.4.1"
   },
   "require-dev": {
     "puko/console": "0.2.1",
