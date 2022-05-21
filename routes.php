@@ -2,7 +2,6 @@
 /**
  * This file is used only for php build in web-server.
  */
-
 define('APPLICATION_ENV', 'development');
 
 $preg = preg_match('/\.(?:png|jpg|jpeg|gif|ico|.eot*([?v=a-zA-Z0-9._-]+)|woff*([?v=a-zA-Z0-9._-]+)|svg|eot*([?v=a-zA-Z0-9._-]+)|woff2*([?v=a-zA-Z0-9._-]+)|ttf*([?v=a-zA-Z0-9._-]+)|mp4|mpeg|js*([?v=a-zA-Z0-9._-]+)|css*([?v=a-zA-Z0-9._-]+))$/', $_SERVER['REQUEST_URI']);

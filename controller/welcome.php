@@ -6,15 +6,14 @@ use pukoframework\middleware\View;
 
 /**
  * #Master master.html
- * #Value title Hello World
+ * #Value title Hello World.
  */
 class welcome extends View
 {
     /**
-     * #Value title Welcome
+     * #Value title Welcome.
      */
     public function welcome()
     {
     }
-
 }

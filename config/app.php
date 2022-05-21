@@ -2,25 +2,25 @@
 
 return [
     'const' => [
-        'API' => ''
+        'API' => '',
     ],
     'cache' => [
         'kind'    => 'MEMCACHED',
         'host'    => 'localhost',
-        'port'    => 11211
+        'port'    => 11211,
     ],
     'logs' => [
         'slack' => [
             'url'      => '',
             'secure'   => '',
             'username' => 'puko-log',
-            'active'   => false
+            'active'   => false,
         ],
         'hook' => [
             'url'      => '',
             'secure'   => '',
             'username' => 'puko-log',
-            'active'   => false
+            'active'   => false,
         ],
     ],
 ];

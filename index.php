@@ -1,8 +1,8 @@
 <?php
 
+use Dotenv\Dotenv;
 use pukoframework\config\Factory;
 use pukoframework\Framework;
-use Dotenv\Dotenv;
 
 require 'vendor/autoload.php';
 
