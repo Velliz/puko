@@ -10,7 +10,11 @@ use pukoframework\middleware\View;
  */
 class welcome extends View
 {
-
-    public function welcome() {}
+    /**
+     * #Value title Welcome
+     */
+    public function welcome()
+    {
+    }
 
 }
