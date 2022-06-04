@@ -8,6 +8,7 @@ return [
         'kind'    => 'MEMCACHED',
         'host'    => 'localhost',
         'port'    => 11211,
+        'active'    => false,
     ],
     'logs' => [
         'slack' => [
