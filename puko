@@ -1,6 +1,12 @@
 <?php
 
+use Dotenv\Dotenv;
+
 require 'vendor/autoload.php';
+
+//spin up environment variables
+$dotenv = Dotenv::createImmutable(__DIR__);
+$dotenv->safeLoad();
 
 $console = new \pukoconsole\Console(__DIR__, $_SERVER['argv']);
 echo $console->Execute();

@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/velliz/puko",
   "dependencies": {
-    "@babel/core": "^7.4.4",
+    "@babel/core": "^7.13.10",
     "@babel/preset-env": "^7.12.1",
     "gulp": "^4.0.2",
     "gulp-babel": "^8.0.0",

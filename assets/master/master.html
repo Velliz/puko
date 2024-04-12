@@ -1,29 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Puko framework -->
     <meta charset="UTF-8">
     <base href="{!url()}">
     <title>{!title}</title>
-    <!-- customize style here -->
-    <style>
-        body { text-align: center; padding: 150px; }
-        h1 { font-size: 50px; }
-        body { font: 20px Helvetica, sans-serif; color: #333; }
-        article { display: block; text-align: left; width: 650px; margin: 0 auto; }
-        a { color: #dc8100; text-decoration: none; }
-        a:hover { color: #333; text-decoration: none; }
-    </style>
+    <!-- bootstrap from bower managed dependency -->
+    <link href="assets/libraries/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- import stylesheet file here -->
+    {!part(css)}
 </head>
 <body>
 <!-- customize content here -->
-<h1>Puko Framework</h1>
-<div>
-    {CONTENT}
+<div class="container text-center mt-5">
+    <h1>Puko Framework</h1>
+    <p>Welcome aboard, Take a look resource to help you get started:</p>
+    <div>
+        {CONTENT}
+    </div>
 </div>
-<br>
-<br>
-<!-- import form file here -->
-{!part(css)}
+<!-- jquery, bootstrap, bootbox from bower managed dependency -->
+<script src="assets/libraries/jquery/dist/jquery.min.js"></script>
+<script src="assets/libraries/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="assets/libraries/bootbox.js/dist/bootbox.all.min.js"></script>
+<!-- import javascript file here -->
 {!part(js)}
 </body>
 </html>
