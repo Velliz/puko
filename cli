@@ -6,14 +6,16 @@ use pukoframework\config\Factory;
 
 require 'vendor/autoload.php';
 
-//spin up environment variables
+//spin up environment variables with Dotenv.
 $dotenv = Dotenv::createImmutable(__DIR__);
 $dotenv->safeLoad();
 
+//possible value for environment: PROD, DEV, MAINTENANCE, DEMO.
+//if website not installed in top level webserver you can set folder name at base with end trailing slash.
 $factory = array(
     'cli_param' => $_SERVER['argv'][1],
-    'environment' => 'DEV', //possible value: PROD, DEV, MAINTENANCE
-    'base' => 'cli',
+    'environment' => 'DEV',
+    'base' => null,
     'root' => __DIR__,
     'start' => microtime(true)
 );
