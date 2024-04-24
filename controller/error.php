@@ -10,21 +10,21 @@ use pukoframework\middleware\View;
 class error extends View
 {
     /**
-     * #Value title Error Display.
+     * #Value title Display HTTP Error
      */
     public function display()
     {
     }
 
     /**
-     * #Value title Error Not Found (404).
+     * #Value title Page Not Found
      */
-    public function notfound()
+    public function not_found()
     {
     }
 
     /**
-     * #Value title Under Maintenance.
+     * #Value title Website Under Maintenance
      */
     public function maintenance()
     {

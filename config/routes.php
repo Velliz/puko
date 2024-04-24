@@ -20,7 +20,7 @@ $routes = [
     ],
     'not_found' => [
         'controller' => 'error',
-        'function'   => 'notfound',
+        'function'   => 'not_found',
         'accept'     => [
             'GET',
             'POST',
