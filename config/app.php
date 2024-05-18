@@ -25,10 +25,7 @@ return [
         ],
     ],
     'environment' => [
-        'demo' => [
-            'init_model_migration_file_name' => 'demo.sql',
-            'crontab' => '0 * * * *',
-        ],
+        'demo' => [],
         'dev' => [],
         'prod' => [],
         'maintenance' => [],

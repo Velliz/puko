@@ -19,7 +19,7 @@ class error extends View
     /**
      * #Value title Page Not Found
      */
-    public function not_found()
+    public function notfound()
     {
     }
 
