@@ -1,6 +1,6 @@
 let gulp = require('gulp');
 let minifyCSS = require("gulp-minify-css");
-let htmlmin = require('gulp-htmlmin');
+let minifyHTML = require('gulp-htmlmin');
 let babel = require('gulp-babel');
 let uglify = require('gulp-uglify');
 let stripDebug = require('gulp-strip-debug');
@@ -14,7 +14,7 @@ gulp.task('minifycss', done => {
 
 gulp.task('minifyhtml', function () {
     return gulp.src('./assets/**/*.html')
-        .pipe(htmlmin({
+        .pipe(minifyHTML({
             collapseWhitespace: true,
             removeComments: true,
             minifyCSS: false,
