@@ -2,11 +2,11 @@
   "name": "velliz/puko",
   "description": "PSR-4 MVC Framework for quick PHP application development",
   "license": "MIT",
-  "version": "1.3.3",
+  "version": "1.4.0",
   "require": {
     "erusev/parsedown": "^1.7.4",
     "php": ">=7.3|>=8.0",
-    "puko/framework": "^1.3.3",
+    "puko/framework": "^1.4.0",
     "vlucas/phpdotenv": "^5.4.1"
   },
   "require-dev": {

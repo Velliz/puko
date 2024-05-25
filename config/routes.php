@@ -24,7 +24,15 @@
         ]
     ],
     "cms" => [
-
+        "controller" => "cms",
+        "function" => "engine",
+        "accept" => [
+            "GET",
+            "POST",
+            "PUT",
+            "PATCH",
+            "DELETE"
+        ]
     ],
     "error" => [
         "controller" => "error",
@@ -34,17 +42,17 @@
             "POST"
         ]
     ],
-    "notfound" => [
+    "maintenance" => [
         "controller" => "error",
-        "function" => "notfound",
+        "function" => "maintenance",
         "accept" => [
             "GET",
             "POST"
         ]
     ],
-    "maintenance" => [
+    "notfound" => [
         "controller" => "error",
-        "function" => "maintenance",
+        "function" => "notfound",
         "accept" => [
             "GET",
             "POST"

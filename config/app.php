@@ -2,7 +2,7 @@
 
 return [
     'const' => [
-        'API' => null,
+        'CMS_MODE' => false,
     ],
     'cache' => [
         'kind' => 'MEMCACHED',

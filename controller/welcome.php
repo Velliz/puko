@@ -2,6 +2,7 @@
 
 namespace controller;
 
+use plugins\elements\pukocms\pukocms;
 use pukoframework\middleware\View;
 
 /**
@@ -15,5 +16,12 @@ class welcome extends View
      */
     public function welcome()
     {
+        if ($this->GetAppConstant('CMS_MODE') === true) {
+            $data = [];
+
+            return [
+                'pukocms' => new pukocms('client', $data),
+            ];
+        }
     }
 }
