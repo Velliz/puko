@@ -4,13 +4,13 @@
   "license": "MIT",
   "version": "1.4.0",
   "require": {
-    "erusev/parsedown": "^1.7.4",
     "php": ">=7.3|>=8.0",
     "puko/framework": "^1.4.0",
+    "erusev/parsedown": "^1.7.4",
     "vlucas/phpdotenv": "^5.4.1"
   },
   "require-dev": {
-    "puko/console": "^0.3.3",
+    "puko/console": "^0.4.0",
     "phpunit/phpunit": "^9.3.11"
   },
   "minimum-stability": "dev",
