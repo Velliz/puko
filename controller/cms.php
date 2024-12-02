@@ -15,14 +15,14 @@ class cms extends View
     /**
      * @return array
      * @desc install it via terminal: php puko element download pukocms
-     * #Template html false
+     * #Template master false
      */
     public function engine()
     {
         $data  = [];
 
         return [
-            'pukocms' => new pukocms('admin', $data),
+            'pukocms' => new pukocms('pukocms', $data),
         ];
     }
 
