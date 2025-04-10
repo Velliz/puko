@@ -30,3 +30,6 @@ package-lock.json
 # Bower web dependencies
 assets/libraries
 
+# In case vendor uploaded in compressed format
+vendor.zip
+vendor.rar
